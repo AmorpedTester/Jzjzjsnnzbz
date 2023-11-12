@@ -1,3 +1,23 @@
+-- button Gui
+-- Create a ScreenGui
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer.PlayerGui
+
+-- Create a TextButton
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 100, 0, 50)
+button.Position = UDim2.new(0, 10, 0.2, -25)  -- Adjusted position to be on the left
+button.Text = "RightShift"
+button.Parent = gui
+
+-- Function to send the virtual key event
+local function sendKeyEvent()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "RightShift", false, game)
+end
+
+-- Connect the function to the button's MouseClick event
+button.MouseButton1Click:Connect(sendKeyEvent)
+
 -- instances
 getgenv().Get =
     setmetatable(
