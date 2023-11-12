@@ -9,8 +9,8 @@ getgenv().Get =
     }
 )
 
-print("fucking line script loaded")
-warn ("Thank for key system")
+print("Many fucking line script loaded")
+warn ("No key system")
 
 -- Valuable 1
 repeat wait() until game:IsLoaded()
