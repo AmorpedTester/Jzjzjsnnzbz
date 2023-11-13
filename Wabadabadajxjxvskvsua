@@ -538,12 +538,13 @@ local tab = Tab:AddToggle({
 -- Start or stop anti-afk based on the initial toggle state
 spawn(ToggleAntiAfk)
 
+
 local Section = Tab:AddSection({
 	Name = "Fast Auto-Farm"
 })
 
 local Section = Tab:AddSection({
-	Name = "Warrior Weapon (No) Power (Yes but slow)"
+	Name = "Warrior Weapon (Yes) Power (Yes but slow)"
 })
 
 local Section = Tab:AddSection({
@@ -806,11 +807,19 @@ Tab:AddToggle({
         AutoMobs = value
         if AutoMobs then
 
-            while AutoMobs do
-                StartDungeon()
-                spawn(function()
-                    while AutoMobs do
-                        wait(1)
+while AutoMobs do
+    StartDungeon()
+    spawn(function()
+        while AutoMobs do
+            wait(1)
+            local dungeon, rooms, enemies, shrines = getDungeon()
+            for _, monster in ipairs(enemies:GetChildren()) do
+                if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+                        monster.EvilHumanoid.Health >= 0 then
+                    local monsterRootPart = monster.HumanoidRootPart
+                    if monsterRootPart.Size ~= Vector3.new(500000, 10000, 500000) then
+                        monsterRootPart.Size = Vector3.new(500000, 10000, 500000)
+                        monsterRootPart.Transparency = 0.9
                         for _, v in ipairs(Workspace:GetChildren()) do
                             if v.ClassName == "Folder" then
                                 for _, x in ipairs(v:GetChildren()) do
@@ -824,9 +833,9 @@ Tab:AddToggle({
                                                     local monsterPos = humanoidRootPart.Position
                                                     local player = game.Players.LocalPlayer
                                                     local playerPos = player.Character and
-                                                                          player.Character:FindFirstChild(
-                                                            "HumanoidRootPart") and
-                                                                          player.Character.HumanoidRootPart.Position
+                                                            player.Character:FindFirstChild(
+                                                                    "HumanoidRootPart") and
+                                                            player.Character.HumanoidRootPart.Position
 
                                                     if playerPos and EvilHumanoid.Health > 0 then
                                                         local direction = (playerPos - monsterPos).unit
@@ -842,7 +851,12 @@ Tab:AddToggle({
                             end
                         end
                     end
-                end)
+                end
+            end
+            wait()
+        end
+    end)
+
 
                 local function PerformAttack()
                     pcall(function()
