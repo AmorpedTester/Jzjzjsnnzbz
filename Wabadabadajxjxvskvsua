@@ -2322,6 +2322,10 @@ local Section = Tab:AddSection({
 	Name = "Small Update: Added Rightshift Gui For Orion Hub Showing"
 })
 
+local Section = Tab:AddSection({
+	Name = "Small Update: Added Fast Farming Warrior Weapon"
+})
+
 Tab:AddButton({
 	Name = "Update Status: 🟢",
 	Callback = function()
