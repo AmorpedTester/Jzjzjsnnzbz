@@ -638,7 +638,7 @@ local function MoveOutFromBossRoom()
     wait(3)
     local PlayerSpawn = findBossRoomInWorkspace(workspace)
     if PlayerSpawn then
-        local targetPosition = PlayerSpawn.Position - Vector3.new(0, 0, -500)
+        local targetPosition = PlayerSpawn.Position - Vector3.new(0, 0, -125)
         local movementSpeed = 70
 
         local TweenService = game:GetService("TweenService")
