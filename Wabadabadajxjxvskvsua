@@ -125,71 +125,6 @@ function getDungeon()
     return dungeon, rooms, enemies, shrines
 end
 
--- Nearest Tp Zone troubleshooting
-
-function getNearestTarget()
-    local target
-    local closet = math.huge
-    local playerx, cha, plr, hum = getPlayer()
-    local dungeon, rooms, enemies, shrines = getDungeon()
-    for _, v in pairs(enemies:GetChildren()) do
-        if v:FindFirstChild("EvilHumanoid") and v:FindFirstChild("HumanoidRootPart") and v.EvilHumanoid.Health > 0 then
-            local distance = (v.HumanoidRootPart.Position - plr.Position).Magnitude
-            if distance < closet then
-                closet = distance
-                target = v
-            end
-        end
-    end
-    return target
-end
-
--- Getplayer function of localization
-function getPlayer()
-    while not game:GetService('Players').LocalPlayer do
-        RunService.Heartbeat:Wait()
-    end
-    while not game:GetService('Players').LocalPlayer.Character do
-        RunService.Heartbeat:Wait()
-    end
-    while not game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart") do
-        RunService.Heartbeat:Wait()
-    end
-    while not game:GetService('Players').LocalPlayer.Character:FindFirstChild("Humanoid") do
-        RunService.Heartbeat:Wait()
-    end
-
-    local player = game:GetService('Players').LocalPlayer
-    local cha = game:GetService('Players').LocalPlayer.Character
-    local plr = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart
-    local hum = game:GetService('Players').LocalPlayer.Character.Humanoid
-    return playerx, cha, plr, hum
-end
-
--- Function of tpzone
-function tpToParts()
-    tweenTo({
-        targetPart = workspace.Characters:FindFirstChild(randomPartName1),
-        newCFrame = CFrame.new(0, 10, 0)
-    }, function()
-        tweenTo({
-            targetPart = workspace.Characters:FindFirstChild(randomPartName2),
-            newCFrame = CFrame.new(0, 10, 0)
-        }, function()
-            tweenTo({
-                targetPart = workspace.Characters:FindFirstChild(randomPartName4),
-                newCFrame = CFrame.new(0, 10, 0)
-            }, function()
-                tweenTo({
-                    targetPart = workspace.Characters:FindFirstChild(randomPartName3),
-                    newCFrame = CFrame.new(0, 10, 0)
-                }, function()
-                end)
-            end)
-        end)
-    end)
-end
-
 local h = require(ReplicatedStorage.Shared.Modules.DungeonLibrary)
 
 local Settings = {}
@@ -287,7 +222,7 @@ OrionLib:MakeNotification({
 
 OrionLib:MakeNotification({
 	Name = "Announcement Notification",
-	Content = "Test",
+	Content = "@Guesttester_1 Has Posted A New video",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
