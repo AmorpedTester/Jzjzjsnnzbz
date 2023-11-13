@@ -1203,7 +1203,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/
 -- Assuming 'Tab' is defined somewhere in your code.
 -- Assuming 'RunService' is defined somewhere in your code.
 
-local flySpeed = 25  -- Adjust this value to your preferred fly speed
+local flySpeed = 20  -- Adjust this value to your preferred fly speed
 local FLYING = false
 local velocityHandlerName = "VelocityHandler"  -- Replace with your actual handler names
 local gyroHandlerName = "GyroHandler"
@@ -1303,8 +1303,11 @@ local function mobilefly(player, vfly)
 
                     local direction = controlModule:GetMoveVector()
                     if direction.X ~= 0 or direction.Z ~= 0 then
-                        local flyDirection = camera.CFrame.LookVector * direction.Z + camera.CFrame.RightVector * direction.X
-                        VelocityHandler.Velocity = flyDirection.unit * ((vfly and flySpeed or flySpeed) * 50)
+                        local moveVector = Vector3.new(direction.X, 0, direction.Z).unit
+                        local rightVector = camera.CFrame.RightVector
+                        local forwardVector = camera.CFrame.LookVector
+                        local flyDirection = (rightVector * moveVector.X + forwardVector * moveVector.Z).unit
+                        VelocityHandler.Velocity = flyDirection * ((vfly and flySpeed or flySpeed) * 50)
                     end
                 end
             end
@@ -1353,6 +1356,7 @@ Tab:AddToggle({
 
 -- Start the loop
 spawn(flyLoop)
+
 
 local Section = Tab:AddSection({
 	Name = "Destroy map Btw the boss will fell (New)"
