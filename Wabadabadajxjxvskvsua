@@ -1275,7 +1275,7 @@ local function mobilefly(player, vfly)
         bg.Parent = root
         bg.MaxTorque = v3inf
         bg.P = 1000
-        bg.D = 50
+        bg.D = 20
 
         mfly1 = player.CharacterAdded:Connect(function()
             unmobilefly(player)
