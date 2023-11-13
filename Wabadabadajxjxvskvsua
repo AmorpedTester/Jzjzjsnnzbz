@@ -2304,6 +2304,10 @@ local Section = Tab:AddSection({
 	Name = "Added Auto Sell"
 })
 
+local Section = Tab:AddSection({
+	Name = "Small Update: Added Rightshift Gui For Orion Hub Showing"
+})
+
 Tab:AddButton({
 	Name = "Update Status: 🟢",
 	Callback = function()
