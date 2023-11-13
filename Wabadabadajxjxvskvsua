@@ -2,6 +2,7 @@
 -- Create a ScreenGui
 local gui = Instance.new("ScreenGui")
 gui.Parent = game.Players.LocalPlayer.PlayerGui
+gui.ResetOnSpawn = false
 
 -- Create a TextButton
 local button = Instance.new("TextButton")
