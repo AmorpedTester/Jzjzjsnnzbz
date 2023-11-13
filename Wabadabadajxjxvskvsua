@@ -1248,7 +1248,7 @@ local function unmobilefly(player)
     end)
 end
 
-local flySpeed = 25  -- Adjust this value to your preferred fly speed
+local flySpeed = 20  -- Adjust this value to your preferred fly speed
 
 local function mobilefly(player, vfly)
     unmobilefly(player)
@@ -1311,7 +1311,7 @@ local function mobilefly(player, vfly)
                         -- Adjusted this line to invert the direction when moving vertically
                         local flyDirection = (rightVector * moveVector.X - forwardVector * moveVector.Z).unit
 
-                        VelocityHandler.Velocity = flyDirection * (flySpeed * 50)
+                        VelocityHandler.Velocity = flyDirection * (flySpeed * 20)
                     end
                 end
             end
