@@ -1203,7 +1203,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/
 -- Assuming 'Tab' is defined somewhere in your code.
 -- Assuming 'RunService' is defined somewhere in your code.
 
-local flySpeed = 25  -- Adjust this value to your preferred fly speed
+local flySpeed = 20  -- Adjust this value to your preferred fly speed
 
 local FLYING = false
 local velocityHandlerName = "VelocityHandler"  -- Replace with your actual handler names
@@ -1214,41 +1214,6 @@ local currentCharacter -- Track the current character
 local function getRoot(character)
     -- Define your getRoot function here if not already defined
     return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Torso")
-end
-
-local function unmobilefly(player)
-    pcall(function()
-        FLYING = false
-        local character = player.Character
-        if character then
-            local root = getRoot(character)
-            if root then
-                local velocityHandler = root:FindFirstChild(velocityHandlerName)
-                local gyroHandler = root:FindFirstChild(gyroHandlerName)
-
-                if velocityHandler then
-                    velocityHandler:Destroy()
-                end
-
-                if gyroHandler then
-                    gyroHandler:Destroy()
-                end
-
-                local humanoid = character:FindFirstChildWhichIsA("Humanoid")
-                if humanoid then
-                    humanoid.PlatformStand = false
-                end
-            end
-        end
-
-        if mfly1 then
-            mfly1:Disconnect()
-        end
-
-        if mfly2 then
-            mfly2:Disconnect()
-        end
-    end)
 end
 
 local function mobilefly(player, vfly)
@@ -1279,7 +1244,6 @@ local function mobilefly(player, vfly)
         bg.D = 50
 
         mfly1 = player.CharacterAdded:Connect(function()
-            -- Disconnect previous connections if a new character is spawned
             unmobilefly(player)
             currentCharacter = player.Character
             mobilefly(player, vfly)
@@ -1305,17 +1269,12 @@ local function mobilefly(player, vfly)
                     VelocityHandler.Velocity = v3none
 
                     local direction = controlModule:GetMoveVector()
-                    if direction.X > 0 then
-                        VelocityHandler.Velocity = camera.CFrame.RightVector * (direction.X * flySpeed)
-                    end
-                    if direction.X < 0 then
-                        VelocityHandler.Velocity = -camera.CFrame.RightVector * (direction.X * flySpeed)
-                    end
-                    if direction.Z > 0 then
-                        VelocityHandler.Velocity = -camera.CFrame.LookVector * (direction.Z * flySpeed)
-                    end
-                    if direction.Z < 0 then
-                        VelocityHandler.Velocity = camera.CFrame.LookVector * (direction.Z * flySpeed)
+                    if direction.X ~= 0 or direction.Z ~= 0 then
+                        local moveVector = Vector3.new(direction.X, 0, direction.Z).unit
+                        local rightVector = camera.CFrame.RightVector
+                        local forwardVector = camera.CFrame.LookVector
+                        local flyDirection = (rightVector * moveVector.X + forwardVector * moveVector.Z).unit
+                        VelocityHandler.Velocity = flyDirection * ((vfly and flySpeed or flySpeed) * 50)
                     end
                 end
             end
