@@ -1203,7 +1203,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/
 -- Assuming 'Tab' is defined somewhere in your code.
 -- Assuming 'RunService' is defined somewhere in your code.
 
-local flySpeed = 20  -- Adjust this value to your preferred fly speed
+local flySpeed = 25  -- Adjust this value to your preferred fly speed
 local FLYING = false
 local velocityHandlerName = "VelocityHandler"  -- Replace with your actual handler names
 local gyroHandlerName = "GyroHandler"
@@ -1307,7 +1307,7 @@ local function mobilefly(player, vfly)
                         local rightVector = camera.CFrame.RightVector
                         local forwardVector = camera.CFrame.LookVector
                         local flyDirection = (rightVector * moveVector.X + forwardVector * moveVector.Z).unit
-                        VelocityHandler.Velocity = flyDirection * ((vfly and flySpeed or flySpeed) * 50)
+                        VelocityHandler.Velocity = flyDirection * ((vfly and flySpeed or flySpeed) * 25)
                     end
                 end
             end
