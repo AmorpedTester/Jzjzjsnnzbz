@@ -102,6 +102,27 @@ end
 
 bypassAntiCheat()
 
+function getPlayer()
+    while not game:GetService('Players').LocalPlayer do
+        RunService.Heartbeat:Wait()
+    end
+    while not game:GetService('Players').LocalPlayer.Character do
+        RunService.Heartbeat:Wait()
+    end
+    while not game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart") do
+        RunService.Heartbeat:Wait()
+    end
+    while not game:GetService('Players').LocalPlayer.Character:FindFirstChild("Humanoid") do
+        RunService.Heartbeat:Wait()
+    end
+
+    local player = game:GetService('Players').LocalPlayer
+    local cha = game:GetService('Players').LocalPlayer.Character
+    local plr = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart
+    local hum = game:GetService('Players').LocalPlayer.Character.Humanoid
+    return player, cha, plr, hum
+end
+
 -- Function to get dungeon components
 function getDungeon()
 
