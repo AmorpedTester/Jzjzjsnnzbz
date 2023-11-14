@@ -246,7 +246,7 @@ OrionLib:MakeNotification({
 
 OrionLib:MakeNotification({
 	Name = "Announcement Notification",
-	Content = "Small Update on Update logs",
+	Content = "Fixed Errors",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
@@ -753,6 +753,8 @@ end
 local Script = require(Player.PlayerScripts.Shared.Client.CombatController)
 local ScriptFunction = Script.BasicAttack
 local ScriptFunction2 = Script.UseAbility
+
+Tab:AddToggle({
 
     Name = "Fast Auto-Farming (High Device)",
 
