@@ -752,7 +752,7 @@ end
 
 local Script = require(Player.PlayerScripts.Shared.Client.CombatController)
 local ScriptFunction = Script.BasicAttack
-local ScriptFunction2 = Script.UseAbilitTab:AddToggle({
+local ScriptFunction2 = Script.UseAbility
 
     Name = "Fast Auto-Farming (High Device)",
 
