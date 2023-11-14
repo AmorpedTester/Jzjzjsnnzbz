@@ -752,119 +752,442 @@ end
 
 local Script = require(Player.PlayerScripts.Shared.Client.CombatController)
 local ScriptFunction = Script.BasicAttack
-local ScriptFunction2 = Script.UseAbility
+local ScriptFunction2 = Script.UseAbilitTab:AddToggle({
 
-local Workspace = game:GetService("Workspace")
-local AutoMobs = false
+    Name = "Fast Auto-Farming (High Device)",
 
-Tab:AddToggle({
-    Name = "Fast Auto-Farming",
     Default = false,
+
     Save = true,
+
     Flag = FastFarming,
+
     Callback = function(value)
+
         AutoMobs = value
+
         if AutoMobs then
 
+
+
 while AutoMobs do
+
     StartDungeon()
     killAura(monster)
+
     spawn(function()
+
         while AutoMobs do
+
             wait(1)
+
             local dungeon, rooms, enemies, shrines = getDungeon()
+
             for _, monster in ipairs(enemies:GetChildren()) do
+
                 if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+
                         monster.EvilHumanoid.Health >= 0 then
+
                     local monsterRootPart = monster.HumanoidRootPart
+
                     if monsterRootPart.Size ~= Vector3.new(500000, 10000, 500000) then
+
                         monsterRootPart.Size = Vector3.new(500000, 10000, 500000)
+
                         monsterRootPart.Transparency = 0.9
+
                         for _, v in ipairs(Workspace:GetChildren()) do
+
                             if v.ClassName == "Folder" then
+
                                 for _, x in ipairs(v:GetChildren()) do
+
                                     if x.ClassName == "Folder" then
+
                                         for _, c in ipairs(x:GetChildren()) do
+
                                             if c:IsA("Model") and c:FindFirstChild("EvilHumanoid") then
+
                                                 local EvilHumanoid = c:FindFirstChild("EvilHumanoid")
+
                                                 local humanoidRootPart = c:FindFirstChild("HumanoidRootPart")
 
+
+
                                                 if EvilHumanoid and humanoidRootPart then
+
                                                     local monsterPos = humanoidRootPart.Position
+
                                                     local player = game.Players.LocalPlayer
+
                                                     local playerPos = player.Character and
+
                                                             player.Character:FindFirstChild(
+
                                                                     "HumanoidRootPart") and
+
                                                             player.Character.HumanoidRootPart.Position
 
+
+
                                                     if playerPos and EvilHumanoid.Health > 0 then
+
                                                         local direction = (playerPos - monsterPos).unit
+
                                                         local distanceToTeleport = 3
+
                                                         local teleportPos = playerPos + direction * distanceToTeleport
+
                                                         humanoidRootPart.Position = teleportPos
+
                                                     end
+
                                                 end
+
                                             end
+
                                         end
+
                                     end
+
                                 end
+
                             end
+
                         end
+
                     end
+
                 end
+
             end
+
             wait()
+
         end
+
     end)
 
 
+
+
+
                 local function PerformAttack()
+
                     pcall(function()
+
                         if AutoMobs then
+
                             ScriptFunction(Script)
+
                             ScriptFunction2(Script)
+
                         end
+
                     end)
+
                 end
+
                 game:GetService("RunService").Stepped:Connect(PerformAttack)
 
+
+
                 spawn(function()
+
                     while AutoMobs do
+
                         allvis()
+
                         wait(0.01)
+
                     end
+
                 end)
 
+
+
                 spawn(function()
+
                     while AutoMobs do
+
                         MoveOutFromBossRoom()
+
                         wait(0.01)
+
                     end
+
                 end)
 
+
+
                 spawn(function()
+
                     while AutoMobs do
+
                         local finishPart = findFinishPartInWorkspace(game:GetService("Workspace"))
+
                         if finishPart then
+
                             local character = game.Players.LocalPlayer.Character
+
                             local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+
                             if humanoidRootPart then
+
                                 local ChestPart = findNewChestInWorkspace(game:GetService("Workspace"))
+
                                 if ChestPart then
+
                                     humanoidRootPart.CFrame = ChestPart.CFrame
+
                                     wait(3)
+
                                     humanoidRootPart.CFrame = finishPart.CFrame
+
                                 end
+
                             end
+
                         end
+
                         wait(0.1)
+
                     end
+
                 end)
+
                 wait(0.01)
+
             end
+
         end
+
     end
+
 })
+
+local AutoMobs2 = false
+
+
+
+Tab:AddToggle({
+
+    Name = "Fast Auto-Farming (Low Device)",
+
+    Default = false,
+
+    Save = true,
+
+    Flag = FastFarmingLow,
+
+    Callback = function(value)
+
+        AutoMobs2 = value
+
+        if AutoMobs2 then
+
+
+
+while AutoMobs2 do
+
+    StartDungeon()
+    killAura(monster)
+
+    spawn(function()
+
+        while AutoMobs2 do
+
+            wait(1)
+
+            local dungeon, rooms, enemies, shrines = getDungeon()
+
+            for _, monster in ipairs(enemies:GetChildren()) do
+
+                if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+
+                        monster.EvilHumanoid.Health >= 0 then
+
+                    local monsterRootPart = monster.HumanoidRootPart
+
+                    if monsterRootPart.Size ~= Vector3.new(30, 10, 75) then
+
+                        monsterRootPart.Size = Vector3.new(30, 10, 75)
+
+                        monsterRootPart.Transparency = 0.9
+
+                        for _, v in ipairs(Workspace:GetChildren()) do
+
+                            if v.ClassName == "Folder" then
+
+                                for _, x in ipairs(v:GetChildren()) do
+
+                                    if x.ClassName == "Folder" then
+
+                                        for _, c in ipairs(x:GetChildren()) do
+
+                                            if c:IsA("Model") and c:FindFirstChild("EvilHumanoid") then
+
+                                                local EvilHumanoid = c:FindFirstChild("EvilHumanoid")
+
+                                                local humanoidRootPart = c:FindFirstChild("HumanoidRootPart")
+
+
+
+                                                if EvilHumanoid and humanoidRootPart then
+
+                                                    local monsterPos = humanoidRootPart.Position
+
+                                                    local player = game.Players.LocalPlayer
+
+                                                    local playerPos = player.Character and
+
+                                                            player.Character:FindFirstChild(
+
+                                                                    "HumanoidRootPart") and
+
+                                                            player.Character.HumanoidRootPart.Position
+
+
+
+                                                    if playerPos and EvilHumanoid.Health > 0 then
+
+                                                        local direction = (playerPos - monsterPos).unit
+
+                                                        local distanceToTeleport = 3
+
+                                                        local teleportPos = playerPos + direction * distanceToTeleport
+
+                                                        humanoidRootPart.Position = teleportPos
+
+                                                    end
+
+                                                end
+
+                                            end
+
+                                        end
+
+                                    end
+
+                                end
+
+                            end
+
+                        end
+
+                    end
+
+                end
+
+            end
+
+            wait()
+
+        end
+
+    end)
+
+
+
+
+
+                local function PerformAttack()
+
+                    pcall(function()
+
+                        if AutoMobs2 then
+
+                            ScriptFunction(Script)
+
+                            ScriptFunction2(Script)
+
+                        end
+
+                    end)
+
+                end
+
+                game:GetService("RunService").Stepped:Connect(PerformAttack)
+
+
+
+                spawn(function()
+
+                    while AutoMobs2 do
+
+                        allvis()
+
+                        wait(0.01)
+
+                    end
+
+                end)
+
+
+
+                spawn(function()
+
+                    while AutoMobs2 do
+
+                        MoveOutFromBossRoom()
+
+                        wait(0.01)
+
+                    end
+
+                end)
+
+
+
+                spawn(function()
+
+                    while AutoMobs2 do
+
+                        local finishPart = findFinishPartInWorkspace(game:GetService("Workspace"))
+
+                        if finishPart then
+
+                            local character = game.Players.LocalPlayer.Character
+
+                            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+
+                            if humanoidRootPart then
+
+                                local ChestPart = findNewChestInWorkspace(game:GetService("Workspace"))
+
+                                if ChestPart then
+
+                                    humanoidRootPart.CFrame = ChestPart.CFrame
+
+                                    wait(3)
+
+                                    humanoidRootPart.CFrame = finishPart.CFrame
+
+                                end
+
+                            end
+
+                        end
+
+                        wait(0.1)
+
+                    end
+
+                end)
+
+                wait(0.01)
+
+            end
+
+        end
+
+    end
+
+})
+
+local Workspace = game:GetService("Workspace")
+
 
 wait(3)
 
@@ -2281,6 +2604,10 @@ local Section = Tab:AddSection({
 
 local Section = Tab:AddSection({
 	Name = "Small Update: Added Fast Farming Warrior Weapon"
+})
+
+local Section = Tab:AddSection({
+	Name = "Small Update: Added Fast Farming Low Device Due Lagging or Freeze Screen"
 })
 
 Tab:AddButton({
