@@ -125,6 +125,30 @@ function getDungeon()
     return dungeon, rooms, enemies, shrines
 end
 
+function killAura(monster)
+    for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+           if damage.ClassName ~= "Model" then
+               pcall(function()
+                   damage.Transparency = 1
+                   damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                      damage.Position = monster.HumanoidRootPart.Position
+               end)
+           end
+        pcall(function()
+            if damage.ClassName ~= "Model" and damage.ClassName ~= "Explosion" then
+                game:GetService("TweenService"):Create(damage, TweenInfo.new(1), {
+                    CFrame = monster.HumanoidRootPart.CFrame
+                }):Play()
+            end
+            if damage:FindFirstChild("Hitbox") then
+                game:GetService("TweenService"):Create(damage.Hitbox, TweenInfo.new(1), {
+                    CFrame = monster.HumanoidRootPart.CFrame
+                }):Play()
+            end
+        end)
+    end
+end
+
 local h = require(ReplicatedStorage.Shared.Modules.DungeonLibrary)
 
 local Settings = {}
@@ -744,6 +768,7 @@ Tab:AddToggle({
 
 while AutoMobs do
     StartDungeon()
+    killAura(monster)
     spawn(function()
         while AutoMobs do
             wait(1)
