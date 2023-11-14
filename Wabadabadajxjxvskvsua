@@ -318,6 +318,19 @@ spawn(function()
        end)
     end
 end)
+spawn(function()
+    while wait() and Settings.H do
+        local player, cha, plr, hum = getPlayer()
+        local dungeon, rooms, enemies, shrines = getDungeon()
+        for _, v in pairs(rooms:GetDescendants()) do
+            if v:FindFirstChildWhichIsA("TouchTransmitter", true) and v.Name == "Trigger" then
+                v.Primary.CFrame = plr.CFrame
+                wait()
+            end
+        end
+        wait()
+    end
+end)
 end})
 
 Settings.Med = State
@@ -2613,7 +2626,7 @@ local Section = Tab:AddSection({
 })
 
 local Section = Tab:AddSection({
-	Name = "Small Update: Added Pumpkin Event on AutoMobs"
+	Name = "Small Update: Added Pumpkin Event on Auto Kill Mobs"
 })
 
 Tab:AddButton({
