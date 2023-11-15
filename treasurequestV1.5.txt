@@ -1,0 +1,1003 @@
+-- instances
+getgenv().Get =
+    setmetatable(
+    {},
+    {
+        __index = function(A, B)
+            return game:GetService(B)
+        end
+    }
+)
+
+print("fucking line script loaded")
+warn("No key system shit")
+
+repeat wait() until game:IsLoaded()
+local ReplicatedStorage = Get.ReplicatedStorage
+local Players = Get.Players
+local RunService = Get.RunService
+local TweenService = Get.TweenService
+local Workspace = Get.Workspace
+local HttpService = Get.HttpService
+local Player = Players.LocalPlayer
+
+
+local h = require(ReplicatedStorage.Shared.Modules.DungeonLibrary)
+
+local Settings = {}
+
+local Dungeons = {}
+for i, v in pairs(h.Dungeons) do
+    table.insert(Dungeons, i)
+end
+GameModes = {}
+for i, v in pairs(h.GameModes) do
+    table.insert(GameModes, i)
+end
+Difficulties = {}
+for i, v in pairs(h.Difficulties) do
+    table.insert(Difficulties, i)
+end
+
+local function GetClosestt()
+    local TargetDistance = math.huge
+    local Target
+    for i, v in pairs(Workspace:GetChildren()) do
+        if v.ClassName == "Folder" then
+            for i, x in pairs(v:GetChildren()) do
+                if x.ClassName == "Folder" then
+                    for i, c in pairs(x:GetChildren()) do
+                        if
+                            c.ClassName == "Model" and c:FindFirstChild("EvilHumanoid") and
+                                c:FindFirstChildOfClass("Humanoid").Health ~= 0 and
+                                c ~= nil
+                         then
+                            local mag =
+                                (Player.Character.HumanoidRootPart.Position -
+                                c.HumanoidRootPart.Position).magnitude
+                            if mag < TargetDistance then
+                                TargetDistance = mag
+                                Target = c
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return Target
+end
+
+local Noclip = function(A)
+    return A:ChangeState(11)
+end 
+
+local TweenService = game:GetService("TweenService")
+
+local Tween = function(A,B,C)
+    if A and B and C then
+        return TweenService:Create(A,TweenInfo.new((B.Position + Vector3.new(x,y,z) - A.Position).magnitude / C, Enum.EasingStyle.Linear),{CFrame = CFrame.new(B.Position + Vector3.new(x,y,z))}):Play()
+    end 
+end
+local Script = require(Player.PlayerScripts.Shared.Client.CombatController)
+local ScriptFunction = Script.BasicAttack
+local ScriptFunction2 = Script.UseAbility
+
+speed = 50
+
+x = 0
+
+y = 0
+
+z = -2
+
+if game.PlaceId == 2960777560 then
+pcall(function()
+ReplicatedStorage.Lobby.Remotes.ClaimDailyReward:FireServer()
+ReplicatedStorage.Lobby.Remotes.ClaimTreasureReward:FireServer()
+end)
+end
+
+game:GetService("Workspace"):FindFirstChild("Map")
+
+--Troubleshoot Orion Library Gui
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/thanhdat4461/OrionMoblie/main/source')))()
+
+-- StarterGui
+
+local Window = OrionLib:MakeWindow({Name = "Unknown Hub V1.5 (OP) ", IntroText = "Unknown Hub V1.5 (OP) ", HidePremium = false, SaveConfig = true, ConfigFolder = "UnknownTQ"})
+
+-- Script
+
+OrionLib:MakeNotification({
+	Name = "Made by Unknownproooolucky",
+	Content = "Nah i dont need key system",
+	Image = "rbxassetid://4483345998",
+	Time = 10
+})
+
+OrionLib:MakeNotification({
+	Name = "Treasure Quest Script",
+	Content = "System Loader",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+local Tab = Window:MakeTab({
+	Name = "Auto Farm",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Auto Farm"
+})
+
+if game.PlaceId == 2960777560 then
+pcall(function()
+ReplicatedStorage.Lobby.Remotes.ClaimDailyReward:FireServer()
+ReplicatedStorage.Lobby.Remotes.ClaimTreasureReward:FireServer()
+end)
+end
+
+Settings.H = State
+Tab:AddToggle({
+	Name = "Auto Kill Mob",
+	Default = false,
+	Callback = function(State)
+Settings.H = State
+game:GetService("RunService").Stepped:connect(
+    function()
+        pcall(
+            function()
+                if Settings.H then
+                    ScriptFunction(Script)
+                    ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
+                    Noclip(Player.Character:WaitForChild("Humanoid"))
+                end
+            end
+        )
+    end
+)
+spawn(function()
+    while wait() and Settings.H do 
+        pcall(function()
+            ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+            ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+            ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
+
+            ReplicatedStorage.Shared.Remotes.Data.ClaimPrizes:FireServer()
+            for i,v in pairs(Workspace:GetChildren()) do
+                if v:FindFirstChild("FinishRoom",true)and v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true) then
+                    firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),0)
+                    firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),1)
+                end 
+            end 
+            if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
+                Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
+            end 
+       end)
+    end
+end)
+end})
+
+Settings.Med = State
+Tab:AddToggle({
+	Name = "Auto Collect Medkit",
+	Default = false,
+	Callback = function(State)
+Settings.Med = State
+
+spawn(function()
+    while wait() and Settings.Med do
+        pcall(function()
+            for i,v in pairs(Workspace.Ignore:GetChildren()) do
+                if v.Name == "Medkit" and v:FindFirstChildWhichIsA("TouchTransmitter",true) then
+                    if Player.Character.Humanoid.Health < Player.Character.Humanoid.MaxHealth then
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true), v, 0)
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true), v, 1)
+                    end 
+                end 
+            end
+        end)
+    end 
+end)
+end})
+
+Settings.Treasure = State
+Tab:AddToggle({
+	Name = "Auto Collect Chest",
+	Default = false,
+	Callback = function(State)
+Settings.Treasure = State
+
+spawn(function()
+    while wait() and Settings.Treasure do 
+        pcall(function()
+            for i,v in pairs(Workspace:GetDescendants()) do
+                if v.Name == "Chest"  then
+                    firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true),v:FindFirstChild("Hitbox"),0)
+                    firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true),v:FindFirstChild("Hitbox"),1)
+                end 
+            end 
+        end)
+    end 
+end)
+end})
+
+local Section = Tab:AddSection({
+	Name = "Tween Speed"
+})
+
+Tab:AddTextbox({
+	Name = "Tween Auto Kill Mobs Speed",
+	Default = "50",
+	TextDisappear = true,
+	Callback = function(Value)
+speed = Value
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "Tween (Positions)"
+})
+
+Tab:AddTextbox({
+    Name = "Tween Position X",
+    Default = "0",
+    TextDisappear = true,
+    Callback = function(HX)
+        x = tonumber(HX) or 0
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Tween Position Y",
+    Default = "0",
+    TextDisappear = true,
+    Callback = function(HY)
+        y = tonumber(HY) or 0
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Tween Position Z",
+    Default = "-2",
+    TextDisappear = true,
+    Callback = function(HZ)
+        z = tonumber(HZ) or -2
+    end
+})
+
+
+local Toggle = false  -- Default toggle state
+
+local vu = game:GetService("VirtualUser")
+
+local function ToggleAntiAfk()
+    while true do
+        if Toggle then
+            vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+            wait(1)
+            vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+        else
+            wait(1)
+        end
+    end
+end
+
+local tab = Tab:AddToggle({
+    Name = "Anti-Afk",
+    Default = false,
+    Callback = function(State)
+        Toggle = State
+    end
+})
+
+-- Start or stop anti-afk based on the initial toggle state
+spawn(ToggleAntiAfk)
+
+local Tab = Window:MakeTab({
+	Name = "Hitbox Settings",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Hitbox Mobs Expander (toggle)"
+})
+
+local hitboxTest = false
+
+local function enableHitbox()
+    for index, value in pairs(workspace:GetDescendants()) do
+        if value:FindFirstChild("HumanoidRootPart") then
+            if value.Name ~= game.Players.LocalPlayer.Name then
+                value.HumanoidRootPart.Transparency = txx
+                value.HumanoidRootPart.Size = Vector3.new(xhx, yhx, zhx)
+            end
+        end
+    end
+end
+
+local function disableHitbox()
+    for index, value in pairs(workspace:GetDescendants()) do
+        if value:FindFirstChild("HumanoidRootPart") then
+            if value.Name ~= game.Players.LocalPlayer.Name then
+                value.HumanoidRootPart.Transparency = 1
+                value.HumanoidRootPart.Size = Vector3.new(10, 10, 10)
+            end
+        end
+    end
+end
+
+local RunService = game:GetService("RunService")
+
+local function toggleHitboxState(Kxe)
+    hitboxTest = Kxe
+    if hitboxTest then
+        enableHitbox()
+    else
+        disableHitbox()
+    end
+end
+
+
+Tab:AddToggle({
+    Name = "Hitbox Toggle",
+    Default = false,
+    Callback = function(Kxe)
+        toggleHitboxState(Kxe)
+    end
+})
+
+RunService.Heartbeat:Connect(function()
+    toggleHitboxState(hitboxTest)
+end)
+
+
+-- For Textbox
+
+xhx = 1
+
+yhx = 1
+
+zhx = 1
+
+txx = 0.8
+
+local Section = Tab:AddSection({
+	Name = "Hitbox Mobs Expander (Size)"
+})
+
+Tab:AddTextbox({
+    Name = "Hitbox Mobs Size X",
+    Default = "1",
+    TextDisappear = true,
+    Callback = function(jxk)
+        xhx = tonumber(jxk) or 1
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Hitbox Mobs Size Y",
+    Default = "1",
+    TextDisappear = true,
+    Callback = function(gxk)
+        yhx = tonumber(gxk) or 1
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Hitbox Mobs Size Z",
+    Default = "1",
+    TextDisappear = true,
+    Callback = function(rxk)
+        zhx = tonumber(rxk) or 1
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Hitbox Mobs Transparent (Idk why its not transparent)",
+    Default = "0.8",
+    TextDisappear = true,
+    Callback = function(xxk)
+        txx = tonumber(xxk) or 0.8
+    end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Speed and Jump",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+
+local Section = Tab:AddSection({
+	Name = "Speed Only Numbers"
+})
+
+Tab:AddTextbox({
+	Name = "Speed",
+	Default = "16",
+	TextDisappear = true,
+	Callback = function(S)
+_G.loops = true
+while wait(1) do
+if _G.loops == true then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = S
+wait(3)
+warn("Anti-Cheat Reseting The Speed")
+warn("Re executing...")
+end
+end
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "Jump Only Numbers"
+})
+
+Tab:AddTextbox({
+	Name = "Jump",
+	Default = "50",
+	TextDisappear = true,
+	Callback = function(J)
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = J
+	end	  
+})
+
+
+local Tab = Window:MakeTab({
+	Name = "Settings",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Auto-Farm Settings"
+})
+
+local Section = Tab:AddSection({
+	Name = "Toggle"
+})
+
+Tab:AddToggle({
+	Name = "Air Jump",
+	Default = false,
+	Callback = function(State)
+InfiniteJumpEnabled = State
+local Player = game:GetService("Players").LocalPlayer
+game:GetService("UserInputService").JumpRequest:Connect(function()
+     if InfiniteJumpEnabled then
+         Player.Character:WaitForChild("Humanoid"):ChangeState("Jumping")
+     end
+end)
+  end    
+})
+
+local XC = false  -- Default noclip state
+
+local function Noclip()
+    game:GetService('RunService').Stepped:Connect(function()
+        if XC then
+            pcall(function()
+                for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                    if v:IsA("BasePart") then
+                        v.CanCollide = false
+                    end
+                end
+            end)
+        end
+    end)
+end
+
+-- Create the toggle
+local tab = Tab:AddToggle({
+    Name = "Noclip",
+    Default = false,
+    Callback = function(State)
+        XC = State
+    end
+})
+
+-- Start or stop noclip based on the initial toggle state
+Noclip()
+
+
+local Section = Tab:AddSection({
+	Name = "Auto-farm Support"
+})
+
+Tab:AddButton({
+	Name = "Fly Gui For Auto Farming (Manual)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Low Gravity"
+})
+
+local LowGravity = false  -- Default low gravity state
+
+local function ToggleLowGravity()
+    if LowGravity then
+        game.Workspace.Gravity = 10  
+    else
+        game.Workspace.Gravity = 196.2  
+    end
+end
+
+Tab:AddToggle({
+    Name = "Low Gravity (For AFK Auto-farm)",
+    Default = false,
+    Callback = function(State)
+        LowGravity = State
+        ToggleLowGravity()  -- Toggle low gravity when the state changes
+    end
+})
+
+-- Initial toggle state
+ToggleLowGravity()
+
+
+local Tab = Window:MakeTab({
+	Name = "Teleport",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Dungeon Teleport"
+})
+
+Tab:AddButton({
+	Name = "Teleport to Dungeon SpawnPoint",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 25, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Lobby Teleport"
+})
+
+Tab:AddButton({
+	Name = "Teleport to Lobby SpawnPoint",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(597.041, 307.598, 452.364)
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Auto Elemental Sword"
+})
+
+Tab:AddButton({
+	Name = "Auto Collect Sword",
+	Callback = function()
+-- Lava Sword
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(592.094116, 271.870483, 411.405548, 0.999581695, -9.72332082e-09, 0.0289210249, 1.06783506e-08, 1, -3.28675362e-08, -0.0289210249, 3.3162614e-08, 0.999581695)
+
+wait(1)
+
+-- upper sword
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(620.374, 629.185, 694.411)
+
+wait (1)
+
+-- ice sword
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.971, 237.207, 616.699)
+
+wait(1)
+
+-- crystal sword
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(429.602, 289.115, 549.409)
+
+wait(1)
+
+-- black sword
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(762.415, 229.793, 653.022)
+
+wait(1)
+
+-- green sword
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(838.448, 217.391, 435.103)
+
+wait(1)
+
+-- Main Spawn Point lobby
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(597.041, 307.598, 452.364)
+warn("All sword already get")
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Daily Teleport"
+})
+
+Tab:AddButton({
+	Name = "Daily Rewards",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(558.265, 307.889, 415.435)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Spin Wheel",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(523.958, 313.488, 621.031)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Quest",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(550.858, 307.592, 480.063)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Daily Quest",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(547.629, 312.991, 577.481)
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Shop Teleport"
+})
+
+Tab:AddButton({
+	Name = "Shop",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(561.511, 307.592, 636.999)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Event Shop",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(620.034, 367.623, 785.656)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Food Cart",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(717.144, 284.795, 667.71)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Heroic Shop",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(910.215, 284.906, 693.791)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "The Emporium",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(758.942, 284.998, 606.16)
+  	end    
+})
+
+
+Tab:AddButton({
+	Name = "Magic Merchant",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(550.498, 307.592, 507.009)
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "More Teleport"
+})
+
+Tab:AddButton({
+	Name = "Bank",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(640.346, 307.598, 453.465)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Blacksmith",
+	Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(660.68, 307.592, 497.431)
+  	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "More",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Range Kill (Weapon Name)"
+})
+
+Tab:AddButton({
+	Name = "Range Kill Script (Copy clipboard)",
+	Callback = function()
+setclipboard("https://pastebin.com/hTUXLaGC")
+toclipboard("https://pastebin.com/hTUXLaGC")
+   end
+})
+
+local Section = Tab:AddSection({
+	Name = " Fps Cap Numbers Only"
+})
+
+Tab:AddTextbox({
+	Name = "Fps Cap",
+	Default = "60",
+	TextDisappear = true,
+	Callback = function(F)
+setfpscap(F)
+print("Set fps cap")
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = " Anti-Scripts"
+})
+
+
+Tab:AddButton({
+	Name = "Anti-Lag",
+	Callback = function()
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/Unknownproootest/UniversalfpsboostXunlocker/main/FpsBoost'),true))()
+   end
+})
+
+Tab:AddButton({
+	Name = "Anti-Lag 2",
+	Callback = function()
+local decalsyeeted = true -- Leaving this on makes games look shitty but the fps goes up by at least 20.
+local g = game
+local w = g.Workspace
+local l = g.Lighting
+local t = w.Terrain
+t.WaterWaveSize = 0
+t.WaterWaveSpeed = 0
+t.WaterReflectance = 0
+t.WaterTransparency = 0
+l.GlobalShadows = false
+l.FogEnd = 9e9
+l.Brightness = 0
+settings().Rendering.QualityLevel = "Level01"
+for i,v in pairs(g:GetDescendants()) do
+    if v:IsA("Part") or v:IsA("Union") or v:IsA("MeshPart") then
+        v.Material = "Plastic"
+v.Reflectance = 0
+elseif v:IsA("Decal") and decalsyeeted then 
+v.Transparency = 1
+elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then 
+v.Lifetime = NumberRange.new(0)
+    end
+end
+   end
+})
+
+Tab:AddButton({
+	Name = "Anti-Lag 3",
+	Callback = function()
+local decalsyeeted = true 
+local g = game
+local w = g.Workspace
+local l = g.Lighting
+local t = w.Terrain
+sethiddenproperty(l,"Technology",2)
+sethiddenproperty(t,"Decoration",false)
+t.WaterWaveSize = 0
+t.WaterWaveSpeed = 0
+t.WaterReflectance = 0
+t.WaterTransparency = 0
+l.GlobalShadows = 0
+l.FogEnd = 9e9
+l.Brightness = 0
+settings().Rendering.QualityLevel = "Level01"
+for i, v in pairs(w:GetDescendants()) do
+    if v:IsA("BasePart") and not v:IsA("MeshPart") then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+    elseif (v:IsA("Decal") or v:IsA("Texture")) and decalsyeeted then
+        v.Transparency = 1
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Lifetime = NumberRange.new(0)
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 1
+        v.BlastRadius = 1
+    elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
+        v.Enabled = false
+    elseif v:IsA("MeshPart") and decalsyeeted then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+        v.TextureID = 10385902758728957
+    elseif v:IsA("SpecialMesh") and decalsyeeted  then
+        v.TextureId=0
+    elseif v:IsA("ShirtGraphic") and decalsyeeted then
+        v.Graphic=0
+    elseif (v:IsA("Shirt") or v:IsA("Pants")) and decalsyeeted then
+        v[v.ClassName.."Template"]=0
+    end
+end
+for i = 1,#l:GetChildren() do
+    e=l:GetChildren()[i]
+    if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
+        e.Enabled = false
+    end
+end
+w.DescendantAdded:Connect(function(v)
+    wait()--prevent errors and shit
+   if v:IsA("BasePart") and not v:IsA("MeshPart") then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+    elseif v:IsA("Decal") or v:IsA("Texture") and decalsyeeted then
+        v.Transparency = 1
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Lifetime = NumberRange.new(0)
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 1
+        v.BlastRadius = 1
+    elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
+        v.Enabled = false
+    elseif v:IsA("MeshPart") and decalsyeeted then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+        v.TextureID = 10385902758728957
+    elseif v:IsA("SpecialMesh") and decalsyeeted then
+        v.TextureId=0
+    elseif v:IsA("ShirtGraphic") and decalsyeeted then
+        v.ShirtGraphic=0
+    elseif (v:IsA("Shirt") or v:IsA("Pants")) and decalsyeeted then
+        v[v.ClassName.."Template"]=0
+    end
+end)
+   end
+})
+
+local Section = Tab:AddSection({
+	Name = "White Screen Recommend to Reduce Lag"
+})
+
+Tab:AddButton({
+	Name = "White-Screen (ON)",
+	Callback = function()
+game:GetService("RunService"):Set3dRenderingEnabled(false)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "White-Screen (OFF)",
+	Callback = function()
+game:GetService("RunService"):Set3dRenderingEnabled(true)
+  	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Update Logs",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "V 1 Logs"
+})
+
+local Section = Tab:AddSection({
+	Name = "is the first based version"
+})
+
+local Section = Tab:AddSection({
+	Name = "Added Auto Farm"
+})
+
+local Section = Tab:AddSection({
+	Name = "V 1.2 Logs"
+})
+
+local Section = Tab:AddSection({
+	Name = "Added Speed and jump"
+})
+
+local Section = Tab:AddSection({
+	Name = "Added Settings"
+})
+
+local Section = Tab:AddSection({
+	Name = "Added Fly Gui And noclip Gui"
+})
+
+local Section = Tab:AddSection({
+	Name = "V 1.3"
+})
+
+local Section = Tab:AddSection({
+	Name = "Removed Noclip Gui version cuz its not working"
+})
+
+local Section = Tab:AddSection({
+	Name = "Added Noclip Toggle"
+})
+
+local Section = Tab:AddSection({
+	Name = "Added Anti-Lag 1-3 and fps cap"
+})
+
+local Section = Tab:AddSection({
+	Name = "Added Range script script"
+})
+
+local Section = Tab:AddSection({
+	Name = "V 1.4 Logs"
+})
+
+local Section = Tab:AddSection({
+	Name = "Added Teleport and Auto Collect Elemental Sword"
+})
+
+local Section = Tab:AddSection({
+	Name = "Added Dragable Gui"
+})
+
+local Section = Tab:AddSection({
+	Name = "Fixed Noclip still not working"
+})
+
+local Section = Tab:AddSection({
+	Name = "V 1.4 (Small update)"
+})
+
+local Section = Tab:AddSection({
+	Name = "Completely fixed no clip but cant turn off :/"
+})
+
+local Section = Tab:AddSection({
+	Name = "Forgot to add teleport to spawn lobby"
+})
+
+local Section = Tab:AddSection({
+	Name = " V 1.4.2 Logs"
+})
+
+local Section = Tab:AddSection({
+	Name = " Added update logs"
+})
+
+local Section = Tab:AddSection({
+	Name = " Added Low Gravity For AFK Auto-Farm"
+})
+
+
+local Section = Tab:AddSection({
+	Name = " Added White-Screen"
+})
+
+local Section = Tab:AddSection({
+	Name = " Finally Figured out how to toggle no clip"
+})
+
+local Section = Tab:AddSection({
+	Name = " V 1.5 Logs (Currently)"
+})
+
+local Section = Tab:AddSection({
+	Name = " Hitbox Mobs "
+})
+
+local Section = Tab:AddSection({
+	Name = " Anti-Afk "
+})
+
+local Section = Tab:AddSection({
+	Name = " Tween Position "
+})
+
+OrionLib:Init()
