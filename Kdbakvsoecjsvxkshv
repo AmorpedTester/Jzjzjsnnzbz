@@ -11,7 +11,12 @@ end
 
 local function readKeyFromFile()
     if isfile(keyFileName) then
-        return readfile(keyFileName)
+        local success, content = pcall(readfile, keyFileName)
+        if success then
+            return content
+        else
+            print("Error reading key file:", content)
+        end
     end
     return nil
 end
@@ -90,8 +95,4 @@ Tab:AddButton({
 
 local Section = Tab:AddSection({
     Name = "Link: https://link-hub.net/1030614/unknowntqhubcheckpoint1"
-})
-
-local Section = Tab:AddSection({
-    Name = "Pls Delete the UnknownTQHub the key won't saved (Only one time)"
 })
