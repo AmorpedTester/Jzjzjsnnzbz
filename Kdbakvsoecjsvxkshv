@@ -5,6 +5,10 @@ local Player = game.Players.LocalPlayer
 
 local keyFileName = "UnknownTQHubKey.txt" -- Define the file name to save the key
 
+local function saveKeyToFile(key)
+    writefile(keyFileName, key)
+end
+
 local function readKeyFromFile()
     if isfile(keyFileName) then
         return readfile(keyFileName)
@@ -12,10 +16,9 @@ local function readKeyFromFile()
     return nil
 end
 
--- Load the key from the file or use the default key
-_G.Key = readKeyFromFile() or "UnknownHubKey=9kI80FjYTavCX"
+_G.Key = readKeyFromFile() or "UnknownHubKey=9kI80FjYTavCX" -- Use the saved key or the default key
 
-_G.KeyInput = "string"
+_G.KeyInput = _G.Key
 
 OrionLib:MakeNotification({
     Name = "Key System Needed",
@@ -57,10 +60,12 @@ local Tab = Window:MakeTab({
 local keyTextbox = Tab:AddTextbox({
     Name = "Enter The Key",
     Default = "Put Key",
+    Text = _G.KeyInput, -- Populate the textbox with the saved key
     TextDisappear = true,
     Save = true,
     Callback = function(Value)
         _G.KeyInput = Value
+        saveKeyToFile(_G.KeyInput) -- Save the key when the textbox value changes
     end	  
 })
 
