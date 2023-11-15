@@ -1,0 +1,92 @@
+-- Moveable Work At Moblie/PC 
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/thanhdat4461/OrionMoblie/main/source')))()
+
+local Player = game.Players.LocalPlayer
+
+local keyFileName = "UnknownTQHubKey.txt" -- Define the file name to save the key
+
+local function saveKeyToFile(key)
+    writefile(keyFileName, key)
+end
+
+local function readKeyFromFile()
+    if isfile(keyFileName) then
+        return readfile(keyFileName)
+    end
+    return nil
+end
+
+_G.Key = readKeyFromFile() or "UnknownHubKey=9kI80FjYTavCX" -- Use the saved key or the default key
+
+_G.KeyInput = "string"
+
+OrionLib:MakeNotification({
+    Name = "Key System Needed",
+    Content = "Welcome "..Player.name..".",
+    Image = "rbxassetid://4483345998",
+    Time = 5
+})
+
+function UnknownHubSuccess()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/AmorpedTester/Jzjzjsnnzbz/main/Wabadabadajxjxvskvsua'))()
+end
+
+function CorrectKeyNotification()
+    OrionLib:MakeNotification({
+        Name = "Successful",
+        Content = "Please Wait until Loaded...",
+        Image = "rbxassetid://4483345998",
+        Time = 5
+    })
+end
+
+function WrongKeyNotification()
+    OrionLib:MakeNotification({
+        Name = "Wrong Key!",
+        Content = "Expired Key Or Invalid Key",
+        Image = "rbxassetid://4483345998",
+        Time = 3
+    })
+end
+
+local Window = OrionLib:MakeWindow({Name = "Unknown TQ Key System", HidePremium = false, SaveConfig = true, ConfigFolder = "UnknownTQHub"})
+
+local Tab = Window:MakeTab({
+    Name = "Key",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+Tab:AddTextbox({
+    Name = "Enter The Key",
+    Default = "Put Key",
+    TextDisappear = true,
+    Save = true,
+    Callback = function(Value)
+        _G.KeyInput = Value
+    end	  
+})
+
+Tab:AddButton({
+    Name = "Check Key",
+    Callback = function()
+        if _G.KeyInput == _G.Key then
+            UnknownHubSuccess()
+            CorrectKeyNotification()
+        else
+            WrongKeyNotification()
+        end
+    end    
+})
+
+Tab:AddButton({
+    Name = "Get Key",
+    Callback = function()
+        setclipboard("https://link-hub.net/1030614/unknowntqhubcheckpoint1")
+        toclipboard("https://link-hub.net/1030614/unknowntqhubcheckpoint1")
+    end
+})
+
+local Section = Tab:AddSection({
+    Name = "Link: https://link-hub.net/1030614/unknowntqhubcheckpoint1"
+})
