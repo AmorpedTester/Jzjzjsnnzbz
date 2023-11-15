@@ -5,23 +5,15 @@ local Player = game.Players.LocalPlayer
 
 local keyFileName = "UnknownTQHubKey.txt" -- Define the file name to save the key
 
-local function saveKeyToFile(key)
-    writefile(keyFileName, key)
-end
-
 local function readKeyFromFile()
     if isfile(keyFileName) then
-        local success, content = pcall(readfile, keyFileName)
-        if success then
-            return content
-        else
-            print("Error reading key file:", content)
-        end
+        return readfile(keyFileName)
     end
     return nil
 end
 
-_G.Key = readKeyFromFile() or "UnknownHubKey=9kI80FjYTavCX" -- Use the saved key or the default key
+-- Load the key from the file or use the default key
+_G.Key = readKeyFromFile() or "UnknownHubKey=9kI80FjYTavCX"
 
 _G.KeyInput = "string"
 
@@ -69,7 +61,6 @@ local keyTextbox = Tab:AddTextbox({
     Save = true,
     Callback = function(Value)
         _G.KeyInput = Value
-        saveKeyToFile(_G.KeyInput) -- Save the key when the textbox value changes
     end	  
 })
 
