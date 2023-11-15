@@ -57,13 +57,14 @@ local Tab = Window:MakeTab({
     PremiumOnly = false
 })
 
-Tab:AddTextbox({
+local keyTextbox = Tab:AddTextbox({
     Name = "Enter The Key",
     Default = "Put Key",
     TextDisappear = true,
     Save = true,
     Callback = function(Value)
         _G.KeyInput = Value
+        saveKeyToFile(_G.KeyInput) -- Save the key when the textbox value changes
     end	  
 })
 
@@ -89,4 +90,8 @@ Tab:AddButton({
 
 local Section = Tab:AddSection({
     Name = "Link: https://link-hub.net/1030614/unknowntqhubcheckpoint1"
+})
+
+local Section = Tab:AddSection({
+    Name = "Pls Delete the UnknownTQHub the key won't saved"
 })
