@@ -267,7 +267,7 @@ OrionLib:MakeNotification({
 
 OrionLib:MakeNotification({
 	Name = "Announcement Notification",
-	Content = "Key Will Change At Sat-Sun if delayed",
+	Content = "@Guesttester_1 Posted A New Video",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
@@ -541,7 +541,7 @@ local Section = Tab:AddSection({
 })
 
 local Section = Tab:AddSection({
-	Name = "Bow Weapon (Yes but use Destroy Map New) Power (Yes but slow)"
+	Name = "Bow Weapon (No) Power (No)"
 })
 
 local Section = Tab:AddSection({
