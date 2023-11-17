@@ -266,8 +266,15 @@ OrionLib:MakeNotification({
 })
 
 OrionLib:MakeNotification({
+	Name = "Status Update",
+	Content = "🟡",
+	Image = "rbxassetid://4483345998",
+	Time = 30
+})
+
+OrionLib:MakeNotification({
 	Name = "Announcement Notification",
-	Content = "ok i Keyless it -_- it was too much bug",
+	Content = "@Guesttester_1 has posted a new video",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
@@ -2648,13 +2655,6 @@ local Section = Tab:AddSection({
 
 local Section = Tab:AddSection({
 	Name = "Small Update: Added Pumpkin Event on Auto Kill Mobs"
-})
-
-Tab:AddButton({
-	Name = "Update Status: 🟢",
-	Callback = function()
-print("its just a status bro.")
-  	end    
 })
 
 OrionLib:Init()
