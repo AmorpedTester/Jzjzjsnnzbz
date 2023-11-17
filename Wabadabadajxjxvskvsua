@@ -31,7 +31,7 @@ getgenv().Get =
 )
 
 print("Many fucking line script loaded")
-warn ("Premium key system Mode")
+warn ("keyless system Mode")
 
 -- Valuable 1
 repeat wait() until game:IsLoaded()
@@ -267,7 +267,7 @@ OrionLib:MakeNotification({
 
 OrionLib:MakeNotification({
 	Name = "Announcement Notification",
-	Content = "@Guesttester_1 Posted A New Video",
+	Content = "ok i Keyless it -_- it was too much bug",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
