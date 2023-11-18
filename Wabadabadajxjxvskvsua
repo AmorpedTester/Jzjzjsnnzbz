@@ -274,7 +274,7 @@ OrionLib:MakeNotification({
 
 OrionLib:MakeNotification({
 	Name = "Announcement Notification",
-	Content = "@Guesttester_1 has posted a new video",
+	Content = "@Guesttester_1 has posted a new leaks",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
