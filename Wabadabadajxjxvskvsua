@@ -267,14 +267,14 @@ OrionLib:MakeNotification({
 
 OrionLib:MakeNotification({
 	Name = "Status Update",
-	Content = "🟡",
+	Content = "🟢",
 	Image = "rbxassetid://4483345998",
 	Time = 30
 })
 
 OrionLib:MakeNotification({
 	Name = "Announcement Notification",
-	Content = "@Guesttester_1 has posted a new video leaks",
+	Content = "...",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
@@ -1241,101 +1241,11 @@ local Tab = Window:MakeTab({
 })
 
 local Section = Tab:AddSection({
-	Name = "Hitbox Mobs Expander (toggle)"
+	Name = "Hitbox Mobs has been Patched"
 })
 
 local Section = Tab:AddSection({
-	Name = "This is literally Hitbox V2"
-})
-
-local RunService = game:GetService("RunService")
-
--- Default hitbox values
-local xhx, yhx, zhx, txx = 1, 1, 1, 0.5
-local hitboxTest = false
-
--- Function to enable hitbox
-local function enableHitbox(monsterRootPart)
-    if monsterRootPart.Size ~= Vector3.new(xhx, yhx, zhx) then
-        monsterRootPart.Size = Vector3.new(xhx, yhx, zhx)
-        monsterRootPart.Transparency = txx
-    end
-end
-
--- Function to disable hitbox
-local function disableHitbox(monsterRootPart)
-    if monsterRootPart.Size ~= Vector3.new(5, 5, 5) then
-        monsterRootPart.Size = Vector3.new(5, 5, 5)
-        monsterRootPart.Transparency = 1
-    end
-end
-
--- Function to toggle hitbox state
-local function toggleHitboxState()
-    local dungeon, rooms, enemies, shrines = getDungeon()
-
-    for _, monster in ipairs(enemies:GetChildren()) do
-        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-           monster.EvilHumanoid.Health > 0 then
-            local monsterRootPart = monster.HumanoidRootPart
-
-            if hitboxTest then
-                enableHitbox(monsterRootPart)
-            else
-                disableHitbox(monsterRootPart)
-            end
-        end
-    end
-end
-
-Tab:AddToggle({
-    Name = "Hitbox Toggle",
-    Default = false,
-    Save = true,
-    Flag = "HitboxToggle",
-    Callback = function(Kxe)
-        hitboxTest = Kxe
-    end
-})
-
-RunService.Heartbeat:Connect(function()
-    toggleHitboxState()
-end)
-
-Tab:AddTextbox({
-    Name = "Hitbox Mobs Size X",
-    Default = "1",
-    TextDisappear = true,
-    Callback = function(jxk)
-        xhx = tonumber(jxk) or 1
-    end
-})
-
-Tab:AddTextbox({
-    Name = "Hitbox Mobs Size Y",
-    Default = "1",
-    TextDisappear = true,
-    Callback = function(gxk)
-        yhx = tonumber(gxk) or 1
-    end
-})
-
-Tab:AddTextbox({
-    Name = "Hitbox Mobs Size Z",
-    Default = "1",
-    TextDisappear = true,
-    Callback = function(rxk)
-        zhx = tonumber(rxk) or 1
-    end
-})
-
-Tab:AddTextbox({
-    Name = "Hitbox Mobs Transparent Box",
-    Default = "0.5",
-    TextDisappear = true,
-    Callback = function(xxk)
-        txx = tonumber(xxk) or 0.5
-    end
+	Name = "We Will Update On Nov hmmm idk i will update it soon"
 })
 
 local Tab = Window:MakeTab({
