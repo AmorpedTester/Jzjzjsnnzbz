@@ -274,7 +274,7 @@ OrionLib:MakeNotification({
 
 OrionLib:MakeNotification({
 	Name = "Announcement Notification",
-	Content = "...",
+	Content = "FE Lag is Out!",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
