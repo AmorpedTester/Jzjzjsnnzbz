@@ -303,10 +303,10 @@ Fluent:Notify({
     })
    
 Fluent:Notify({
-        Title = "Announcement",
-        Content = "Now Its Out!",
-        SubContent = "Small Update: N/A ", -- Optional
-        Duration = 5 -- Set to nil to make the notification not disappear
+        Title = "Announcement Notification",
+        Content = "Fixed Little Bug",
+        SubContent = "Small Update: Fixed Low device Fast Farming Not killing Monsters", -- Optional
+        Duration = 10 -- Set to nil to make the notification not disappear
     })
    
 Fluent:Notify({
@@ -1632,7 +1632,7 @@ local function unmobilefly(player)
     end)
 end
 
-local function mobilefly(player, vfly, flySpeed)
+local function mobilefly(player, vfly)
     unmobilefly(player)
     FLYING = true
 
@@ -1662,7 +1662,7 @@ local function mobilefly(player, vfly, flySpeed)
         mfly1 = player.CharacterAdded:Connect(function()
             unmobilefly(player)
             currentCharacter = player.Character
-            mobilefly(player, vfly, flySpeed)
+            mobilefly(player, vfly)
         end)
 
         mfly2 = RunService.RenderStepped:Connect(function()
@@ -1678,7 +1678,7 @@ local function mobilefly(player, vfly, flySpeed)
                     GyroHandler.MaxTorque = v3inf
 
                     if not vfly and humanoid then
-                        humanoid.PlatformStand = true
+                        humanoid.PlatformStand = false
                     end
 
                     GyroHandler.CFrame = camera.CoordinateFrame
@@ -1690,10 +1690,9 @@ local function mobilefly(player, vfly, flySpeed)
                         local rightVector = camera.CFrame.RightVector
                         local forwardVector = camera.CFrame.LookVector
 
-                        if rightVector and forwardVector then
-                            local flyDirection = (rightVector * moveVector.X - forwardVector * moveVector.Z).unit
-                            VelocityHandler.Velocity = flyDirection * (flySpeed * 8)
-                        end
+                        local flyDirection = (rightVector * moveVector.X - forwardVector * moveVector.Z).unit
+
+                        VelocityHandler.Velocity = flyDirection * (_G.flySpeed * 20)
                     end
                 end
             end
@@ -1701,9 +1700,9 @@ local function mobilefly(player, vfly, flySpeed)
     end
 end
 
-local function toggleFly(player, toggleValue, flySpeed)
+local function toggleFly(player, toggleValue)
     if toggleValue then
-        mobilefly(player, true, flySpeed)
+        mobilefly(player, true)
     else
         unmobilefly(player)
     end
@@ -1723,21 +1722,29 @@ local function flyLoop()
     end
 end
 
-local ToggleFly = Tabs.Main:AddToggle("MyToggle", { Title = "Tween_Lock", Default = false })
+local Toggle = Tabs.Main:AddToggle("MyToggle", { Title = "Fly Toggle", Default = false })
 
-ToggleFly:OnChanged(function(Fly)
-    _G.loops = Fly
+Toggle:OnChanged(function()
     local player = game.Players.LocalPlayer
-
-    if not Fly and player and player.Character then
-        local flySpeed = tonumber(Input.Value) or 8
-        toggleFly(player, ToggleFly.Value, flySpeed)  -- Corrected here
-    elseif Fly then
-        local flySpeed = tonumber(Input.Value) or 8
-        toggleFly(player, ToggleFly.Value, flySpeed)  -- Corrected here
-    end
+    _G.loops = Toggle.Value
+    toggleFly(player, Toggle.Value)
 end)
 
+_G.flySpeed = 20  -- Default fly speed
+
+local FlySpeedInput = Tabs.Main:AddInput("FlySpeedInput", {
+    Title = "Fly Speed (ignore about the error)",
+    Default = tostring(_G.flySpeed),
+    Placeholder = "Enter fly speed",
+    Numeric = true,
+    Finished = false,
+    Callback = function(Value)
+        _G.flySpeed = tonumber(Value) or 20
+        toggleFly(player, Toggle.Value)
+    end
+})
+
+-- Start the loop
 spawn(flyLoop)
 
 Tabs.Main:AddParagraph({
@@ -2553,8 +2560,58 @@ local Tabs = {
 }
 
 Tabs.Main:AddParagraph({
+        Title = "Unknown TQ Hub V3",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added Quick Optimizer",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added Skip Cutscene",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added Loader print on Console",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added Tween_Lock",
+        Content = "It Changed to Fly"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added 2 Auto-Leave",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Changed UI Library",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added Something in Visual",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Changed Low Device Fast Farming",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Small Update: Fixed Low device Fast Farming Not Killing A Monster",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
         Title = "Status Update: 🟢",
-        Content = "Literally Nothing Here"
+        Content = ""
     })
     
 print("Changed SimulationRaduis")
