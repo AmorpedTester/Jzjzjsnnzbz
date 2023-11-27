@@ -2610,7 +2610,7 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Status Update: 🟢",
+        Title = ". Status Update: 🟢",
         Content = ""
     })
     
