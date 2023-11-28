@@ -1938,42 +1938,6 @@ local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Sell Ultimate", Default
         toggleCallback("Ultimate", Value)
     end)
 
-Tabs.Main:AddParagraph({
-        Title = "Auto-Leave",
-        Content = ""
-    })
-
-function leaveWhenDied(v)
-    if not _G.Setting.AutoLeave.WhenDied.Enabled then
-        return
-    end
-    print('Leaving: Died')
-    wait(_G.Setting.AutoLeave.WhenDied.Delay)
-    game.ReplicatedStorage.Dungeon.Remotes.BackToLobby:FireServer()
-end
-
-function leaveWhenInventoryFull(v)
-    if not _G.Setting.AutoLeave.WhenInventoryFull.Enabled then
-        return
-    end
-    if v == "Visible" then
-        print('Leaving: InventoryFull')
-        wait(_G.Setting.AutoLeave.WhenInventoryFull.Delay)
-        game.ReplicatedStorage.Dungeon.Remotes.BackToLobby:FireServer()
-    end
-end
-
-local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Leave When Died", Default = false })
-
-    Toggle:OnChanged(function(Value)
-        _G.Setting.AutoLeave.WhenDied.Enabled = Value
-    end)
-   
-local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Leave When Inventory Full", Default = false })
-
-    Toggle:OnChanged(function(Value)
-        _G.Setting.AutoLeave.WhenInventoryFull.Enabled = Value
-    end)
 
 Tabs.Main:AddParagraph({
         Title = "Auto buy",
@@ -2610,7 +2574,7 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = ". Status Update: 🟢",
+        Title = " Status Update: 🟢",
         Content = ""
     })
     
@@ -2636,7 +2600,3 @@ Window:SelectTab(1)
 
 -- Auto Load Configuration
 SaveManager:LoadAutoloadConfig()
-
--- Auto Leave
-    mainFrame.Bottom.DeadCard.Changed:Connect(leaveWhenDied)
-    rightSideFrame.Backpack.Full.Changed:Connect(leaveWhenInventoryFull)
