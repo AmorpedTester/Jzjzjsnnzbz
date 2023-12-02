@@ -304,8 +304,8 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
-        Content = "Fixed Little Bug",
-        SubContent = "Small Update: Fixed Low device Fast Farming Not killing Monsters", -- Optional
+        Content = "Removed something",
+        SubContent = "Small Update: Removed the Auto Pumpkin Farm", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -1088,103 +1088,10 @@ z = ztw
     })
    
 Tabs.Main:AddParagraph({
-        Title = "Pumpkin Patch",
-        Content = ""
+        Title = "Adding Fall 2023 Farming Coming soon...",
+        Content = "Coming soon..."
     })
 
-local Toggle1 = Tabs.Main:AddToggle("Autopumpkin", {Title = "Auto Kill Pumpkin Mobs", Default = false })
-
-Toggle1:OnChanged(function(State)
-    Settings.Re = State
-    game:GetService("RunService").Stepped:Connect(function()
-        pcall(function()
-            if Settings.Re then
-                ScriptFunction(Script)
-                ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
-                Noclip(Player.Character:WaitForChild("Humanoid"))
-            end
-        end)
-    end)
-    spawn(function()
-        while wait() and Settings.Re do 
-            pcall(function()
-                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
-                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
-                ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
-                ReplicatedStorage.Shared.Remotes.Data.ClaimPrizes:FireServer()
-                for i, v in pairs(Workspace:GetChildren()) do
-                    if v:FindFirstChild("FinishRoom", true) and v:FindFirstChild("FinishRoom", true):FindFirstChild("Hitbox", true) then
-                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),0)
-                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),1)
-                    end 
-                end 
-                if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
-                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
-                end 
-            end)
-        end
-    end)
-    spawn(function()
-        while wait() and Settings.Re do
-            local player, cha, plr, hum = getPlayer()
-            local dungeon, rooms, enemies, shrines = getDungeon()
-            for _, v in pairs(rooms:GetDescendants()) do
-                if v:FindFirstChildWhichIsA("TouchTransmitter", true) and v.Name == "Trigger" then
-                    v.Primary.CFrame = plr.CFrame
-                    wait()
-                end
-            end
-            wait()
-        end
-    end)
-end)
-
-Tabs.Main:AddButton({
-        Title = "Teleport To Boss",
-        Description = "Manual",
-        Callback = function()
-local CFrameEnd = CFrame.new(-912.5400390625, 366.51214599609375, 1953.9599609375) -- Place your coords in here
-local Time = speed -- Time in seconds
-local tween =  game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
-tween:Play()
-tween.Completed:Wait()
-        end
-    })
-
-local _G = {}
-_G.loops = false -- Set the initial value to false
-
-local function RunTween()
-    local CFrameEnd = CFrame.new(-912.5400390625, 366.51214599609375, 1953.9599609375) -- Place your coords in here
-    local Time = speed -- Time in seconds (you can change this)
-    local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
-    tween:Play()
-    tween.Completed:Wait()
-end
-
-local Toggle = Tabs.Main:AddToggle("AutoKillPumpkinBoss", {Title = "Auto Teleport to Boss", Default = false })
-
-    Toggle:OnChanged(function(Tswx)
-        _G.loops = Tswx -- Set the global variable based on the toggle state
-        if _G.loops then
-            while _G.loops do
-                RunTween()
-                wait(timerx)
-                print("Re-executed")
-            end
-        end
-    end)
-
-local Input = Tabs.Main:AddInput("Input", {
-        Title = "Afk Teleport Time",
-        Default = "430",
-        Placeholder = "Placeholder",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(Xdsr)
-timerx = Xdsr
-        end
-    })
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Hitbox Settings", Icon = "" }),
