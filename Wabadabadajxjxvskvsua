@@ -304,8 +304,8 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
-        Content = "Removed something",
-        SubContent = "Small Update: Removed the Auto Pumpkin Farm", -- Optional
+        Content = "Fixed Little Bug",
+        SubContent = "Small Update: Fixed Low device Fast Farming Not killing Monsters", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -318,7 +318,7 @@ Fluent:Notify({
    
 local Window = Fluent:CreateWindow({
     Title = "Unknown TQ Hub",
-    SubTitle = "V3 (Fluent)",
+    SubTitle = "V3.2 | ❄️ Christmas Update ❄️ |",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
@@ -1088,10 +1088,103 @@ z = ztw
     })
    
 Tabs.Main:AddParagraph({
-        Title = "Adding Fall 2023 Farming Coming soon...",
-        Content = "Coming soon..."
+        Title = "Grand Grotto",
+        Content = ""
     })
 
+local Toggle1 = Tabs.Main:AddToggle("AutoGrotto", {Title = "Auto Kill Grand Grotto Mobs", Default = false })
+
+Toggle1:OnChanged(function(State)
+    Settings.Re = State
+    game:GetService("RunService").Stepped:Connect(function()
+        pcall(function()
+            if Settings.Re then
+                ScriptFunction(Script)
+                ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
+                Noclip(Player.Character:WaitForChild("Humanoid"))
+            end
+        end)
+    end)
+    spawn(function()
+        while wait() and Settings.Re do 
+            pcall(function()
+                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+                ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
+                ReplicatedStorage.Shared.Remotes.Data.ClaimPrizes:FireServer()
+                for i, v in pairs(Workspace:GetChildren()) do
+                    if v:FindFirstChild("FinishRoom", true) and v:FindFirstChild("FinishRoom", true):FindFirstChild("Hitbox", true) then
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),0)
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),1)
+                    end 
+                end 
+                if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
+                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
+                end 
+            end)
+        end
+    end)
+    spawn(function()
+        while wait() and Settings.Re do
+            local player, cha, plr, hum = getPlayer()
+            local dungeon, rooms, enemies, shrines = getDungeon()
+            for _, v in pairs(rooms:GetDescendants()) do
+                if v:FindFirstChildWhichIsA("TouchTransmitter", true) and v.Name == "Trigger" then
+                    v.Primary.CFrame = plr.CFrame
+                    wait()
+                end
+            end
+            wait()
+        end
+    end)
+end)
+
+Tabs.Main:AddButton({
+        Title = "Teleport To Boss",
+        Description = "Manual",
+        Callback = function()
+local CFrameEnd = CFrame.new(-1593.79, 515.489, 606.864) -- Place your coords in here
+local Time = speed -- Time in seconds
+local tween =  game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
+tween:Play()
+tween.Completed:Wait()
+        end
+    })
+
+local _G = {}
+_G.loops = false -- Set the initial value to false
+
+local function RunTween()
+    local CFrameEnd = CFrame.new(-1593.79, 515.489, 606.864) -- Place your coords in here
+    local Time = speed -- Time in seconds (you can change this)
+    local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
+    tween:Play()
+    tween.Completed:Wait()
+end
+
+local Toggle = Tabs.Main:AddToggle("AutoKillGrottoBoss", {Title = "Auto Teleport to Boss", Default = false })
+
+    Toggle:OnChanged(function(Tswx)
+        _G.loops = Tswx -- Set the global variable based on the toggle state
+        if _G.loops then
+            while _G.loops do
+                RunTween()
+                wait(timerx)
+                print("Re-executed")
+            end
+        end
+    end)
+
+local Input = Tabs.Main:AddInput("Input", {
+        Title = "Afk Teleport Time",
+        Default = "430",
+        Placeholder = "Placeholder",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(Xdsr)
+timerx = Xdsr
+        end
+    })
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Hitbox Settings", Icon = "" }),
@@ -1845,6 +1938,58 @@ local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Sell Ultimate", Default
         toggleCallback("Ultimate", Value)
     end)
 
+Tabs.Main:AddParagraph({
+        Title = "Auto-Leave",
+        Content = ""
+    })
+
+local autoLeaveEnabled = false
+local rightSideFrame = mainFrame:WaitForChild("Right")
+
+local function leaveWhenInventoryFull(v)
+    if autoLeaveEnabled and v == "Visible" then
+        print('Leaving: InventoryFull')
+        wait(_G.Setting.AutoLeave.WhenInventoryFull.Delay)
+        game.ReplicatedStorage.Dungeon.Remotes.BackToLobby:FireServer()
+    end
+end
+
+local ToggleLeave = Tabs.Main:AddToggle("AutoLeaveToggle", { Title = "Auto Leave When Inventory Full", Default = false })
+
+ToggleLeave:OnChanged(function(Value)
+    autoLeaveEnabled = Value
+    _G.Setting.AutoLeave.WhenInventoryFull.Enabled = Value
+end)
+
+if rightSideFrame.Backpack:FindFirstChild("Capacity") then
+    rightSideFrame.Backpack.Full.Changed:Connect(leaveWhenInventoryFull)
+else
+    print("rightSideFrame not found. Auto leave when inventory full is disabled.")
+end
+
+local autoLeaveWhenDiedEnabled = false
+local mainFrame = game:GetService("Players")[cha.Name].PlayerGui:WaitForChild("MainGui"):WaitForChild("MainFrame")
+
+local function leaveWhenDied(v)
+    if autoLeaveWhenDiedEnabled and v then
+        print('Leaving: Died')
+        wait(_G.Setting.AutoLeave.WhenDied.Delay)
+        game.ReplicatedStorage.Dungeon.Remotes.BackToLobby:FireServer()
+    end
+end
+
+local ToggleLeaveWhenDied = Tabs.Main:AddToggle("AutoLeaveWhenDiedToggle", {Title = "Auto Leave When Died", Default = false })
+
+ToggleLeaveWhenDied:OnChanged(function(Value)
+    autoLeaveWhenDiedEnabled = Value
+    _G.Setting.AutoLeave.WhenDied.Enabled = Value
+end)
+
+if mainFrame and mainFrame.Bottom and mainFrame.Bottom.DeadCard then
+    mainFrame.Bottom.DeadCard.Changed:Connect(leaveWhenDied)
+else
+    print("MainFrame or DeadCard not found. Auto leave when died is disabled.")
+end
 
 Tabs.Main:AddParagraph({
         Title = "Auto buy",
@@ -2481,7 +2626,7 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = " Status Update: 🟢",
+        Title = "Status Update: 🟢",
         Content = ""
     })
     
