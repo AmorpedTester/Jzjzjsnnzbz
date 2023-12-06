@@ -304,8 +304,8 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
-        Content = "Fixed Little Bug",
-        SubContent = "Small Update: Fixed Error ", -- Optional
+        Content = "Added Esp",
+        SubContent = "Small Update : Added Esp Enemies on Visual", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -1399,6 +1399,59 @@ game.Players.LocalPlayer.Character.Humanoid.MaxHealth = Hmax
     })
 
 Tabs.Main:AddParagraph({
+        Title = "Esp",
+        Content = ""
+    })
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if MobESP then
+                for i,v in pairs(game:GetService("Workspace").Dungeon.Enemies:GetChildren()) do
+                    if v:FindFirstChild('HumanoidRootPart') then
+                        if not v:FindFirstChild("MobEap") then
+                            local BillboardGui = Instance.new("BillboardGui")
+                            local TextLabel = Instance.new("TextLabel")
+
+                            BillboardGui.Parent = v
+                            BillboardGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+                            BillboardGui.Active = true
+                            BillboardGui.Name = "MobEap"
+                            BillboardGui.AlwaysOnTop = true
+                            BillboardGui.LightInfluence = 1.000
+                            BillboardGui.Size = UDim2.new(0, 200, 0, 50)
+                            BillboardGui.StudsOffset = Vector3.new(0, 2.5, 0)
+
+                            TextLabel.Parent = BillboardGui
+                            TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                            TextLabel.BackgroundTransparency = 1.000
+                            TextLabel.Size = UDim2.new(0, 200, 0, 50)
+                            TextLabel.Font = Enum.Font.GothamBold
+                            TextLabel.TextColor3 = Color3.fromRGB(7, 236, 240)
+                            TextLabel.Text.Size = 35
+                        end
+                        local Dis = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).Magnitude)
+                        v.MobEap.TextLabel.Text = v.Name.." - "..Dis.." M"
+                    end
+                end
+            else
+                for i,v in pairs(game:GetService("Workspace").Dungeon.Enemies:GetChildren()) do
+                    if v:FindFirstChild("MobEap") then
+                        v.MobEap:Destroy()
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+local Toggle = Tabs.Main:AddToggle("Esp Mobs", {Title = "Esp Enemies", Default = false })
+
+    Toggle:OnChanged(function(nec)
+        MobESP = nec
+    end)
+
+Tabs.Main:AddParagraph({
         Title = "Speed And Jump",
         Content = ""
     })
@@ -1423,6 +1476,11 @@ local Input = Tabs.Main:AddInput("Input", {
         Callback = function(JP)
 game.Players.LocalPlayer.Character.Humanoid.JumpPower = JP
         end
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Graphics",
+        Content = ""
     })
 
 Tabs.Main:AddButton({
@@ -1937,6 +1995,7 @@ local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Sell Ultimate", Default
     Toggle:OnChanged(function(Value)
         toggleCallback("Ultimate", Value)
     end)
+
 
 Tabs.Main:AddParagraph({
         Title = "Auto buy",
@@ -2568,13 +2627,18 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Small Update: Fixed Low device Fast Farming Not Killing A Monster",
+        Title = "Small Update: Fixed Low device Fast Farming Not Killing A Enemies",
         Content = ""
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Added Auto Grand Grotto Farm",
-        Content = "Small Update: Fixed Error"
+        Title = "Added Grotto Grand Farms",
+        Content = "Fixed Error"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Small Update: Added Esp Enemies",
+        Content = ""
     })
 
 Tabs.Main:AddParagraph({
