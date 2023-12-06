@@ -305,7 +305,7 @@ Fluent:Notify({
 Fluent:Notify({
         Title = "Announcement Notification",
         Content = "Fixed Little Bug",
-        SubContent = "Small Update: Fixed Low device Fast Farming Not killing Monsters", -- Optional
+        SubContent = "Small Update: Fixed Error ", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -1939,59 +1939,6 @@ local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Sell Ultimate", Default
     end)
 
 Tabs.Main:AddParagraph({
-        Title = "Auto-Leave",
-        Content = ""
-    })
-
-local autoLeaveEnabled = false
-local rightSideFrame = mainFrame:WaitForChild("Right")
-
-local function leaveWhenInventoryFull(v)
-    if autoLeaveEnabled and v == "Visible" then
-        print('Leaving: InventoryFull')
-        wait(_G.Setting.AutoLeave.WhenInventoryFull.Delay)
-        game.ReplicatedStorage.Dungeon.Remotes.BackToLobby:FireServer()
-    end
-end
-
-local ToggleLeave = Tabs.Main:AddToggle("AutoLeaveToggle", { Title = "Auto Leave When Inventory Full", Default = false })
-
-ToggleLeave:OnChanged(function(Value)
-    autoLeaveEnabled = Value
-    _G.Setting.AutoLeave.WhenInventoryFull.Enabled = Value
-end)
-
-if rightSideFrame.Backpack:FindFirstChild("Capacity") then
-    rightSideFrame.Backpack.Full.Changed:Connect(leaveWhenInventoryFull)
-else
-    print("rightSideFrame not found. Auto leave when inventory full is disabled.")
-end
-
-local autoLeaveWhenDiedEnabled = false
-local mainFrame = game:GetService("Players")[cha.Name].PlayerGui:WaitForChild("MainGui"):WaitForChild("MainFrame")
-
-local function leaveWhenDied(v)
-    if autoLeaveWhenDiedEnabled and v then
-        print('Leaving: Died')
-        wait(_G.Setting.AutoLeave.WhenDied.Delay)
-        game.ReplicatedStorage.Dungeon.Remotes.BackToLobby:FireServer()
-    end
-end
-
-local ToggleLeaveWhenDied = Tabs.Main:AddToggle("AutoLeaveWhenDiedToggle", {Title = "Auto Leave When Died", Default = false })
-
-ToggleLeaveWhenDied:OnChanged(function(Value)
-    autoLeaveWhenDiedEnabled = Value
-    _G.Setting.AutoLeave.WhenDied.Enabled = Value
-end)
-
-if mainFrame and mainFrame.Bottom and mainFrame.Bottom.DeadCard then
-    mainFrame.Bottom.DeadCard.Changed:Connect(leaveWhenDied)
-else
-    print("MainFrame or DeadCard not found. Auto leave when died is disabled.")
-end
-
-Tabs.Main:AddParagraph({
         Title = "Auto buy",
         Content = "make sure u encounter the mystery shop!"
     })
@@ -2623,6 +2570,11 @@ Tabs.Main:AddParagraph({
 Tabs.Main:AddParagraph({
         Title = "Small Update: Fixed Low device Fast Farming Not Killing A Monster",
         Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added Auto Grand Grotto Farm",
+        Content = "Small Update: Fixed Error"
     })
 
 Tabs.Main:AddParagraph({
