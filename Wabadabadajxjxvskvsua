@@ -304,8 +304,8 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
-        Content = "Added Esp",
-        SubContent = "Small Update : Added Esp Enemies on Visual", -- Optional
+        Content = "Announcement",
+        SubContent = "Fixing the Lag issue soon.", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -1292,80 +1292,9 @@ local InputTransparency = Tabs.Main:AddInput("InputTransparency", {
 
 Tabs.Main:AddParagraph({
         Title = "Hitbox Weapon Expander",
-        Content = ""
+        Content = "Removed Causing of Lags"
     })
 
-local isToggleEnabled = false
-local normalHitboxSize = Vector3.new(10, 10, 10)
-local wxhx, wyhx, wzhx = 10, 10, 10 -- Default size values
-local wtxx = 0.5 -- Default transparency value
-local translucentMaterial = BrickColor.new("Translucent")
-
-local Toggle = Tabs.Main:AddToggle("HitboxWeapon", {Title = "Hitbox Weapon Toggle", Default = false })
-
-    Toggle:OnChanged(function(Value)
-isToggleEnabled = Value
-        for i, v in pairs(game.Players.LocalPlayer.Character.FighterVisuals:GetDescendants()) do
-            if v.Name == "Hitbox" then
-                if isToggleEnabled then
-                    -- Toggle is on, adjust hitbox size and transparency
-                    v.Size = Vector3.new(wxhx, wyhx, wzhx)
-                    v.BrickColor = translucentMaterial
-                    v.Transparency = wtxx
-                else
-                    -- Toggle is off, revert hitbox size to normal and reset transparency
-                    v.Size = normalHitboxSize
-                    v.BrickColor = BrickColor.new("Bright red") -- Adjust the original color as needed
-                    v.Transparency = 1 -- Reset transparency
-                end
-            end
-        end
-    end)
-
-
-local Input = Tabs.Main:AddInput("Input", {
-        Title = "Hitbox Size X",
-        Default = "10",
-        Placeholder = "Placeholder",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(Value)
-        wxhx = tonumber(Value) or wxhx
-        end
-    })
-
-local Input = Tabs.Main:AddInput("Input", {
-        Title = "Hitbox Size Y",
-        Default = "10",
-        Placeholder = "Placeholder",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(Value)
-        wyhx = tonumber(Value) or wyhx
-        end
-    })
-
-local Input = Tabs.Main:AddInput("Input", {
-        Title = "Hitbox Size Z",
-        Default = "10",
-        Placeholder = "Placeholder",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(Value)
-        wzhx = tonumber(Value) or wzhx
-        end
-    })
-    
-local Input = Tabs.Main:AddInput("Input", {
-        Title = "Hitbox Transparency",
-        Default = "0.5",
-        Placeholder = "Placeholder",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(Value)
-        wtxx = math.clamp(tonumber(Value) or wtxx, 0, 1) -- Ensure the value is between 0 and 1
-        end
-    })
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Custom Visuals", Icon = "" }),
