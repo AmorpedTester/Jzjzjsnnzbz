@@ -304,8 +304,8 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
-        Content = "Announcement",
-        SubContent = "Fixing the Lag issue soon.", -- Optional
+        Content = "Bot Notifier",
+        SubContent = "Guesttester_1 Posted A New Video", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
