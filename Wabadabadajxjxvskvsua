@@ -65,7 +65,7 @@ print("-- Unknown TQ Hub 3.5/5: Bypassing... *DumbExploiterController* ")
 
 -- Valuable Servers
 local isWaveDefense
-local isPumpkinEvent
+local isGrandGrotto
 local isLobby = game.PlaceId == 2960777560
 
 function bypassAntiCheat()
@@ -113,9 +113,9 @@ function bypassAntiCheat()
     workspace.Dungeon:GetChildren()[1].Name = 'Enemies'
     workspace.Dungeon:GetChildren()[2].Name = 'Rooms'
 
-    -- Pumpkin Event
+    -- Grand Grotto
     if workspace.Dungeon.Rooms:FindFirstChild("Start"):FindFirstChild("Traps") then
-        isPumpkinEvent = true
+        isGrandGrotto = true
     end
 end
 
