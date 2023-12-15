@@ -234,7 +234,7 @@ local function GetClosestt()
     end
     return Target
 end
-
+    
 local Noclip = function(A)
     return A:ChangeState(11)
 end 
@@ -304,8 +304,8 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
-        Content = "Bot Notifier",
-        SubContent = "Guesttester_1 Posted A New Video", -- Optional
+        Content = "Update Notifier",
+        SubContent = "Many fixed on the Update-logs", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -318,11 +318,11 @@ Fluent:Notify({
    
 local Window = Fluent:CreateWindow({
     Title = "Unknown TQ Hub",
-    SubTitle = "V3.2 | ❄️ Christmas Update ❄️ |",
+    SubTitle = "V3.3 | ❄️ Christmas Update ❄️ |",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
-    Theme = "Dark",
+    Theme = "Red",
     MinimizeKey = Enum.KeyCode.N -- Used when theres no MinimizeKeybind
 })
 
@@ -605,18 +605,8 @@ local ScriptFunction = Script.BasicAttack
 local ScriptFunction2 = Script.UseAbility
 
 Tabs.Main:AddParagraph({
-        Title = "Warrior Weapon",
-        Content = "Yes"
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Archer Weapon",
-        Content = "No"
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Magic Weapon",
-        Content = "Yes"
+        Title = "Fast Farmings",
+        Content = "GPU PERFORMANCE ONLY"
     })
 
 local Toggle4 = Tabs.Main:AddToggle("FastFarmingHigh", {Title = "Fast Auto-Farming (High Device)", Default = false })
@@ -824,12 +814,7 @@ while AutoMobs do
     end)
    
 
-Tabs.Main:AddParagraph({
-        Title = "Magic Weapon (Only)",
-        Content = ""
-    })
-
-local Toggle5 = Tabs.Main:AddToggle("FastFarmingLow", {Title = "Fast Auto-Farming (Low Device)", Default = false })
+local Toggle5 = Tabs.Main:AddToggle("FastFarmingMed", {Title = "Fast Auto-Farming (Medium Device)", Default = false })
 
     Toggle5:OnChanged(function(value)
 AutoMobs2 = value
@@ -1124,6 +1109,7 @@ Toggle1:OnChanged(function(State)
             end)
         end
     end)
+    
     spawn(function()
         while wait() and Settings.Re do
             local player, cha, plr, hum = getPlayer()
@@ -1139,24 +1125,37 @@ Toggle1:OnChanged(function(State)
     end)
 end)
 
+local speed2 = 1 -- Default value
+
+local Input = Tabs.Main:AddInput("Input", {
+    Title = "Teleport Boss Speed",
+    Default = "25",
+    Placeholder = "Placeholder",
+    Numeric = true, -- Only allows numbers
+    Finished = false, -- Only calls callback when you press enter
+    Callback = function(speedtw)
+        speed2 = tonumber(speedtw) or 1 -- Convert to number or use default value
+    end
+})
+
 Tabs.Main:AddButton({
-        Title = "Teleport To Boss",
-        Description = "Manual",
-        Callback = function()
-local CFrameEnd = CFrame.new(-1593.79, 515.489, 606.864) -- Place your coords in here
-local Time = speed -- Time in seconds
-local tween =  game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
-tween:Play()
-tween.Completed:Wait()
-        end
-    })
+    Title = "Teleport To Boss",
+    Description = "Manual",
+    Callback = function()
+        local CFrameEnd = CFrame.new(-1593.79, 515.489, 606.864) -- Place your coords here
+        local Time = speed2 -- Time in seconds
+        local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
+        tween:Play()
+        tween.Completed:Wait()
+    end
+})
 
 local _G = {}
 _G.loops = false -- Set the initial value to false
 
 local function RunTween()
-    local CFrameEnd = CFrame.new(-1593.79, 515.489, 606.864) -- Place your coords in here
-    local Time = speed -- Time in seconds (you can change this)
+    local CFrameEnd = CFrame.new(-1593.79, 515.489, 606.865) -- Place your coords here
+    local Time = speed2 -- Time in seconds (you can change this)
     local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
     tween:Play()
     tween.Completed:Wait()
@@ -1164,27 +1163,33 @@ end
 
 local Toggle = Tabs.Main:AddToggle("AutoKillGrottoBoss", {Title = "Auto Teleport to Boss", Default = false })
 
-    Toggle:OnChanged(function(Tswx)
-        _G.loops = Tswx -- Set the global variable based on the toggle state
-        if _G.loops then
-            while _G.loops do
+Toggle:OnChanged(function(Tswx)
+    _G.loops = Tswx -- Set the global variable based on the toggle state
+    if _G.loops then
+        local startTime = tick()
+        local timerx = tonumber(timerx) or 130 -- Default value or user input
+        while _G.loops do
+            if tick() - startTime >= timerx then
                 RunTween()
-                wait(timerx)
+                startTime = tick()
                 print("Re-executed")
             end
+            wait() -- This is crucial to avoid high CPU usage
         end
-    end)
+    end
+end)
 
 local Input = Tabs.Main:AddInput("Input", {
-        Title = "Afk Teleport Time",
-        Default = "430",
-        Placeholder = "Placeholder",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(Xdsr)
-timerx = Xdsr
-        end
-    })
+    Title = "Afk Teleport Time",
+    Default = "130",
+    Placeholder = "Placeholder",
+    Numeric = true, -- Only allows numbers
+    Finished = false, -- Only calls callback when you press enter
+    Callback = function(Xdsr)
+        timerx = Xdsr
+    end
+})
+
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Hitbox Settings", Icon = "" }),
@@ -1192,44 +1197,43 @@ local Tabs = {
 
 Tabs.Main:AddParagraph({
         Title = "Hitbox Toggle",
-        Content = "This is Fixed Hitbox V2"
+        Content = "Optimized Hitbox V2"
     })
 
 local RunService = game:GetService("RunService")
 
--- Default hitbox values
 local xhx, yhx, zhx, txx = 1, 1, 1, 0.5
 local hitboxTest = false
+local lastUpdateTime = 0
+local updateInterval = 1  -- Set the interval in seconds
 
--- Function to enable hitbox
 local function enableHitbox(monsterRootPart)
-    if monsterRootPart.Size ~= Vector3.new(xhx, yhx, zhx) then
-        monsterRootPart.Size = Vector3.new(xhx, yhx, zhx)
-        monsterRootPart.Transparency = txx
-    end
+    monsterRootPart.Size = Vector3.new(xhx, yhx, zhx)
+    monsterRootPart.Transparency = txx
 end
 
--- Function to disable hitbox
 local function disableHitbox(monsterRootPart)
-    if monsterRootPart.Size ~= Vector3.new(5, 5, 5) then
-        monsterRootPart.Size = Vector3.new(5, 5, 5)
-        monsterRootPart.Transparency = 1
-    end
+    monsterRootPart.Size = Vector3.new(5, 5, 5)
+    monsterRootPart.Transparency = 1
 end
 
--- Function to toggle hitbox state
 local function toggleHitboxState()
-    local dungeon, rooms, enemies, shrines = getDungeon()
+    local currentTime = tick()
+    if currentTime - lastUpdateTime >= updateInterval then
+        lastUpdateTime = currentTime
 
-    for _, monster in ipairs(enemies:GetChildren()) do
-        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-           monster.EvilHumanoid.Health > 0 then
-            local monsterRootPart = monster.HumanoidRootPart
+        local dungeon, rooms, enemies, shrines = getDungeon()
 
-            if hitboxTest then
-                enableHitbox(monsterRootPart)
-            else
-                disableHitbox(monsterRootPart)
+        for _, monster in ipairs(enemies:GetChildren()) do
+            if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+               monster.EvilHumanoid.Health > 0 then
+                local monsterRootPart = monster.HumanoidRootPart
+
+                if hitboxTest then
+                    enableHitbox(monsterRootPart)
+                else
+                    disableHitbox(monsterRootPart)
+                end
             end
         end
     end
@@ -1237,12 +1241,12 @@ end
 
 local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Hitbox Toggle", Default = false })
 
-    Toggle:OnChanged(function(Kxe)
-   hitboxTest = Kxe
-    end)
+Toggle:OnChanged(function(isEnabled)
+    hitboxTest = isEnabled
+end)
 
 RunService.Heartbeat:Connect(function()
-    toggleHitboxState(hitboxTest)
+    toggleHitboxState()
 end)
 
 local InputX = Tabs.Main:AddInput("InputX", {
@@ -1289,13 +1293,6 @@ local InputTransparency = Tabs.Main:AddInput("InputTransparency", {
         end
      })
      
-
-Tabs.Main:AddParagraph({
-        Title = "Hitbox Weapon Expander",
-        Content = "Removed Causing of Lags"
-    })
-
-
 local Tabs = {
     Main = Window:AddTab({ Title = "Custom Visuals", Icon = "" }),
 }
@@ -1328,7 +1325,7 @@ game.Players.LocalPlayer.Character.Humanoid.MaxHealth = Hmax
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Esp",
+        Title = "Enemies Modify",
         Content = ""
     })
 
@@ -1379,6 +1376,53 @@ local Toggle = Tabs.Main:AddToggle("Esp Mobs", {Title = "Esp Enemies", Default =
     Toggle:OnChanged(function(nec)
         MobESP = nec
     end)
+    
+
+local RunService = game:GetService("RunService")
+
+local archorMobsEnabled = false
+local lastUpdateTime = 0
+local updateInterval = 1
+
+local function archorMobsEnable(monsterRootPart)
+    monsterRootPart.Anchored = true
+end
+
+local function archorMobsDisable(monsterRootPart)
+    monsterRootPart.Anchored = false
+end
+
+local function toggleArchorMobsState()
+    local currentTime = tick()
+    if currentTime - lastUpdateTime >= updateInterval then
+        lastUpdateTime = currentTime
+
+        local dungeon, rooms, enemies, shrines = getDungeon()
+
+        for _, monster in ipairs(enemies:GetChildren()) do
+            if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+               monster.EvilHumanoid.Health > 0 then
+                local monsterRootPart = monster.HumanoidRootPart
+
+                if archorMobsEnabled then
+                    archorMobsEnable(monsterRootPart)
+                else
+                    archorMobsDisable(monsterRootPart)
+                end
+            end
+        end
+    end
+end
+
+local ToggleArchorMobs = Tabs.Main:AddToggle("ArchorMobsToggle", {Title = "Freeze Enemies Toggle", Default = false })
+
+ToggleArchorMobs:OnChanged(function(isEnabled)
+    archorMobsEnabled = isEnabled
+end)
+
+RunService.Heartbeat:Connect(function()
+    toggleArchorMobsState()
+end)
 
 Tabs.Main:AddParagraph({
         Title = "Speed And Jump",
@@ -1387,7 +1431,7 @@ Tabs.Main:AddParagraph({
 
 local Input = Tabs.Main:AddInput("Input", {
         Title = "WalkSpeed",
-        Default = "16",
+        Default = "26",
         Placeholder = "Placeholder",
         Numeric = false, -- Only allows numbers
         Finished = false, -- Only calls callback when you press enter
@@ -2567,6 +2611,41 @@ Tabs.Main:AddParagraph({
 
 Tabs.Main:AddParagraph({
         Title = "Small Update: Added Esp Enemies",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "V3.3 Updates",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Freeze Enemies in Custom Visuals",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Changed Fast Farming Low to Medium",
+        Content = "i didn't even know ;-;"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Fast Farming: Only For GPU PERFORMANCE ",
+        Content = "Like from my video in YT that i turned on the performance Stats"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Fixed: Lag Hitbox Enemies",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Fixed: Slow Teleport Boss",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Fixed: Afk Time Teleport To boss",
         Content = ""
     })
 
