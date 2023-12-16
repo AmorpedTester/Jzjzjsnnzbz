@@ -814,117 +814,68 @@ while AutoMobs do
     end)
    
 
-local Toggle4 = Tabs.Main:AddToggle("FastFarmingMed", {Title = "Fast Auto-Farming (Medium Device)", Default = false })
+local Toggle4 = Tabs.Main:AddToggle("FastFarmingMed", { Title = "Fast Auto-Farming (Medium Device)", Default = false })
 
-    Toggle4:OnChanged(function(vaf)
-        AutoMobs2 = vaf
+Toggle4:OnChanged(function(vaf)
+    AutoMobs2 = vaf
 
-        if AutoMobs2 then
-
-
-
-while AutoMobs2 do
-
-    StartDungeon()
-    killAura(monster)
-  
-    spawn(function()
-
+    if AutoMobs2 then
         while AutoMobs2 do
+            StartDungeon()
+            killAura(monster)
 
-            wait(1)
+            spawn(function()
+                while AutoMobs2 do
+                    wait(1)
 
-            local dungeon, rooms, enemies, shrines = getDungeon()
+                    local dungeon, rooms, enemies, shrines = getDungeon()
 
-            for _, monster in ipairs(enemies:GetChildren()) do
+                    for _, monster in ipairs(enemies:GetChildren()) do
+                        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and monster.EvilHumanoid.Health >= 0 then
+                            local monsterRootPart = monster.HumanoidRootPart
 
-                if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+                            if monsterRootPart.Size ~= Vector3.new(50, 50, 50) then
+                                monsterRootPart.Size = Vector3.new(50, 50, 50)
+                                monsterRootPart.Transparency = 1
 
-                        monster.EvilHumanoid.Health >= 0 then
+                                for _, v in ipairs(Workspace:GetChildren()) do
+                                    if v.ClassName == "Folder" then
+                                        for _, x in ipairs(v:GetChildren()) do
+                                            if x.ClassName == "Folder" then
+                                                for _, c in ipairs(x:GetChildren()) do
+                                                    if c:IsA("Model") and c:FindFirstChild("EvilHumanoid") then
+                                                        local EvilHumanoid = c:FindFirstChild("EvilHumanoid")
+                                                        local humanoidRootPart = c:FindFirstChild("HumanoidRootPart")
 
-                    local monsterRootPart = monster.HumanoidRootPart
+                                                        if EvilHumanoid and humanoidRootPart then
+                                                            local monsterPos = humanoidRootPart.Position
+                                                            local player = game.Players.LocalPlayer
+                                                            local playerPos = player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character.HumanoidRootPart.Position
 
-                    if monsterRootPart.Size ~= Vector3.new(500, 5, 500) then
-
-                        monsterRootPart.Size = Vector3.new(500, 5, 500)
-
-                        monsterRootPart.Transparency = 1
-
-                        for _, v in ipairs(Workspace:GetChildren()) do
-
-                            if v.ClassName == "Folder" then
-
-                                for _, x in ipairs(v:GetChildren()) do
-
-                                    if x.ClassName == "Folder" then
-
-                                        for _, c in ipairs(x:GetChildren()) do
-
-                                            if c:IsA("Model") and c:FindFirstChild("EvilHumanoid") then
-
-                                                local EvilHumanoid = c:FindFirstChild("EvilHumanoid")
-
-                                                local humanoidRootPart = c:FindFirstChild("HumanoidRootPart")
-
-
-
-                                                if EvilHumanoid and humanoidRootPart then
-
-                                                    local monsterPos = humanoidRootPart.Position
-
-                                                    local player = game.Players.LocalPlayer
-
-                                                    local playerPos = player.Character and
-
-                                                            player.Character:FindFirstChild(
-
-                                                                    "HumanoidRootPart") and
-
-                                                            player.Character.HumanoidRootPart.Position
-
-
-
-                                                    if playerPos and EvilHumanoid.Health > 0 then
-
-                                                        local direction = (playerPos - monsterPos).unit
-
-                                                        local distanceToTeleport = 3
-
-                                                        local teleportPos = playerPos + direction * distanceToTeleport
-
-                                                        humanoidRootPart.Position = teleportPos
-
+                                                            if playerPos and EvilHumanoid.Health > 0 then
+                                                                local direction = (playerPos - monsterPos).unit
+                                                                local distanceToTeleport = 3
+                                                                local teleportPos = playerPos + direction * distanceToTeleport
+                                                                humanoidRootPart.Position = teleportPos
+                                                            end
+                                                        end
                                                     end
-
                                                 end
-
                                             end
-
                                         end
-
                                     end
-
                                 end
-
                             end
-
                         end
-
                     end
-
+                    wait()
                 end
+            end)
 
-            end
-
-            wait()
-
+            wait(0.1)
         end
-
-    end)
-
-
-
-
+    end
+end)
 
                 local function PerformAttack()
 
@@ -946,78 +897,44 @@ while AutoMobs2 do
 
 
 
-                spawn(function()
+ spawn(function()
+    while AutoMobs2 do
+        wait(0.01)
+        allvis()
+    end
+end)
 
-                    while AutoMobs2 do
-
-                        allvis()
-
-                        wait(0.01)
-
-                    end
-
-                end)
-
-
-
-                spawn(function()
-
-                    while AutoMobs2 do
-
-                        MoveOutFromBossRoom()
-
-                        wait(0.01)
-
-                    end
-
-                end)
+spawn(function()
+    while AutoMobs2 do
+        wait(0.01)
+        MoveOutFromBossRoom()
+    end
+end)
 
 
 
-                spawn(function()
+ spawn(function()
+    while AutoMobs2 do
+        wait(0.1)
 
-                    while AutoMobs2 do
+        local finishPart = findFinishPartInWorkspace(game:GetService("Workspace"))
 
-                        local finishPart = findFinishPartInWorkspace(game:GetService("Workspace"))
+        if finishPart then
+            local character = game.Players.LocalPlayer.Character
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 
-                        if finishPart then
+            if AutoMobs2 and humanoidRootPart then
+                local ChestPart = findNewChestInWorkspace(game:GetService("Workspace"))
 
-                            local character = game.Players.LocalPlayer.Character
-
-                            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-
-                            if humanoidRootPart then
-
-                                local ChestPart = findNewChestInWorkspace(game:GetService("Workspace"))
-
-                                if ChestPart then
-
-                                    humanoidRootPart.CFrame = ChestPart.CFrame
-
-                                    wait(3)
-
-                                    humanoidRootPart.CFrame = finishPart.CFrame
-
-                                end
-
-                            end
-
-                        end
-
-                        wait(0.1)
-
-                    end
-
-                end)
-
-                wait(0.01)
-
+                if ChestPart then
+                    humanoidRootPart.CFrame = ChestPart.CFrame
+                    wait(3)
+                    humanoidRootPart.CFrame = finishPart.CFrame
+                end
             end
-
         end
-
-    end)
-
+    end
+end)
 
 Tabs.Main:AddParagraph({
         Title = "Auto Collects",
@@ -1464,6 +1381,99 @@ end)
 RunService.Heartbeat:Connect(function()
     toggleArchorMobsState()
 end)
+
+-- Function to get the nearest target
+function getNearestTarget()
+    local target
+    local closest = math.huge
+    local player, cha, plr, hum = getPlayer()
+    local dungeon, rooms, enemies, shrines = getDungeon()
+
+    for _, v in pairs(enemies:GetChildren()) do
+        if v:FindFirstChild("EvilHumanoid") and v:FindFirstChild("HumanoidRootPart") and v.EvilHumanoid.Health > 0 then
+            local distance = (v.HumanoidRootPart.Position - plr.Position).Magnitude
+            if distance < closest then
+                closest = distance
+                target = v
+            end
+        end
+    end
+
+    return target
+end
+
+-- Function to generate a random string
+function generateRandomString()
+    local chars = {"q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z",
+                   "x", "c", "v", "b", "n", "m", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "X", "A", "B", "V",
+                   "R", "I", "O", "P", "L"}
+    local str = ""
+
+    for i = 1, 16 do
+        str = str .. chars[math.random(1, #chars)]
+    end
+
+    return str
+end
+
+-- Variable to store the random camera part name
+local cameraPartName = generateRandomString()
+
+-- Function to update the camera focus
+function updateCamera()
+    while isUpdatingCamera do
+        local monster = getNearestTarget()
+        local camera = workspace.CurrentCamera
+        local dungeon, rooms, enemies, shrines = getDungeon()
+
+        if monster then
+            camera.CameraSubject = monster.EvilHumanoid
+        else
+            if isWaveDefense then
+                camera.CameraSubject = dungeon.Spawn
+            else
+                camera.CameraSubject = workspace.Characters:FindFirstChild(cameraPartName)
+            end
+        end
+        wait()  -- Add a small delay to avoid using too much CPU
+    end
+end
+
+function resetCamera()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+
+    if character then
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+        if humanoid then
+            local camera = workspace.CurrentCamera
+            camera.CameraSubject = humanoid
+        end
+    end
+end
+
+-- Add buttons to the UI
+Tabs.Main:AddButton({
+    Title = "View Enemies",
+    Description = "",
+    Callback = function()
+        isUpdatingCamera = true  -- Start the camera update loop
+        updateCamera()
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Reset Camera",
+    Description = "",
+    Callback = function()
+        resetCamera()
+        isUpdatingCamera = false  -- Stop the camera update loop
+    end
+})
+
+-- Initialize the variable to control the loop
+local isUpdatingCamera = false
 
 Tabs.Main:AddParagraph({
         Title = "Speed And Jump",
