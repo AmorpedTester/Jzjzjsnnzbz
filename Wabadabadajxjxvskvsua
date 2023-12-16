@@ -30,13 +30,14 @@ getgenv().Get =
     }
 )
 
+print("-- Fast Loader V1")
 print("-- Unknown TQ Hub 1/5: Checking Game...")
 
-wait(2)
+wait(1)
 
 print("-- Unknown TQ Hub 2/5: Getting Service...")
 
-wait(1)
+wait(0.5)
 
 -- Test literally
 local request = http_request or request or HttpPost
@@ -276,7 +277,7 @@ game:GetService("Workspace"):FindFirstChild("Map")
 
 print("-- Unknown TQ Hub 4/5: Checking Exploit Support...")
 
-wait(2)
+wait(0.5)
 
 if not require then
     return game.Players.LocalPlayer:Kick("Your Exploit doesn't support")
@@ -288,7 +289,7 @@ end
 
 print("-- Unknown TQ Hub 5/5: Loaded, Pls Wait for Few Seconds...")
 
-wait(2)
+wait(0.5)
 
 -- Troubleshooting Ui library
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
