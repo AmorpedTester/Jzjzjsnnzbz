@@ -2702,6 +2702,16 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
+        Title = "Added View Enemies",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added Fast Loader Gui V1",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
         Title = "Status Update: 🟢",
         Content = ""
     })
