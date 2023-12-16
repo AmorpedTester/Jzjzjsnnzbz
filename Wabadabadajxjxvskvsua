@@ -322,7 +322,7 @@ local Window = Fluent:CreateWindow({
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
-    Theme = "Red",
+    Theme = "Dark",
     MinimizeKey = Enum.KeyCode.N -- Used when theres no MinimizeKeybind
 })
 
@@ -2727,3 +2727,4 @@ Window:SelectTab(1)
 
 -- Auto Load Configuration
 SaveManager:LoadAutoloadConfig()
+
