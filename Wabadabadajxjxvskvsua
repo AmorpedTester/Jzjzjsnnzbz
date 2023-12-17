@@ -306,7 +306,7 @@ Fluent:Notify({
 Fluent:Notify({
         Title = "Announcement Notification",
         Content = "Update Notifier",
-        SubContent = "I forgot About the Fast Farming is only for medium device ;-;", -- Optional
+        SubContent = "Added: View Enemies and Bypass Walkspeed and Jump", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -1035,7 +1035,7 @@ Tabs.Main:AddParagraph({
         Title = "Grand Grotto",
         Content = ""
     })
-
+    
 local Toggle1 = Tabs.Main:AddToggle("AutoGrotto", {Title = "Auto Kill Grand Grotto Mobs", Default = false })
 
 Toggle1:OnChanged(function(State)
@@ -1083,7 +1083,7 @@ Toggle1:OnChanged(function(State)
         end
     end)
 end)
-
+    
 local speed2 = 1 -- Default value
 
 local Input = Tabs.Main:AddInput("Input", {
@@ -1488,7 +1488,21 @@ local Input = Tabs.Main:AddInput("Input", {
         Numeric = false, -- Only allows numbers
         Finished = false, -- Only calls callback when you press enter
         Callback = function(WS)
+_G.BypassWS = true
+while wait(5) do
+if _G.loops == true then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WS
+end
+end
+        end
+    })
+    
+    Tabs.Main:AddButton({
+        Title = "Reset Walkspeed",
+        Description = "",
+        Callback = function()
+_G.BypassWS = false
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 18
         end
     })
     
@@ -1499,7 +1513,21 @@ local Input = Tabs.Main:AddInput("Input", {
         Numeric = false, -- Only allows numbers
         Finished = false, -- Only calls callback when you press enter
         Callback = function(JP)
+_G.BypassJP = true
+while wait(5) do
+if _G.loops == true then
 game.Players.LocalPlayer.Character.Humanoid.JumpPower = JP
+end
+end
+        end
+    })
+
+Tabs.Main:AddButton({
+        Title = "Reset JumpHeight",
+        Description = "",
+        Callback = function()
+_G.BypassJP = false
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
         end
     })
 
@@ -2712,6 +2740,11 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
+        Title = "Added Bypass Speed and Jump",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
         Title = "Status Update: 🟢",
         Content = ""
     })
@@ -2738,4 +2771,3 @@ Window:SelectTab(1)
 
 -- Auto Load Configuration
 SaveManager:LoadAutoloadConfig()
-
