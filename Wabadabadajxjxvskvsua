@@ -170,7 +170,7 @@ function killAura(monster)
     for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
            if damage.ClassName ~= "Model" then
                pcall(function()
-                   damage.Transparency = 1
+                   damage.Transparency = 0.7
                    damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
                       damage.Position = monster.HumanoidRootPart.Position
                end)
@@ -188,6 +188,23 @@ function killAura(monster)
             end
         end)
     end
+end
+
+function getNearestAttack()
+    local nearestAttack = nil
+    local closestDistance = math.huge
+    local player, cha, plr, hum = getPlayer()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("Part") then
+            local distance = (v.Position - plr.Position).Magnitude
+            if distance < closestDistance then
+                closestDistance = distance
+                nearestAttack = v
+            end
+        end
+    end
+
+    return nearestAttack, closestDistance
 end
 
 local h = require(ReplicatedStorage.Shared.Modules.DungeonLibrary)
@@ -296,6 +313,8 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+local Options = Fluent.Options
+
 Fluent:Notify({
         Title = "Made by Unknownproooolucky",
         Content = "",
@@ -338,6 +357,7 @@ Toggle1:OnChanged(function(State)
     game:GetService("RunService").Stepped:Connect(function()
         pcall(function()
             if Settings.H then
+               getNearestAttack()
                 ScriptFunction(Script)
                 ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
                 Noclip(Player.Character:WaitForChild("Humanoid"))
@@ -364,6 +384,8 @@ Toggle1:OnChanged(function(State)
         end
     end)
 end)
+
+Options.AutokillMob:SetValue(false)
 
 local function StartDungeon()
     local hasHumanoidRootPart = false
@@ -814,6 +836,7 @@ while AutoMobs do
 
     end)
    
+Options.FastFarmingHigh:SetValue(false)
 
 local Toggle4 = Tabs.Main:AddToggle("FastFarmingMed", { Title = "Fast Auto-Farming (Medium Device)", Default = false })
 
@@ -937,6 +960,8 @@ end)
     end
 end)
 
+Options.FastFarmingMed:SetValue(false)
+
 Tabs.Main:AddParagraph({
         Title = "Auto Collects",
         Content = ""
@@ -960,6 +985,8 @@ Toggle2:OnChanged(function(State)
     end)
 end)
 
+Options.AutoChest:SetValue(false)
+
 local Toggle3 = Tabs.Main:AddToggle("AutoMedkits", {Title = "Auto Collect Medkits", Default = false })
 
 Toggle3:OnChanged(function(State)
@@ -979,6 +1006,8 @@ Toggle3:OnChanged(function(State)
         end 
     end)
 end)
+
+Options.AutoMedkits:SetValue(false)
 
 Tabs.Main:AddParagraph({
         Title = "Tween Settings",
@@ -1084,6 +1113,8 @@ Toggle1:OnChanged(function(State)
     end)
 end)
     
+Options.AutoGrotto:SetValue(false)
+    
 local speed2 = 1 -- Default value
 
 local Input = Tabs.Main:AddInput("Input", {
@@ -1137,6 +1168,8 @@ Toggle:OnChanged(function(Tswx)
         end
     end
 end)
+
+Options.AutoKillGrottoBoss:SetValue(false)
 
 local Input = Tabs.Main:AddInput("Input", {
     Title = "Afk Teleport Time",
@@ -1198,7 +1231,7 @@ local function toggleHitboxState()
     end
 end
 
-local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Hitbox Toggle", Default = false })
+local Toggle = Tabs.Main:AddToggle("HitboxEnemies", {Title = "Hitbox Toggle", Default = false })
 
 Toggle:OnChanged(function(isEnabled)
     hitboxTest = isEnabled
@@ -1207,6 +1240,8 @@ end)
 RunService.Heartbeat:Connect(function()
     toggleHitboxState()
 end)
+
+Options.HitboxEnemies:SetValue(false)
 
 local InputX = Tabs.Main:AddInput("InputX", {
         Title = "Hitbox Size X",
@@ -1330,11 +1365,13 @@ spawn(function()
     end
 end)
 
-local Toggle = Tabs.Main:AddToggle("Esp Mobs", {Title = "Esp Enemies", Default = false })
+local Toggle = Tabs.Main:AddToggle("EspMobs", {Title = "Esp Enemies", Default = false })
 
     Toggle:OnChanged(function(nec)
         MobESP = nec
     end)
+    
+Options.EspMobs:SetValue(false)
     
 
 local RunService = game:GetService("RunService")
@@ -1373,7 +1410,7 @@ local function toggleArchorMobsState()
     end
 end
 
-local ToggleArchorMobs = Tabs.Main:AddToggle("ArchorMobsToggle", {Title = "Freeze Enemies Toggle", Default = false })
+local ToggleArchorMobs = Tabs.Main:AddToggle("ArchorMobs", {Title = "Freeze Enemies Toggle", Default = false })
 
 ToggleArchorMobs:OnChanged(function(isEnabled)
     archorMobsEnabled = isEnabled
@@ -1382,6 +1419,8 @@ end)
 RunService.Heartbeat:Connect(function()
     toggleArchorMobsState()
 end)
+
+Options.ArchorMobs:SetValue(false)
 
 -- Function to get the nearest target
 function getNearestTarget()
@@ -1490,7 +1529,7 @@ local Input = Tabs.Main:AddInput("Input", {
         Callback = function(WS)
 _G.BypassWS = true
 while wait(5) do
-if _G.loops == true then
+if _G.BypassWS == true then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WS
 end
 end
@@ -1515,7 +1554,7 @@ local Input = Tabs.Main:AddInput("Input", {
         Callback = function(JP)
 _G.BypassJP = true
 while wait(5) do
-if _G.loops == true then
+if _G.BypassJP == true then
 game.Players.LocalPlayer.Character.Humanoid.JumpPower = JP
 end
 end
@@ -1627,6 +1666,8 @@ local Toggle = Tabs.Main:AddToggle("AntiAfk", {Title = "Anti-AFK", Default = fal
         Toggle = State
     end)
 
+Options.AntiAfk:SetValue(true)
+
 spawn(ToggleAntiAfk)
 
 local function skipCutscene()
@@ -1645,6 +1686,8 @@ local Toggle = Tabs.Main:AddToggle("SkipCutscene", {Title = "Skip Cutscenes (Bug
         end
     end)
 
+Options.SkipCutscene:SetValue(false)
+
 local InfiniteJumpEnabled = false
 
 local Toggle = Tabs.Main:AddToggle("AirJump", {Title = "Air Jump", Default = false })
@@ -1659,6 +1702,8 @@ game:GetService("UserInputService").JumpRequest:Connect(function()
         Player.Character:WaitForChild("Humanoid"):ChangeState("Jumping")
     end
 end)
+  
+Options.AirJump:SetValue(false)
   
 
 local Toggle = Tabs.Main:AddToggle("Noclip", {Title = "Noclip", Default = false })
@@ -1682,6 +1727,8 @@ end
     Toggle:OnChanged(function(State)
 NoClipx = State
     end)
+
+Options.Noclip:SetValue(false)
 
 Noclip()
 
@@ -1833,13 +1880,15 @@ local function flyLoop()
     end
 end
 
-local Toggle = Tabs.Main:AddToggle("MyToggle", { Title = "Fly Toggle", Default = false })
+local Toggle = Tabs.Main:AddToggle("FlyToggle", { Title = "Fly Toggle", Default = false })
 
 Toggle:OnChanged(function()
     local player = game.Players.LocalPlayer
     _G.loops = Toggle.Value
     toggleFly(player, Toggle.Value)
 end)
+
+Options.FlyToggle:SetValue(false)
 
 _G.flySpeed = 20  -- Default fly speed
 
@@ -1863,7 +1912,7 @@ Tabs.Main:AddParagraph({
         Content = ""
     })
 
-local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Destroy Map", Default = false })
+local Toggle = Tabs.Main:AddToggle("DestroyMap", {Title = "Destroy Map", Default = false })
 
 local toggleState = false -- Default state
 
@@ -1884,6 +1933,8 @@ toggleState = Value
             destroyMap()
         end
     end)
+    
+Options.DestroyMap:SetValue(false)
     
 game:GetService("RunService").Heartbeat:Connect(function()
     if toggleState then
@@ -2635,66 +2686,6 @@ local Tabs = {
 }
 
 Tabs.Main:AddParagraph({
-        Title = "Unknown TQ Hub V3",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Added Quick Optimizer",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Added Skip Cutscene",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Added Loader print on Console",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Added Tween_Lock",
-        Content = "It Changed to Fly"
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Added 2 Auto-Leave",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Changed UI Library",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Added Something in Visual",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Changed Low Device Fast Farming",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Small Update: Fixed Low device Fast Farming Not Killing A Enemies",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Added Grotto Grand Farms",
-        Content = "Fixed Error"
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Small Update: Added Esp Enemies",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
         Title = "V3.3 Updates",
         Content = ""
     })
@@ -2760,6 +2751,8 @@ end)
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 
+SaveManager:SetIgnoreIndexes({})
+
 -- Save Folder
 InterfaceManager:SetFolder("UnknownTQHub")
 SaveManager:SetFolder("UnknownTQHub/TreasureQuest")
@@ -2767,7 +2760,7 @@ SaveManager:SetFolder("UnknownTQHub/TreasureQuest")
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
 
-Window:SelectTab(1)
+Window:SelectTab(8)
 
 -- Auto Load Configuration
 SaveManager:LoadAutoloadConfig()
