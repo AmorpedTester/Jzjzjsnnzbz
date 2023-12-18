@@ -308,85 +308,6 @@ print("-- Unknown TQ Hub 5/5: Loaded, Pls Wait for Few Seconds...")
 
 wait(0.5)
 
--- Troubleshooting Ui library
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-
-local Options = Fluent.Options
-
-Fluent:Notify({
-        Title = "Made by Unknownproooolucky",
-        Content = "",
-        SubContent = "", -- Optional
-        Duration = 5 -- Set to nil to make the notification not disappear
-    })
-   
-Fluent:Notify({
-        Title = "Announcement Notification",
-        Content = "Update Notifier",
-        SubContent = "Added: View Enemies and Bypass Walkspeed and Jump", -- Optional
-        Duration = 10 -- Set to nil to make the notification not disappear
-    })
-   
-Fluent:Notify({
-        Title = "Quick Optimzer",
-        Content = "Done!",
-        SubContent = "", -- Optional
-        Duration = 10 -- Set to nil to make the notification not disappear
-    })
-   
-local Window = Fluent:CreateWindow({
-    Title = "Unknown TQ Hub",
-    SubTitle = "V3.3 | ❄️ Christmas Update ❄️ |",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
-    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.N -- Used when theres no MinimizeKeybind
-})
-
-local Tabs = {
-    Main = Window:AddTab({ Title = "Auto Farms", Icon = "" }),
-}
-
-local Toggle1 = Tabs.Main:AddToggle("AutokillMob", {Title = "Auto Kill Mobs", Default = false })
-
-Toggle1:OnChanged(function(State)
-    Settings.H = State
-    game:GetService("RunService").Stepped:Connect(function()
-        pcall(function()
-            if Settings.H then
-               getNearestAttack()
-                ScriptFunction(Script)
-                ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
-                Noclip(Player.Character:WaitForChild("Humanoid"))
-            end
-        end)
-    end)
-    spawn(function()
-        while wait() and Settings.H do 
-            pcall(function()
-                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
-                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
-                ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
-                ReplicatedStorage.Shared.Remotes.Data.ClaimPrizes:FireServer()
-                for i, v in pairs(Workspace:GetChildren()) do
-                    if v:FindFirstChild("FinishRoom", true) and v:FindFirstChild("FinishRoom", true):FindFirstChild("Hitbox", true) then
-                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),0)
-                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),1)
-                    end 
-                end 
-                if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
-                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
-                end 
-            end)
-        end
-    end)
-end)
-
-Options.AutokillMob:SetValue(false)
-
 local function StartDungeon()
     local hasHumanoidRootPart = false
     for _, v in ipairs(game:GetService("Workspace"):GetChildren()) do
@@ -621,11 +542,102 @@ local function allvis()
     visiblemob()
 end
 
+local function allvis2()
+    Wskill()
+    visibleskill()
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------
 
 local Script = require(Player.PlayerScripts.Shared.Client.CombatController)
 local ScriptFunction = Script.BasicAttack
 local ScriptFunction2 = Script.UseAbility
+
+
+-- Troubleshooting Ui library
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Options = Fluent.Options
+
+Fluent:Notify({
+        Title = "Made by Unknownproooolucky",
+        Content = "",
+        SubContent = "", -- Optional
+        Duration = 5 -- Set to nil to make the notification not disappear
+    })
+   
+Fluent:Notify({
+        Title = "Announcement Notification",
+        Content = "Update Notifier",
+        SubContent = "Added: View Enemies and Bypass Walkspeed and Jump", -- Optional
+        Duration = 10 -- Set to nil to make the notification not disappear
+    })
+   
+Fluent:Notify({
+        Title = "Quick Optimzer",
+        Content = "Done!",
+        SubContent = "", -- Optional
+        Duration = 10 -- Set to nil to make the notification not disappear
+    })
+   
+local Window = Fluent:CreateWindow({
+    Title = "Unknown TQ Hub",
+    SubTitle = "V3.3 | ❄️ Christmas Update ❄️ |",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.N -- Used when theres no MinimizeKeybind
+})
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "Auto Farms", Icon = "" }),
+}
+
+local Toggle1 = Tabs.Main:AddToggle("AutokillMob", {Title = "Auto Kill Mobs", Default = false })
+
+Toggle1:OnChanged(function(State)
+    Settings.H = State
+    game:GetService("RunService").Stepped:Connect(function()
+        pcall(function()
+            if Settings.H then
+                ScriptFunction(Script)
+                ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
+                Noclip(Player.Character:WaitForChild("Humanoid"))
+            end
+        end)
+    end)
+    spawn(function()
+        while wait() and Settings.H do 
+            pcall(function()
+                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+                ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
+                ReplicatedStorage.Shared.Remotes.Data.ClaimPrizes:FireServer()
+                for i, v in pairs(Workspace:GetChildren()) do
+                    if v:FindFirstChild("FinishRoom", true) and v:FindFirstChild("FinishRoom", true):FindFirstChild("Hitbox", true) then
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),0)
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),1)
+                    end 
+                end 
+                if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
+                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
+                end 
+            end)
+        end
+    end)
+
+       spawn(function()
+                    while Settings.H do
+                        allvis2()
+                        wait(0.01)
+                    end
+                end)
+              end)
+              
+Options.AutokillMob:SetValue(false)
 
 Tabs.Main:AddParagraph({
         Title = "Fast Farmings",
@@ -1111,7 +1123,15 @@ Toggle1:OnChanged(function(State)
             wait()
         end
     end)
-end)
+
+       spawn(function()
+                    while Settings.Re do
+                        allvis2()
+                        wait(0.01)
+                    end
+                end)
+              end)
+    
     
 Options.AutoGrotto:SetValue(false)
     
@@ -2732,6 +2752,11 @@ Tabs.Main:AddParagraph({
 
 Tabs.Main:AddParagraph({
         Title = "Added Bypass Speed and Jump",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Improvement Auto Kill Mobs and Auto Kill Grand Grotto Mobs",
         Content = ""
     })
 
