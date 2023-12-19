@@ -30,8 +30,26 @@ getgenv().Get =
     }
 )
 
-print("Many fucking line script loaded")
-warn ("No key system Mode")
+print("Gui: Orion Library")
+
+wait(0.5)
+
+print("-- Fast Loader V1")
+print("-- Unknown TQ Hub 1/5: Checking Game...")
+
+wait(1)
+
+print("-- Unknown TQ Hub 2/5: Getting Service...")
+
+wait(0.5)
+
+-- Test literally
+local request = http_request or request or HttpPost
+
+-- waiting for game load
+while not game:IsLoaded() do
+    RunService.Heartbeat:Wait()
+end
 
 -- Valuable 1
 repeat wait() until game:IsLoaded()
@@ -43,6 +61,12 @@ local Workspace = Get.Workspace
 local HttpService = Get.HttpService
 local Player = Players.LocalPlayer
 local InventoryController = require(game:GetService("Players").LocalPlayer.PlayerScripts:WaitForChild("Shared"):WaitForChild("Client"):WaitForChild("InventoryController"))
+
+print("-- Unknown TQ Hub 3/5: Bypassing Random Name...")
+
+wait(0.5)
+
+print("-- Unknown TQ Hub 3.5/5: Bypassing... *DumbExploiterController* ")
 
 -- Valuable Servers
 local isWaveDefense
@@ -263,6 +287,22 @@ end
 
 game:GetService("Workspace"):FindFirstChild("Map")
 
+print("-- Unknown TQ Hub 4/5: Checking Exploit Support...")
+
+wait(0.5)
+
+if not require then
+    return game.Players.LocalPlayer:Kick("Your Exploit doesn't support")
+end
+
+if not firetouchinterest then
+    return game.Players.LocalPlayer:Kick("Your Exploit doesn't support")
+end
+
+print("-- Unknown TQ Hub 5/5: Loaded, Pls Wait for Few Seconds...")
+
+wait(0.5)
+
 --Troubleshoot Orion Library Gui
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/thanhdat4461/OrionMoblie/main/source')))()
@@ -275,7 +315,7 @@ local Window = OrionLib:MakeWindow({Name = "Unknown TQ Hub V3.4 (Orion)", IntroT
 
 OrionLib:MakeNotification({
 	Name = "Made by Unknownproooolucky",
-	Content = "nothing Description",
+	Content = "",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
@@ -288,8 +328,8 @@ OrionLib:MakeNotification({
 })
 
 OrionLib:MakeNotification({
-	Name = "Fast V3_Optimizing...",
-	Content = "wait for 10 second until loaded",
+	Name = "Quick Optimizer",
+	Content = "Done!",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
@@ -299,8 +339,6 @@ local Tab = Window:MakeTab({
 	Icon = "rbxassetid://7733960981",
 	PremiumOnly = false
 })
-
-wait(1)
 
 local Section = Tab:AddSection({
 	Name = "Auto Farm"
@@ -1229,10 +1267,6 @@ timerx = Xdsr
 	end	  
 })
 
-
-
-wait(3)
-
 local Tab = Window:MakeTab({
 	Name = "Hitbox Settings",
 	Icon = "rbxassetid://7734022107",
@@ -1341,8 +1375,6 @@ local Tab = Window:MakeTab({
 	Icon = "rbxassetid://7734022107",
 	PremiumOnly = false
 })
-
-wait(1)
 
 local Section = Tab:AddSection({
 	Name = "Enemies Modify"
@@ -1598,8 +1630,6 @@ Tab:AddTextbox({
 game.Players.LocalPlayer.Character.Humanoid.MaxHealth = Hmax
 	end	  
 })
-
-wait(1)
 
 local Tab = Window:MakeTab({
 	Name = "Auto-Farm Settings",
@@ -1946,9 +1976,9 @@ local Section = Tab:AddSection({
 Tab:AddButton({
 	Name = "Destroy Map (Only For Dungeon)",
 	Callback = function()
-_G.loops = true
+_G.Destroy1 = true
 while wait(1) do
-if _G.loops == true then
+if _G.Destroy1 == true then
     for _, value in pairs(workspace:GetDescendants()) do
         if value:IsA("Part") and value.Parent.Name ~= game.Players.LocalPlayer.Name then
             value.Transparency = 1
@@ -1962,9 +1992,9 @@ end
 Tab:AddButton({
 	Name = "Destroy Map 2 (Ur item will be Invisible ;-;)",
 	Callback = function()
-_G.loops = true
+_G.Destroy2 = true
 while wait(1) do
-if _G.loops == true then
+if _G.Destroy2 == true then
     for _, value in pairs(workspace:GetDescendants()) do
         if value:IsA("BasePart") and value.Parent.Name ~= game.Players.LocalPlayer.Name then
             value.Transparency = 1
@@ -2483,8 +2513,6 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(660.68, 
   	end    
 })
 
-wait(2)
-
 local Tab = Window:MakeTab({
 	Name = "More",
 	Icon = "rbxassetid://7734053495",
@@ -2694,8 +2722,6 @@ Tab:AddButton({
 game:GetService("RunService"):Set3dRenderingEnabled(true)
   	end    
 })
-
-wait(2)
 
 local Tab = Window:MakeTab({
 	Name = "Update Logs",
