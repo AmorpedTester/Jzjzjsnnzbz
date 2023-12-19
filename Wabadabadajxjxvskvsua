@@ -2778,8 +2778,8 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Status Update: 🟢",
-        Content = ""
+        Title = "Status Update: 🔴",
+        Content = "Got Banned Again."
     })
     
 print("Changed SimulationRaduis")
