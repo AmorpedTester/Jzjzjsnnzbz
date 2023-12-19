@@ -30,6 +30,10 @@ getgenv().Get =
     }
 )
 
+print("Gui: Fluent Library")
+
+wait(0.5)
+
 print("-- Fast Loader V1")
 print("-- Unknown TQ Hub 1/5: Checking Game...")
 
@@ -345,7 +349,7 @@ Fluent:Notify({
 Fluent:Notify({
         Title = "Announcement Notification",
         Content = "Update Notifier",
-        SubContent = "Orion Library Version is Back u can change it to OrionLib_Gui.lua", -- Optional
+        SubContent = "Added: View Enemies and Bypass Walkspeed and Jump", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -367,7 +371,7 @@ local Window = Fluent:CreateWindow({
 })
 
 local Tabs = {
-    Main = Window:AddTab({ Title = "Auto Farms", Icon = "" }),
+    Main = Window:AddTab({ Title = "Auto Farms", Icon = "rbxassetid://7733960981" }),
 }
 
 local Toggle1 = Tabs.Main:AddToggle("AutokillMob", {Title = "Auto Kill Mobs", Default = false })
@@ -1124,6 +1128,7 @@ Toggle1:OnChanged(function(State)
 Options.AutoGrotto:SetValue(false)
 
 local speed2 = 1 -- Default value
+local timerx = 1
 
 local Input = Tabs.Main:AddInput("Input", {
     Title = "Teleport Boss Speed",
@@ -1149,7 +1154,7 @@ Tabs.Main:AddButton({
 })
 
 local _G = {}
-_G.loops = false -- Set the initial value to false
+_G.Button3 = false -- Set the initial value to false
 
 local function RunTween()
     local CFrameEnd = CFrame.new(-1593.79, 515.489, 606.865) -- Place your coords here
@@ -1162,11 +1167,11 @@ end
 local Toggle = Tabs.Main:AddToggle("AutoKillGrottoBoss", {Title = "Auto Teleport to Boss", Default = false })
 
 Toggle:OnChanged(function(Tswx)
-    _G.loops = Tswx -- Set the global variable based on the toggle state
-    if _G.loops then
+    _G.Button3 = Tswx -- Set the global variable based on the toggle state
+    if _G.Button3 then
         local startTime = tick()
         local timerx = tonumber(timerx) or 130 -- Default value or user input
-        while _G.loops do
+        while _G.Button3 do
             if tick() - startTime >= timerx then
                 RunTween()
                 startTime = tick()
@@ -1192,7 +1197,7 @@ local Input = Tabs.Main:AddInput("Input", {
 
 
 local Tabs = {
-    Main = Window:AddTab({ Title = "Hitbox Settings", Icon = "" }),
+    Main = Window:AddTab({ Title = "Hitbox Settings", Icon = "rbxassetid://7734022107" }),
 }
 
 Tabs.Main:AddParagraph({
@@ -1296,7 +1301,7 @@ local InputTransparency = Tabs.Main:AddInput("InputTransparency", {
      })
      
 local Tabs = {
-    Main = Window:AddTab({ Title = "Custom Visuals", Icon = "" }),
+    Main = Window:AddTab({ Title = "Custom Visuals", Icon = "rbxassetid://7734022107" }),
 }
 
 Tabs.Main:AddParagraph({
@@ -2006,7 +2011,7 @@ end
     })
 
 local Tabs = {
-    Main = Window:AddTab({ Title = "Auto-Dungeon", Icon = "" }),
+    Main = Window:AddTab({ Title = "Misc-Dungeon", Icon = "rbxassetid://7734068321" }),
 }
 
 -- Define toggle settings in _G
@@ -2330,7 +2335,7 @@ BuyitemFF = value
     end)
     
 local Tabs = {
-    Main = Window:AddTab({ Title = "Teleport", Icon = "" }),
+    Main = Window:AddTab({ Title = "Teleport", Icon = "rbxassetid://7734037723" }),
 }
 
 
@@ -2488,7 +2493,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(660.68, 
 
 
 local Tabs = {
-    Main = Window:AddTab({ Title = "Anti-Lags", Icon = "" }),
+    Main = Window:AddTab({ Title = "Anti-Lags", Icon = "rbxassetid://7734053495" }),
 }
 
 Tabs.Main:AddButton({
