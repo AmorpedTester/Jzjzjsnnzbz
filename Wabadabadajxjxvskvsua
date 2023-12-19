@@ -1878,7 +1878,7 @@ end
 _G.loops = false
 
 local function flyLoop()
-    while wait(10) do
+    while wait(3) do
         if _G.loops then
             local player = game.Players.LocalPlayer
             if player and player.Character then
@@ -1935,10 +1935,23 @@ local function destroyMap()
     end
 end
 
+local function destroyMap2()
+    for _, room in ipairs(workspace.Dungeon.Rooms:GetChildren()) do
+        for _, child in ipairs(room:GetChildren()) do
+            if child.Name == "Shadow" then
+                workspace.Terrain:Clear()
+                child:Destroy()
+            end
+        end
+    end
+end
+
     Toggle:OnChanged(function(Value)
 toggleState = Value
         if toggleState then
             destroyMap()
+            destroyMap2()
+    workspace.Terrain:Clear()
         end
     end)
     
@@ -1947,6 +1960,7 @@ Options.DestroyMap:SetValue(false)
 game:GetService("RunService").Heartbeat:Connect(function()
     if toggleState then
         destroyMap()
+        destroyMap2()
     end
 end)
 
@@ -2745,6 +2759,16 @@ Tabs.Main:AddParagraph({
 
 Tabs.Main:AddParagraph({
         Title = "Improvement Auto Kill Mobs and Auto Kill Grand Grotto Mobs",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Improvement Destroy Map Toggle",
+        Content = ""
+    })
+    
+ Tabs.Main:AddParagraph({
+        Title = "Improvement Fly Toggle",
         Content = ""
     })
 
