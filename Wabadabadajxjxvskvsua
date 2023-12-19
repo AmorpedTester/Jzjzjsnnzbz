@@ -1072,7 +1072,7 @@ Tabs.Main:AddParagraph({
         Content = ""
     })
 
-local Toggle1 = Tabs.Main:AddToggle("AutoGrotto", {Title = "Auto Kill Grand Grotto Mobs (Old And Fast)", Default = false })
+local Toggle1 = Tabs.Main:AddToggle("AutoGrotto", {Title = "Auto Kill Grand Grotto Mobs", Default = false })
 
 Toggle1:OnChanged(function(State)
     Settings.Re = State
