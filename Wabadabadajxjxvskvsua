@@ -345,7 +345,7 @@ Fluent:Notify({
 Fluent:Notify({
         Title = "Announcement Notification",
         Content = "Update Notifier",
-        SubContent = "Added: View Enemies and Bypass Walkspeed and Jump", -- Optional
+        SubContent = "Improvement update on Update Logs", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -2006,7 +2006,7 @@ end
     })
 
 local Tabs = {
-    Main = Window:AddTab({ Title = "Auto-Dugeon", Icon = "" }),
+    Main = Window:AddTab({ Title = "Auto-Dungeon", Icon = "" }),
 }
 
 -- Define toggle settings in _G
