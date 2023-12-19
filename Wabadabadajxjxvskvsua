@@ -166,15 +166,28 @@ function getDungeon()
     return dungeon, rooms, enemies, shrines
 end
 
-function killAura(monster)
+function killAuraV1(monster)
     for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-           if damage.ClassName ~= "Model" then
-               pcall(function()
-                   damage.Transparency = 0.7
-                   damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
-                      damage.Position = monster.HumanoidRootPart.Position
-               end)
-           end
+        if damage.ClassName ~= "Model" then
+            pcall(function()
+                damage.Transparency = 1
+                damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                damage.Position = monster.HumanoidRootPart.Position
+            end)
+        end
+    end
+end
+
+
+function killAuraV2(monster)
+    for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+        -- if damage.ClassName ~= "Model" then
+        --     pcall(function()
+        --         damage.Transparency = 1
+        --         damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+        --         -- damage.Position = monster.HumanoidRootPart.Position
+        --     end)
+        -- end
         pcall(function()
             if damage.ClassName ~= "Model" and damage.ClassName ~= "Explosion" then
                 game:GetService("TweenService"):Create(damage, TweenInfo.new(1), {
@@ -205,6 +218,12 @@ function getNearestAttack()
     end
 
     return nearestAttack, closestDistance
+end
+
+local function AllKill()
+    getNearestAttack()
+    killAuraV1(monster)
+    killAuraV2(monster)
 end
 
 local h = require(ReplicatedStorage.Shared.Modules.DungeonLibrary)
@@ -307,6 +326,92 @@ end
 print("-- Unknown TQ Hub 5/5: Loaded, Pls Wait for Few Seconds...")
 
 wait(0.5)
+
+
+-- Troubleshooting Ui library
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Options = Fluent.Options
+
+Fluent:Notify({
+        Title = "Made by Unknownproooolucky",
+        Content = "",
+        SubContent = "", -- Optional
+        Duration = 5 -- Set to nil to make the notification not disappear
+    })
+   
+Fluent:Notify({
+        Title = "Announcement Notification",
+        Content = "Update Notifier",
+        SubContent = "Added: View Enemies and Bypass Walkspeed and Jump", -- Optional
+        Duration = 10 -- Set to nil to make the notification not disappear
+    })
+   
+Fluent:Notify({
+        Title = "Quick Optimzer",
+        Content = "Done!",
+        SubContent = "", -- Optional
+        Duration = 10 -- Set to nil to make the notification not disappear
+    })
+   
+local Window = Fluent:CreateWindow({
+    Title = "Unknown TQ Hub",
+    SubTitle = "V3.3 | ❄️ Christmas Update ❄️ |",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.N -- Used when theres no MinimizeKeybind
+})
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "Auto Farms", Icon = "" }),
+}
+
+local Toggle1 = Tabs.Main:AddToggle("AutokillMob", {Title = "Auto Kill Mobs", Default = false })
+
+Toggle1:OnChanged(function(State)
+    Settings.H = State
+    game:GetService("RunService").Stepped:Connect(function()
+        pcall(function()
+            if Settings.H then
+               AllKill()
+                ScriptFunction(Script)
+                ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
+                Noclip(Player.Character:WaitForChild("Humanoid"))
+            end
+        end)
+    end)
+    spawn(function()
+        while wait() and Settings.H do 
+            pcall(function()
+                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+                ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
+                ReplicatedStorage.Shared.Remotes.Data.ClaimPrizes:FireServer()
+                for i, v in pairs(Workspace:GetChildren()) do
+                    if v:FindFirstChild("FinishRoom", true) and v:FindFirstChild("FinishRoom", true):FindFirstChild("Hitbox", true) then
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),0)
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),1)
+                    end 
+                end 
+                if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
+                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
+                end 
+            end)
+        end
+    end)
+ end)
+ 
+Options.AutokillMob:SetValue(false)
+
+Tabs.Main:AddParagraph({
+        Title = "Fast Farmings",
+        Content = "GPU PERFORMANCE ONLY"
+    })
+
 
 local function StartDungeon()
     local hasHumanoidRootPart = false
@@ -542,10 +647,6 @@ local function allvis()
     visiblemob()
 end
 
-local function allvis2()
-    Wskill()
-    visibleskill()
-end
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -553,165 +654,67 @@ local Script = require(Player.PlayerScripts.Shared.Client.CombatController)
 local ScriptFunction = Script.BasicAttack
 local ScriptFunction2 = Script.UseAbility
 
-
--- Troubleshooting Ui library
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-
-local Options = Fluent.Options
-
-Fluent:Notify({
-        Title = "Made by Unknownproooolucky",
-        Content = "",
-        SubContent = "", -- Optional
-        Duration = 5 -- Set to nil to make the notification not disappear
-    })
-   
-Fluent:Notify({
-        Title = "Announcement Notification",
-        Content = "Update Notifier",
-        SubContent = "Added: View Enemies and Bypass Walkspeed and Jump", -- Optional
-        Duration = 10 -- Set to nil to make the notification not disappear
-    })
-   
-Fluent:Notify({
-        Title = "Quick Optimzer",
-        Content = "Done!",
-        SubContent = "", -- Optional
-        Duration = 10 -- Set to nil to make the notification not disappear
-    })
-   
-local Window = Fluent:CreateWindow({
-    Title = "Unknown TQ Hub",
-    SubTitle = "V3.3 | ❄️ Christmas Update ❄️ |",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
-    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.N -- Used when theres no MinimizeKeybind
-})
-
-local Tabs = {
-    Main = Window:AddTab({ Title = "Auto Farms", Icon = "" }),
-}
-
-local Toggle1 = Tabs.Main:AddToggle("AutokillMob", {Title = "Auto Kill Mobs", Default = false })
-
-Toggle1:OnChanged(function(State)
-    Settings.H = State
-    game:GetService("RunService").Stepped:Connect(function()
-        pcall(function()
-            if Settings.H then
-                ScriptFunction(Script)
-                ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
-                Noclip(Player.Character:WaitForChild("Humanoid"))
-            end
-        end)
-    end)
-    spawn(function()
-        while wait() and Settings.H do 
-            pcall(function()
-                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
-                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
-                ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
-                ReplicatedStorage.Shared.Remotes.Data.ClaimPrizes:FireServer()
-                for i, v in pairs(Workspace:GetChildren()) do
-                    if v:FindFirstChild("FinishRoom", true) and v:FindFirstChild("FinishRoom", true):FindFirstChild("Hitbox", true) then
-                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),0)
-                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),1)
-                    end 
-                end 
-                if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
-                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
-                end 
-            end)
-        end
-    end)
-
-       spawn(function()
-                    while Settings.H do
-                        allvis2()
-                        wait(0.01)
-                    end
-                end)
-              end)
-              
-Options.AutokillMob:SetValue(false)
-
-Tabs.Main:AddParagraph({
-        Title = "Fast Farmings",
-        Content = "GPU PERFORMANCE ONLY"
-    })
-
 local Toggle4 = Tabs.Main:AddToggle("FastFarmingHigh", {Title = "Fast Auto-Farming (High Device)", Default = false })
 
     Toggle4:OnChanged(function(vaf)
         AutoMobs = vaf
-
         if AutoMobs then
-
-
-
 while AutoMobs do
-
     StartDungeon()
-    killAura(monster)
-  
+    killAuraV2(monster)
     spawn(function()
-
         while AutoMobs do
 
             wait(1)
 
             local dungeon, rooms, enemies, shrines = getDungeon()
-
+            
             for _, monster in ipairs(enemies:GetChildren()) do
-
+            
                 if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-
+                
                         monster.EvilHumanoid.Health >= 0 then
-
+                        
                     local monsterRootPart = monster.HumanoidRootPart
-
+                    
                     if monsterRootPart.Size ~= Vector3.new(500000, 10000, 500000) then
-
+                    
                         monsterRootPart.Size = Vector3.new(500000, 10000, 500000)
-
+                        
                         monsterRootPart.Transparency = 0.9
-
+                        
                         for _, v in ipairs(Workspace:GetChildren()) do
-
+                        
                             if v.ClassName == "Folder" then
 
                                 for _, x in ipairs(v:GetChildren()) do
-
+                                
                                     if x.ClassName == "Folder" then
-
+                                    
                                         for _, c in ipairs(x:GetChildren()) do
-
+                                        
                                             if c:IsA("Model") and c:FindFirstChild("EvilHumanoid") then
-
+                                            
                                                 local EvilHumanoid = c:FindFirstChild("EvilHumanoid")
-
+                                                
                                                 local humanoidRootPart = c:FindFirstChild("HumanoidRootPart")
-
-
-
+                                                
+                                                
+                                                
                                                 if EvilHumanoid and humanoidRootPart then
-
+                                                
                                                     local monsterPos = humanoidRootPart.Position
-
+                                                    
                                                     local player = game.Players.LocalPlayer
-
+                                                    
                                                     local playerPos = player.Character and
 
                                                             player.Character:FindFirstChild(
-
+                                                            
                                                                     "HumanoidRootPart") and
-
-                                                            player.Character.HumanoidRootPart.Position
-
+                                                                     
+                                                           player.Character.HumanoidRootPart.Position
+                                                           
 
 
                                                     if playerPos and EvilHumanoid.Health > 0 then
@@ -858,7 +861,7 @@ Toggle4:OnChanged(function(vaf)
     if AutoMobs2 then
         while AutoMobs2 do
             StartDungeon()
-            killAura(monster)
+            killAuraV1(monster)
 
             spawn(function()
                 while AutoMobs2 do
@@ -914,22 +917,14 @@ Toggle4:OnChanged(function(vaf)
 end)
 
                 local function PerformAttack()
-
                     pcall(function()
-
                         if AutoMobs2 then
-
                             ScriptFunction(Script)
-
                             ScriptFunction2(Script)
-
                         end
-
                     end)
-
                 end
-
-                game:GetService("RunService").Stepped:Connect(PerformAttack)
+         game:GetService("RunService").Stepped:Connect(PerformAttack)
 
 
 
@@ -1076,14 +1071,15 @@ Tabs.Main:AddParagraph({
         Title = "Grand Grotto",
         Content = ""
     })
-    
-local Toggle1 = Tabs.Main:AddToggle("AutoGrotto", {Title = "Auto Kill Grand Grotto Mobs", Default = false })
+
+local Toggle1 = Tabs.Main:AddToggle("AutoGrotto", {Title = "Auto Kill Grand Grotto Mobs (Old And Fast)", Default = false })
 
 Toggle1:OnChanged(function(State)
     Settings.Re = State
     game:GetService("RunService").Stepped:Connect(function()
         pcall(function()
             if Settings.Re then
+                AllKill()
                 ScriptFunction(Script)
                 ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
                 Noclip(Player.Character:WaitForChild("Humanoid"))
@@ -1123,18 +1119,10 @@ Toggle1:OnChanged(function(State)
             wait()
         end
     end)
-
-       spawn(function()
-                    while Settings.Re do
-                        allvis2()
-                        wait(0.01)
-                    end
-                end)
-              end)
-    
+  end)
     
 Options.AutoGrotto:SetValue(false)
-    
+
 local speed2 = 1 -- Default value
 
 local Input = Tabs.Main:AddInput("Input", {
