@@ -2729,7 +2729,7 @@ local Section = Tab:AddSection({
 })
 
 Tab:AddButton({
-	Name = "Update Status: 🟢",
+	Name = "Update Status: 🔴",
 	Callback = function()
 print("its just a status bro.")
   	end    
