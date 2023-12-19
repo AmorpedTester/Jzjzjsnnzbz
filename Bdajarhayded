@@ -217,69 +217,7 @@ RunService.RenderStepped:Connect(function()
 end)
 
 local Section = Tab:AddSection({
-	Name = "Auto Kill Cursed Enemies"
-})
-
-Tab:AddToggle({
-	Name = "Auto Click",
-	Default = false,
-	Callback = function(Value)
-		_G.click = Value
-	end    
-})
-
-spawn(function()
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if _G.click then
-             pcall(function()
-                game:GetService'VirtualUser':CaptureController()
-			    game:GetService'VirtualUser':Button1Down(Vector2.new(0,1,0,1))
-            end)
-        end
-    end)
-end)
-
-Tab:AddToggle({
-	Name = "Fast Attack",
-	Default = false,
-	Callback = function(Value)
-		_G.FastAttack = Value
-	end    
-})
-
--- [[ Fast Attack Fixed / Shadow Hub / Dont edit , or ur will be messed up! ]]
-
--- [[ Properties ]]
-
-require(game.ReplicatedStorage.Util.CameraShaker):Stop()
-
-xShadowFastAttackx = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
-
-xShadowx = debug.getupvalues(xShadowFastAttackx)[2]
-
-spawn(function()
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if _G.FastAttack then
-            if typeof(xShadowx) == "table" then
-                pcall(function()
-                    xShadowx.activeController.timeToNextAttack = (math.huge^math.huge^math.huge)
-                    xShadowx.activeController.timeToNextAttack = 0
-                    xShadowx.activeController.hitboxMagnitude = 200
-                    xShadowx.activeController.active = false
-                    xShadowx.activeController.timeToNextBlock = 0
-                    xShadowx.activeController.focusStart = 0
-                    xShadowx.activeController.increment = 4
-                    xShadowx.activeController.blocking = false
-                    xShadowx.activeController.attacking = false
-                    xShadowx.activeController.humanoid.AutoRotate = 50
-                end)
-            end
-        end
-    end)
-end)
-
-local Section = Tab:AddSection({
-	Name = "Chest Farm Needs"
+	Name = "Chest Farm Misc"
 })
 
 local XC = false  -- Default noclip state
