@@ -1886,11 +1886,6 @@ local function flyLoop()
     end
 end
 
-local Toggle = Tabs.Main:AddToggle("FlyToggle", { Title = "Fly Toggle", Default = false })
-
-Toggle:OnChanged(function()
-end)
-
 Tab:AddToggle({
 	Name = "Fly Toggle",
 	Default = false,
@@ -1908,7 +1903,7 @@ _G.flySpeed = 20  -- Default fly speed
 
 Tab:AddTextbox({
     Name = "Fly Speed",
-    Default = "tostring(_G.flyspeed",
+    Default = "20",
     TextDisappear = false,
     Callback = function(Value)
    _G.flySpeed = tonumber(Value) or 20
