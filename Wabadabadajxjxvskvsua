@@ -46,7 +46,7 @@ local InventoryController = require(game:GetService("Players").LocalPlayer.Playe
 
 -- Valuable Servers
 local isWaveDefense
-local isPumpkinEvent
+local isGrandGrotto
 local isLobby = game.PlaceId == 2960777560
 
 function bypassAntiCheat()
@@ -94,9 +94,9 @@ function bypassAntiCheat()
     workspace.Dungeon:GetChildren()[1].Name = 'Enemies'
     workspace.Dungeon:GetChildren()[2].Name = 'Rooms'
 
-    -- Pumpkin Event
+    -- Grand Grotto
     if workspace.Dungeon.Rooms:FindFirstChild("Start"):FindFirstChild("Traps") then
-        isPumpkinEvent = true
+        isGrandGrotto = true
     end
 end
 
@@ -209,7 +209,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/tha
 
 -- StarterGui
 
-local Window = OrionLib:MakeWindow({Name = "Unknown TQ Hub V2", IntroText = "Unknown TQ Hub V2 ", HidePremium = true, SaveConfig = true, ConfigFolder = "UnknownTQHub"})
+local Window = OrionLib:MakeWindow({Name = "Unknown TQ Hub V3.4 (Orion)", IntroText = "Unknown TQ Hub V3.4 ", HidePremium = true, SaveConfig = true, ConfigFolder = "UnknownTQHub"})
 
 -- Script
 
@@ -222,7 +222,7 @@ OrionLib:MakeNotification({
 
 OrionLib:MakeNotification({
 	Name = "Announcement Notification",
-	Content = "@Guesttester_1 Has Posted A New video",
+	Content = "This Library is Back for All Executor",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
@@ -296,6 +296,14 @@ spawn(function()
 end)
 end})
 
+local Section = Tab:AddSection({
+	Name = "Fast Farming is Not available"
+})
+
+local Section = Tab:AddSection({
+	Name = "Auto Collects"
+})
+
 Settings.Med = State
 Tab:AddToggle({
     Name = "Auto Collect Medkit",
@@ -345,63 +353,6 @@ end)
 end})
 
 local Section = Tab:AddSection({
-	Name = "Afk Farm Pumpkin Boss"
-})
-
-local Section = Tab:AddSection({
-	Name = "(Hitbox Required)"
-})
-
-Tab:AddButton({
-	Name = "Tp To Pumpkin boss (Manual)",
-	Callback = function()
-local CFrameEnd = CFrame.new(-912.5400390625, 366.51214599609375, 1953.9599609375) -- Place your coords in here
-local Time = speed -- Time in seconds
-local tween =  game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
-tween:Play()
-tween.Completed:Wait()
-  	end    
-})
-
-local _G = {}
-_G.loops = false -- Set the initial value to false
-
-local function RunTween()
-    local CFrameEnd = CFrame.new(-912.5400390625, 366.51214599609375, 1953.9599609375) -- Place your coords in here
-    local Time = speed -- Time in seconds (you can change this)
-    local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
-    tween:Play()
-    tween.Completed:Wait()
-end
-
-Tab:AddToggle({
-    Name = "Auto Farm Pumpkin Boss (Low Gravity Required)",
-    Default = false,
-    Callback = function(Tswx)
-        _G.loops = Tswx -- Set the global variable based on the toggle state
-        if _G.loops then
-            while _G.loops do
-                RunTween()
-                wait(timerx)
-                print("Re-executed")
-            end
-        end
-    end
-})
-
-timerx = 1
-
-
-Tab:AddTextbox({
-	Name = "Put the Time Of Afk teleport",
-	Default = "430",
-	TextDisappear = true,
-	Callback = function(Xdsr)
-timerx = Xdsr
-	end	  
-})
-
-local Section = Tab:AddSection({
 	Name = "Tween Speed"
 })
 
@@ -445,406 +396,14 @@ Tab:AddTextbox({
     end
 })
 
-
-local Toggle = false  -- Default toggle state
-
-local vu = game:GetService("VirtualUser")
-
-local function ToggleAntiAfk()
-    while true do
-        if Toggle then
-            vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-            wait(1)
-            vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-        else
-            wait(1)
-        end
-    end
-end
-
-local tab = Tab:AddToggle({
-    Name = "Anti-Afk",
-    Default = false,
-    Callback = function(State)
-        Toggle = State
-    end
-})
-
--- Start or stop anti-afk based on the initial toggle state
-spawn(ToggleAntiAfk)
-
-
 local Section = Tab:AddSection({
-	Name = "Fast Auto-Farm"
-})
-
-local Section = Tab:AddSection({
-	Name = "Warrior Weapon (Yes) Power (Yes but slow)"
-})
-
-local Section = Tab:AddSection({
-	Name = "Bow Weapon (Yes but use Destroy Map New) Power (Yes but slow)"
-})
-
-local Section = Tab:AddSection({
-	Name = "Magic Weapon (Yes But fast if tsunami power)"
-})
-
-local function StartDungeon()
-    local hasHumanoidRootPart = false
-    for _, v in ipairs(game:GetService("Workspace"):GetChildren()) do
-        if v.ClassName == "Folder" then
-            for _, x in ipairs(v:GetChildren()) do
-                if x.ClassName == "Folder" then
-                    for _, c in ipairs(x:GetChildren()) do
-                        if c:IsA("Model") and c:FindFirstChild("HumanoidRootPart") then
-                            hasHumanoidRootPart = true
-                            break
-                        end
-                    end
-                end
-                if hasHumanoidRootPart then
-                    break
-                end
-            end
-        end
-        if hasHumanoidRootPart then
-            break
-        end
-    end
-
-    if not hasHumanoidRootPart then
-        wait(1.5)
-        game.ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
-        game.ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
-    end
-end
-
--------------------------------------------------------------------------------------------------------------------------------------------------
-
-local visitedChests = {}
-local lastVisitedChest = nil
-
-local function findNewChestInWorkspace(parent)
-    for _, child in pairs(parent:GetChildren()) do
-        if child:IsA("Folder") and child.Name == "Chests" then
-            for _, grandchild in pairs(child:GetChildren()) do
-                if grandchild:IsA("Model") and grandchild.Name == "Chest" then
-                    local ChestPart = grandchild:FindFirstChild("Hitbox")
-                    if ChestPart and not visitedChests[grandchild] then
-                        visitedChests[grandchild] = true
-                        lastVisitedChest = grandchild
-                        return ChestPart
-                    end
-                end
-            end
-        end
-
-        local foundPart = findNewChestInWorkspace(child)
-        if foundPart then
-            return foundPart
-        end
-    end
-
-    return nil
-end
-
------------------------------------------------------------------------------------------------------------------------------------------------------
-
-local function findFinishPartInWorkspace(workspace)
-    local function searchInChildren(parent)
-        for _, child in pairs(parent:GetChildren()) do
-            if child:IsA("Model") and child.Name == "FinishRoom" then
-                local finishPart = child:FindFirstChild("Hitbox")
-                local HitboxPart = finishPart and finishPart:FindFirstChildWhichIsA("BasePart")
-                if HitboxPart then
-                    return HitboxPart
-                end
-            end
-
-            local foundPart = searchInChildren(child)
-            if foundPart then
-                return foundPart
-            end
-        end
-
-        return nil
-    end
-
-    return searchInChildren(workspace)
-end
-
---------------------------------------------------------------------------------------------------------------------------------------------
-
-local function findBossRoomInWorkspace(workspace)
-    local function searchInChildren(parent)
-        for _, child in pairs(parent:GetChildren()) do
-            if child:IsA("Model") and child.Name == "BossRoom" then
-                local BossPart = child:FindFirstChild("PlayerSpawn")
-                if BossPart then
-                    return BossPart
-                end
-            end
-
-            local foundPart = searchInChildren(child)
-            if foundPart then
-                return foundPart
-            end
-        end
-
-        return nil
-    end
-
-    return searchInChildren(workspace)
-end
-
-local BossPartInstance = nil
-
-local function CreateBossPart()
-    local partSize = Vector3.new(20000, 10, 20000)
-
-    if BossPartInstance and BossPartInstance:IsDescendantOf(workspace) then
-        BossPartInstance:Destroy()
-    end
-
-    local createdPart = Instance.new("Part")
-    createdPart.Name = "PartฺBossGGez"
-    createdPart.Size = partSize
-
-    local PlayerSpawn = findBossRoomInWorkspace(workspace)
-    if PlayerSpawn then
-        createdPart.Position = PlayerSpawn.Position - Vector3.new(0, 10, 0)
-    else
-        createdPart.Position = Vector3.new(0, -10, 0)
-    end
-    createdPart.Anchored = true
-    createdPart.Parent = workspace
-
-    BossPartInstance = createdPart
-
-    local HitboxPart = findFinishPartInWorkspace(workspace)
-    if HitboxPart then
-        for _, part in pairs(workspace:GetChildren()) do
-            if part:IsA("Part") and part.Name == "PartฺBossGGez" then
-                part:Destroy()
-            end
-        end
-    end
-    return createdPart
-end
-
-local function MoveOutFromBossRoom()
-    CreateBossPart()
-    wait(3)
-    local PlayerSpawn = findBossRoomInWorkspace(workspace)
-    if PlayerSpawn then
-        local targetPosition = PlayerSpawn.Position - Vector3.new(0, 0, -75)
-        local movementSpeed = 70
-
-        local TweenService = game:GetService("TweenService")
-        local HumanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
-
-        local distance = (targetPosition - HumanoidRootPart.Position).Magnitude
-        local duration = distance / movementSpeed
-
-        local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
-        local tween = TweenService:Create(HumanoidRootPart, tweenInfo, {
-            CFrame = CFrame.new(targetPosition)
-        })
-
-        tween:Play()
-    end
-end
-
----------------------------------------------------------------------------------------------------------------------------------
-
-local function Wskill()
-    local Skill = {"Fireball", "Tsunami", "Freeze", "Heal", "HealBlast", "Shockwave", "LaserBeam", "LightningStrike",
-                   "Sandstorm", "Earthquake", "IceSpikes", "PolarVortex", "TeamHeal", "RainbowBlast", "PumpkinBlast",
-                   "Random", "Camouflage", "Tumble", "Flurry", "Boomerang", "ShockArrows", "ShocFlameArrowskwave",
-                   "BoomArows", "FrostArrows", "WeaponThrow", "WaveBlast", "InfernoWave", "SpikeField", "Berserk",
-                   "Pulsefire", "Cyclone", "BlackHole", "QuickSlash", "MeteorShower", "MeteorBlast", "Stomp"}
-
-    for _, v in pairs(game:GetService("Workspace"):GetChildren()) do
-        if table.find(Skill, v.Name) then
-            local SKK = table.find(Skill, v.Name)
-            local AllPart = v:IsA("BasePart") or v:IsA("MeshPart") or v:IsA("Part")
-            if (SKK or AllPart) then
-                v.Transparency = 1
-            end
-        end
-    end
-end
-
-local function visibleskill()
-    local Skill = {"Fireball", "Tsunami", "Freeze", "Heal", "HealBlast", "Shockwave", "LaserBeam", "LightningStrike",
-                   "Sandstorm", "Earthquake", "IceSpikes", "PolarVortex", "TeamHeal", "RainbowBlast", "PumpkinBlast",
-                   "Random", "Camouflage", "Tumble", "Flurry", "Boomerang", "ShockArrows", "ShocFlameArrowskwave",
-                   "BoomArows", "FrostArrows", "WeaponThrow", "WaveBlast", "InfernoWave", "SpikeField", "Berserk",
-                   "Pulsefire", "Cyclone", "BlackHole", "QuickSlash", "MeteorShower", "MeteorBlast", "Stomp"}
-
-    for _, v in pairs(game:GetService("Workspace").Ignore:GetChildren()) do
-        if table.find(Skill, v.Name) then
-            local SKK = table.find(Skill, v.Name)
-            local AllPart = v:IsA("BasePart") or v:IsA("MeshPart") or v:IsA("Part")
-            if (SKK or AllPart) then
-                v.Transparency = 1
-            end
-        end
-    end
-end
-
-local function visiblemob()
-    local visible = {"LeftHand", "LeftLowerArm", "LeftUpperArm", "RightHand", "RightLowerArm", "RightUpperArm",
-                     "UpperTorso", "LeftFoot", "LeftLowerLeg", "LeftUpperLeg", "RightFoot", "RightLowerLeg",
-                     "RightUpperLeg", "LowerTorso", "Head", "Body Colors", "FakeHead", "+Appearance", "Hat"}
-
-    for _, v in pairs(game:GetService("Workspace"):GetChildren()) do
-        if v.ClassName == "Folder" then
-            for _, x in pairs(v:GetChildren()) do
-                if x.ClassName == "Folder" then
-                    for _, c in pairs(x:GetChildren()) do
-                        if c:IsA("Model") then
-                            for _, f in pairs(c:GetChildren()) do
-                                if table.find(visible, f.Name) then
-                                    f:Destroy()
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
-local function allvis()
-    Wskill()
-    visibleskill()
-    visiblemob()
-end
-
----------------------------------------------------------------------------------------------------------------------------------
-
-local Script = require(Player.PlayerScripts.Shared.Client.CombatController)
-local ScriptFunction = Script.BasicAttack
-local ScriptFunction2 = Script.UseAbility
-
-local Workspace = game:GetService("Workspace")
-local AutoMobs = false
-
-Tab:AddToggle({
-    Name = "Fast Auto-Farming",
-    Default = false,
-    Save = true,
-    Flag = FastFarming,
-    Callback = function(value)
-        AutoMobs = value
-        if AutoMobs then
-
-while AutoMobs do
-    StartDungeon()
-    spawn(function()
-        while AutoMobs do
-            wait(1)
-            local dungeon, rooms, enemies, shrines = getDungeon()
-            for _, monster in ipairs(enemies:GetChildren()) do
-                if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-                        monster.EvilHumanoid.Health >= 0 then
-                    local monsterRootPart = monster.HumanoidRootPart
-                    if monsterRootPart.Size ~= Vector3.new(500000, 10000, 500000) then
-                        monsterRootPart.Size = Vector3.new(500000, 10000, 500000)
-                        monsterRootPart.Transparency = 0.9
-                        for _, v in ipairs(Workspace:GetChildren()) do
-                            if v.ClassName == "Folder" then
-                                for _, x in ipairs(v:GetChildren()) do
-                                    if x.ClassName == "Folder" then
-                                        for _, c in ipairs(x:GetChildren()) do
-                                            if c:IsA("Model") and c:FindFirstChild("EvilHumanoid") then
-                                                local EvilHumanoid = c:FindFirstChild("EvilHumanoid")
-                                                local humanoidRootPart = c:FindFirstChild("HumanoidRootPart")
-
-                                                if EvilHumanoid and humanoidRootPart then
-                                                    local monsterPos = humanoidRootPart.Position
-                                                    local player = game.Players.LocalPlayer
-                                                    local playerPos = player.Character and
-                                                            player.Character:FindFirstChild(
-                                                                    "HumanoidRootPart") and
-                                                            player.Character.HumanoidRootPart.Position
-
-                                                    if playerPos and EvilHumanoid.Health > 0 then
-                                                        local direction = (playerPos - monsterPos).unit
-                                                        local distanceToTeleport = 3
-                                                        local teleportPos = playerPos + direction * distanceToTeleport
-                                                        humanoidRootPart.Position = teleportPos
-                                                    end
-                                                end
-                                            end
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-            wait()
-        end
-    end)
-
-
-                local function PerformAttack()
-                    pcall(function()
-                        if AutoMobs then
-                            ScriptFunction(Script)
-                            ScriptFunction2(Script)
-                        end
-                    end)
-                end
-                game:GetService("RunService").Stepped:Connect(PerformAttack)
-
-                spawn(function()
-                    while AutoMobs do
-                        allvis()
-                        wait(0.01)
-                    end
-                end)
-
-                spawn(function()
-                    while AutoMobs do
-                        MoveOutFromBossRoom()
-                        wait(0.01)
-                    end
-                end)
-
-                spawn(function()
-                    while AutoMobs do
-                        local finishPart = findFinishPartInWorkspace(game:GetService("Workspace"))
-                        if finishPart then
-                            local character = game.Players.LocalPlayer.Character
-                            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-                            if humanoidRootPart then
-                                local ChestPart = findNewChestInWorkspace(game:GetService("Workspace"))
-                                if ChestPart then
-                                    humanoidRootPart.CFrame = ChestPart.CFrame
-                                    wait(3)
-                                    humanoidRootPart.CFrame = finishPart.CFrame
-                                end
-                            end
-                        end
-                        wait(0.1)
-                    end
-                end)
-                wait(0.01)
-            end
-        end
-    end
+	Name = "Grand Grotto is Not available"
 })
 
 wait(3)
 
 local Tab = Window:MakeTab({
-	Name = "Dungeon",
+	Name = "Hitbox Settings",
 	Icon = "rbxassetid://7734022107",
 	PremiumOnly = false
 })
@@ -854,44 +413,43 @@ local Section = Tab:AddSection({
 })
 
 local Section = Tab:AddSection({
-	Name = "This is literally Hitbox V2"
+	Name = "Optimized Hitbox V2"
 })
 
 local RunService = game:GetService("RunService")
 
--- Default hitbox values
 local xhx, yhx, zhx, txx = 1, 1, 1, 0.5
 local hitboxTest = false
+local lastUpdateTime = 0
+local updateInterval = 1  -- Set the interval in seconds
 
--- Function to enable hitbox
 local function enableHitbox(monsterRootPart)
-    if monsterRootPart.Size ~= Vector3.new(xhx, yhx, zhx) then
-        monsterRootPart.Size = Vector3.new(xhx, yhx, zhx)
-        monsterRootPart.Transparency = txx
-    end
+    monsterRootPart.Size = Vector3.new(xhx, yhx, zhx)
+    monsterRootPart.Transparency = txx
 end
 
--- Function to disable hitbox
 local function disableHitbox(monsterRootPart)
-    if monsterRootPart.Size ~= Vector3.new(5, 5, 5) then
-        monsterRootPart.Size = Vector3.new(5, 5, 5)
-        monsterRootPart.Transparency = 1
-    end
+    monsterRootPart.Size = Vector3.new(5, 5, 5)
+    monsterRootPart.Transparency = 1
 end
 
--- Function to toggle hitbox state
 local function toggleHitboxState()
-    local dungeon, rooms, enemies, shrines = getDungeon()
+    local currentTime = tick()
+    if currentTime - lastUpdateTime >= updateInterval then
+        lastUpdateTime = currentTime
 
-    for _, monster in ipairs(enemies:GetChildren()) do
-        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-           monster.EvilHumanoid.Health > 0 then
-            local monsterRootPart = monster.HumanoidRootPart
+        local dungeon, rooms, enemies, shrines = getDungeon()
 
-            if hitboxTest then
-                enableHitbox(monsterRootPart)
-            else
-                disableHitbox(monsterRootPart)
+        for _, monster in ipairs(enemies:GetChildren()) do
+            if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+               monster.EvilHumanoid.Health > 0 then
+                local monsterRootPart = monster.HumanoidRootPart
+
+                if hitboxTest then
+                    enableHitbox(monsterRootPart)
+                else
+                    disableHitbox(monsterRootPart)
+                end
             end
         end
     end
@@ -956,6 +514,10 @@ local Tab = Window:MakeTab({
 wait(1)
 
 local Section = Tab:AddSection({
+	Name = "Enemies Modify is Not available"
+})
+
+local Section = Tab:AddSection({
 	Name = "Speed Only Numbers"
 })
 
@@ -1015,116 +577,6 @@ game.Players.LocalPlayer.Character.Humanoid.MaxHealth = Hmax
 	end	  
 })
 
-local Section = Tab:AddSection({
-	Name = "Fog Visuals (Almost Finished)"
-})
-
-Tab:AddButton({
-	Name = "Fog (Visual *Reduce Lag*)",
-	Callback = function()
-repeat task.wait() until game:IsLoaded()
-wait(1) -- extra load to ensure the script is working
-
-for i, v in pairs(game.Lighting:GetChildren()) do
-    if v:IsA("Sky") or v:IsA("BlurEffect") or v:IsA("BloomEffect") or v:IsA("SunRaysEffect") then
-        v:Destroy()
-    end
-end
-
-game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
-game.Lighting.Brightness = 1
-game.Lighting.ClockTime = 14
-game.Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
-game.Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
-game.Lighting.ExposureCompensation = 0
-game.Lighting.FogColor = Color3.fromRGB(255, 255, 255)
-
--- Adjust the fog distance here
-game.Lighting.FogEnd = 100 -- Set your preferred fog distance
-
-game.Lighting.GeographicLatitude = 41.733
-game.Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
-game.Lighting.GlobalShadows = true
-
-game.Lighting.Changed:Connect(function()
-    game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
-    game.Lighting.Brightness = 1
-    game.Lighting.ClockTime = 14
-    game.Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
-    game.Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
-    game.Lighting.ExposureCompensation = 0
-    game.Lighting.FogColor = Color3.fromRGB(255, 255, 255)
-
-    -- Adjust the fog distance here as well
-    game.Lighting.FogEnd = 100 -- Set your preferred fog distance
-
-    game.Lighting.GeographicLatitude = 41.733
-    game.Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
-    game.Lighting.GlobalShadows = true
-end)
-
-game.Lighting.DescendantAdded:Connect(function(obj)
-    if obj:IsA("Sky") or obj:IsA("BlurEffect") or obj:IsA("BloomEffect") or obj:IsA("SunRaysEffect") then
-        obj:Destroy()
-    end
-end)
-end
-})
-
-
-Tab:AddButton({
-	Name = "Remove Fog (Broken)",
-	Callback = function()
-repeat task.wait() until game:IsLoaded()
-wait(1) -- extra load to ensure the script is working
-
-for i, v in pairs(game.Lighting:GetChildren()) do
-    if v:IsA("Sky") or v:IsA("BlurEffect") or v:IsA("BloomEffect") or v:IsA("SunRaysEffect") then
-        v:Destroy()
-    end
-end
-
-game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
-game.Lighting.Brightness = 1
-game.Lighting.ClockTime = 14
-game.Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
-game.Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
-game.Lighting.ExposureCompensation = 0
-game.Lighting.FogColor = Color3.fromRGB(255, 255, 255)
-
--- Adjust the fog distance here
-game.Lighting.FogEnd = 10000 -- Set your preferred fog distance
-
-game.Lighting.GeographicLatitude = 41.733
-game.Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
-game.Lighting.GlobalShadows = true
-
-game.Lighting.Changed:Connect(function()
-    game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
-    game.Lighting.Brightness = 1
-    game.Lighting.ClockTime = 14
-    game.Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
-    game.Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
-    game.Lighting.ExposureCompensation = 0
-    game.Lighting.FogColor = Color3.fromRGB(255, 255, 255)
-
-    -- Adjust the fog distance here as well
-    game.Lighting.FogEnd = 100000 -- Set your preferred fog distance
-
-    game.Lighting.GeographicLatitude = 41.733
-    game.Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
-    game.Lighting.GlobalShadows = true
-end)
-
-game.Lighting.DescendantAdded:Connect(function(obj)
-    if obj:IsA("Sky") or obj:IsA("BlurEffect") or obj:IsA("BloomEffect") or obj:IsA("SunRaysEffect") then
-        obj:Destroy()
-    end
-end)
-end
-})
-
-
 wait(1)
 
 local Tab = Window:MakeTab({
@@ -1139,6 +591,53 @@ local Section = Tab:AddSection({
 
 local Section = Tab:AddSection({
 	Name = "Toggle"
+})
+
+local Toggle = false  -- Default toggle state
+
+local vu = game:GetService("VirtualUser")
+
+local function ToggleAntiAfk()
+    while true do
+        if Toggle then
+            vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+            wait(1)
+            vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+        else
+            wait(1)
+        end
+    end
+end
+
+local tab = Tab:AddToggle({
+    Name = "Anti-Afk",
+    Default = true,
+    Callback = function(State)
+        Toggle = State
+    end
+})
+
+-- Start or stop anti-afk based on the initial toggle state
+spawn(ToggleAntiAfk)
+
+local function skipCutscene()
+    local player, cha, plr, hum = getPlayer()
+    local bossSpawn = player.PlayerScripts.Shared.Modules.Effects:FindFirstChild("BossSpawn") 
+    if bossSpawn then
+        bossSpawn:Destroy()
+      end
+ end
+ 
+ Tab:AddToggle({
+	Name = "Skip Cutscene (Bug)",
+	Default = false,
+	Save = true,
+    Flag = "Airjump",
+	Callback = function(State)
+	if State then
+skipCutscene()
+    end
+  end    
 })
 
 Tab:AddToggle({
@@ -1200,20 +699,49 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/
   	end    
 })
 
--- Assuming 'Tab' is defined somewhere in your code.
--- Assuming 'RunService' is defined somewhere in your code.
-
-local flySpeed = 20  -- Adjust this value to your preferred fly speed
-
 local FLYING = false
-local velocityHandlerName = "VelocityHandler"  -- Replace with your actual handler names
+local velocityHandlerName = "VelocityHandler"
 local gyroHandlerName = "GyroHandler"
-local mfly1, mfly2  -- Define these variables outside the functions
-local currentCharacter -- Track the current character
+local mfly1, mfly2
+local currentCharacter
 
 local function getRoot(character)
-    -- Define your getRoot function here if not already defined
     return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Torso")
+end
+
+local function unmobilefly(player)
+    pcall(function()
+        FLYING = false
+        local character = player.Character
+        if character then
+            local root = getRoot(character)
+            if root then
+                local velocityHandler = root:FindFirstChild(velocityHandlerName)
+                local gyroHandler = root:FindFirstChild(gyroHandlerName)
+
+                if velocityHandler then
+                    velocityHandler:Destroy()
+                end
+
+                if gyroHandler then
+                    gyroHandler:Destroy()
+                end
+
+                local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+                if humanoid then
+                    humanoid.PlatformStand = false
+                end
+            end
+        end
+
+        if mfly1 then
+            mfly1:Disconnect()
+        end
+
+        if mfly2 then
+            mfly2:Disconnect()
+        end
+    end)
 end
 
 local function mobilefly(player, vfly)
@@ -1241,7 +769,7 @@ local function mobilefly(player, vfly)
         bg.Parent = root
         bg.MaxTorque = v3inf
         bg.P = 1000
-        bg.D = 50
+        bg.D = 20
 
         mfly1 = player.CharacterAdded:Connect(function()
             unmobilefly(player)
@@ -1262,7 +790,7 @@ local function mobilefly(player, vfly)
                     GyroHandler.MaxTorque = v3inf
 
                     if not vfly and humanoid then
-                        humanoid.PlatformStand = true
+                        humanoid.PlatformStand = false
                     end
 
                     GyroHandler.CFrame = camera.CoordinateFrame
@@ -1273,8 +801,10 @@ local function mobilefly(player, vfly)
                         local moveVector = Vector3.new(direction.X, 0, direction.Z).unit
                         local rightVector = camera.CFrame.RightVector
                         local forwardVector = camera.CFrame.LookVector
-                        local flyDirection = (rightVector * moveVector.X + forwardVector * moveVector.Z).unit
-                        VelocityHandler.Velocity = flyDirection * ((vfly and flySpeed or flySpeed) * 50)
+
+                        local flyDirection = (rightVector * moveVector.X - forwardVector * moveVector.Z).unit
+
+                        VelocityHandler.Velocity = flyDirection * (_G.flySpeed * 20)
                     end
                 end
             end
@@ -1291,11 +821,11 @@ local function toggleFly(player, toggleValue)
 end
 
 -- Your loop structure
-_G.loops = false
+_G.Fly = false
 
 local function flyLoop()
-    while wait(10) do
-        if _G.loops then
+    while wait(3) do
+        if _G.Fly then
             local player = game.Players.LocalPlayer
             if player and player.Character then
                 mobilefly(player, true)
@@ -1304,20 +834,33 @@ local function flyLoop()
     end
 end
 
--- Assuming 'Tab' is defined somewhere in your code.
+local Toggle = Tabs.Main:AddToggle("FlyToggle", { Title = "Fly Toggle", Default = false })
+
+Toggle:OnChanged(function()
+end)
+
 Tab:AddToggle({
-    Name = "Fly-Lock",
-    Default = false,
-    Save = true,
-    Flag = "Fly_Lock",
+	Name = "Fly Toggle",
+	Default = false,
+	Save = true,
+    Flag = "Fly Toggle",
+	Callback = function(State)
+    local player = game.Players.LocalPlayer
+    _G.Fly = State
+    toggleFly(player, State)
+  end    
+})
+
+_G.flySpeed = 20  -- Default fly speed
+
+
+Tab:AddTextbox({
+    Name = "Fly Speed",
+    Default = "tostring(_G.flyspeed",
+    TextDisappear = false,
     Callback = function(Value)
-        _G.loops = Value
-        if not Value then
-            local player = game.Players.LocalPlayer
-            if player and player.Character then
-                unmobilefly(player)
-            end
-        end
+   _G.flySpeed = tonumber(Value) or 20
+        toggleFly(player, Toggle.Value)
     end
 })
 
@@ -1325,7 +868,7 @@ Tab:AddToggle({
 spawn(flyLoop)
 
 local Section = Tab:AddSection({
-	Name = "Destroy map Btw the boss will fell (New)"
+	Name = "Destroy Map (New)"
 })
 
 local toggleState = false -- Default state
@@ -1334,6 +877,17 @@ local function destroyMap()
     for _, room in ipairs(workspace.Dungeon.Rooms:GetChildren()) do
         for _, child in ipairs(room:GetChildren()) do
             if child.Name == "Extra" or child.Name == "Extras" then
+                workspace.Terrain:Clear()
+                child:Destroy()
+            end
+        end
+    end
+end
+
+local function destroyMap2()
+    for _, room in ipairs(workspace.Dungeon.Rooms:GetChildren()) do
+        for _, child in ipairs(room:GetChildren()) do
+            if child.Name == "Shadow" then
                 workspace.Terrain:Clear()
                 child:Destroy()
             end
@@ -1350,6 +904,7 @@ Tab:AddToggle({
         toggleState = Value
         if toggleState then
             destroyMap()
+            destroyMap2()
         end
     end    
 })
@@ -1357,6 +912,8 @@ Tab:AddToggle({
 game:GetService("RunService").Heartbeat:Connect(function()
     if toggleState then
         destroyMap()
+        destroyMap2()
+        workspace.Terrain:Clear()
     end
 end)
 
@@ -1403,7 +960,7 @@ end
 })
 
 local Tab = Window:MakeTab({
-	Name = "Auto Dungeon",
+	Name = "Misc-Dungeon",
 	Icon = "rbxassetid://7734068321",
 	PremiumOnly = false
 })
@@ -2125,99 +1682,7 @@ local Tab = Window:MakeTab({
 })
 
 local Section = Tab:AddSection({
-	Name = "1.5.4 Logs"
-})
-
-local Section = Tab:AddSection({
-	Name = "Optimized Lag and Hitbox"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Destroy Map"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Anti-Lag"
-})
-
-local Section = Tab:AddSection({
-	Name = "Changed Anti-Lag 2-4"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Auto Remove Old Logs"
-})
-
-local Section = Tab:AddSection({
-	Name = " Added Optimized V2"
-})
-
-local Section = Tab:AddSection({
-	Name = " Dont be Lazy Lmao i was so lazy in the coding too"
-})
-
-local Section = Tab:AddSection({
-	Name = "1.6 Logs"
-})
-
-local Section = Tab:AddSection({
-	Name = " Added Auto-Farm Pumpkin Boss (Skip teleport Btw)"
-})
-
-local Section = Tab:AddSection({
-	Name = " Added Custom Visual (And More!)"
-})
-
-local Section = Tab:AddSection({
-	Name = " Changed name Unknown TQ Hub Reason Why its a Copyrighted"
-})
-
-local Section = Tab:AddSection({
-	Name = "V2 Logs (Currently)"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Bypass Anti-cheat"
-})
-
-local Section = Tab:AddSection({
-	Name = "Changed Low-Gravity To Fly-Lock"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Fast Farming"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Key system (V2 only)"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Auto Save"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Icon on window"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Auto Buy Mystery Shop (Only When Spawn)"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added V3_Optimizer"
-})
-
-local Section = Tab:AddSection({
-	Name = "Added Auto Sell"
-})
-
-local Section = Tab:AddSection({
-	Name = "Small Update: Added Rightshift Gui For Orion Hub Showing"
-})
-
-local Section = Tab:AddSection({
-	Name = "Small Update: Added Fast Farming Warrior Weapon"
+	Name = "Orion Lib Version is Back"
 })
 
 Tab:AddButton({
