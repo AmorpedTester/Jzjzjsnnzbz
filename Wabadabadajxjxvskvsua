@@ -348,8 +348,15 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
-        Content = "Update Notifier",
-        SubContent = "Added: View Enemies and Bypass Walkspeed and Jump", -- Optional
+        Content = "Warning Notifier",
+        SubContent = "U Should Hide ur Exploit While Screenshot Or Crop.", -- Optional
+        Duration = 10 -- Set to nil to make the notification not disappear
+    })
+
+Fluent:Notify({
+        Title = "Announcement Notification",
+        Content = "Warning Notifier 2",
+        SubContent = "i was spying in official discord nosniy server.", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
