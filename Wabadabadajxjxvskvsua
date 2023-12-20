@@ -348,6 +348,13 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
+        Content = "Announcement Notifier",
+        SubContent = "Guesttester_1 Posted a New Leaks", -- Optional
+        Duration = 10 -- Set to nil to make the notification not disappear
+    })
+
+Fluent:Notify({
+        Title = "Announcement Notification",
         Content = "Warning Notifier",
         SubContent = "U Should Hide ur Exploit While Screenshot Or Crop.", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
