@@ -321,8 +321,15 @@ OrionLib:MakeNotification({
 })
 
 OrionLib:MakeNotification({
-	Name = "Announcement Notification",
-	Content = "This Library is Back for All Executor",
+	Name = "Warning Notification",
+	Content = "U Should Hide ur Exploit While Screenshot or Crop.",
+	Image = "rbxassetid://4483345998",
+	Time = 10
+})
+
+OrionLib:MakeNotification({
+	Name = "Warning Notification 2",
+	Content = "i was spying in official discord nosniy server.",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
