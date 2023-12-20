@@ -126,6 +126,27 @@ end
 
 bypassAntiCheat()
 
+function getPlayer()
+    while not game:GetService('Players').LocalPlayer do
+        RunService.Heartbeat:Wait()
+    end
+    while not game:GetService('Players').LocalPlayer.Character do
+        RunService.Heartbeat:Wait()
+    end
+    while not game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart") do
+        RunService.Heartbeat:Wait()
+    end
+    while not game:GetService('Players').LocalPlayer.Character:FindFirstChild("Humanoid") do
+        RunService.Heartbeat:Wait()
+    end
+
+    local player = game:GetService('Players').LocalPlayer
+    local cha = game:GetService('Players').LocalPlayer.Character
+    local plr = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart
+    local hum = game:GetService('Players').LocalPlayer.Character.Humanoid
+    return player, cha, plr, hum
+end
+
 -- Function to get dungeon components
 function getDungeon()
 
@@ -321,15 +342,8 @@ OrionLib:MakeNotification({
 })
 
 OrionLib:MakeNotification({
-	Name = "Warning Notification",
-	Content = "U Should Hide ur Exploit While Screenshot or Crop.",
-	Image = "rbxassetid://4483345998",
-	Time = 10
-})
-
-OrionLib:MakeNotification({
-	Name = "Warning Notification 2",
-	Content = "i was spying in official discord nosniy server.",
+	Name = "Announcement Notification",
+	Content = "This Library is Back for All Executor",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
@@ -366,41 +380,37 @@ Tab:AddToggle({
     Flag = "AutoMobs",
 	Callback = function(State)
 Settings.H = State
-game:GetService("RunService").Stepped:connect(
-    function()
-        pcall(
-            function()
-                if Settings.H then
-                    AllKill()
-                    ScriptFunction(Script)
-                    ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
-                    Noclip(Player.Character:WaitForChild("Humanoid"))
-                end
-            end
-        )
-    end
-)
-spawn(function()
-    while wait() and Settings.H do 
+    game:GetService("RunService").Stepped:Connect(function()
         pcall(function()
-            ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
-            ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
-            ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
-
-            ReplicatedStorage.Shared.Remotes.Data.ClaimPrizes:FireServer()
-            for i,v in pairs(Workspace:GetChildren()) do
-                if v:FindFirstChild("FinishRoom",true)and v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true) then
-                    firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),0)
-                    firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),1)
+            if Settings.H then
+                AllKill()
+                ScriptFunction(Script)
+                ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
+                Noclip(Player.Character:WaitForChild("Humanoid"))
+            end
+        end)
+    end)
+    
+    spawn(function()
+        while wait() and Settings.H do 
+            pcall(function()
+                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+                ReplicatedStorage.Dungeon.Remotes.StartDungeon:FireServer()
+                ReplicatedStorage.Dungeon.Remotes.StartWaveDefense:FireServer()
+                ReplicatedStorage.Shared.Remotes.Data.ClaimPrizes:FireServer()
+                for i, v in pairs(Workspace:GetChildren()) do
+                    if v:FindFirstChild("FinishRoom", true) and v:FindFirstChild("FinishRoom", true):FindFirstChild("Hitbox", true) then
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),0)
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart", true),v:FindFirstChild("FinishRoom",true):FindFirstChild("Hitbox",true):FindFirstChild("Part",true),1)
+                    end 
                 end 
-            end 
-            if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
-                Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
-            end 
-       end)
-    end
-end)
-end})
+                if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
+                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
+                end 
+            end)
+        end
+    end)
+ end})
 
 local Section = Tab:AddSection({
 	Name = "Fast Farming"
@@ -1564,7 +1574,7 @@ Tab:AddButton({
 	Name = "View Enemies",
 	Callback = function()
 	isUpdatingCamera = true
-updateCamera()
+    updateCamera()
   	end    
 })
 
@@ -1572,7 +1582,7 @@ Tab:AddButton({
 	Name = "Reset Camera",
 	Callback = function()
 	isUpdatingCamera = false
-resetCamera()
+    resetCamera()
   	end    
 })
 
@@ -1691,7 +1701,7 @@ local function skipCutscene()
 	Name = "Skip Cutscene (Bug)",
 	Default = false,
 	Save = true,
-    Flag = "Airjump",
+    Flag = "SkipCutscene",
 	Callback = function(State)
 	if State then
 skipCutscene()
@@ -2136,14 +2146,6 @@ Tab:AddToggle({
     Callback = function(Value)
         toggleCallback("Ultimate", Value)
     end    
-})
-
-local Section = Tab:AddSection({
-	Name = "Auto Create And Auto Leave has been delay due many errors"
-})
-
-local Section = Tab:AddSection({
-	Name = "It will Be Added on V2.5"
 })
 
 local Section = Tab:AddSection({
@@ -2736,7 +2738,7 @@ local Section = Tab:AddSection({
 })
 
 Tab:AddButton({
-	Name = "Update Status: 🔴",
+	Name = "Update Status: 🟢",
 	Callback = function()
 print("its just a status bro.")
   	end    
