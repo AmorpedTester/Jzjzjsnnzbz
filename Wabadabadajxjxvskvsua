@@ -394,8 +394,7 @@ Toggle1:OnChanged(function(State)
     Settings.H = State
     game:GetService("RunService").Stepped:Connect(function()
         pcall(function()
-            if Settings.H then
-               AllKill()
+            if Settings.H thenl
                 ScriptFunction(Script)
                 ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
                 Noclip(Player.Character:WaitForChild("Humanoid"))
@@ -1097,7 +1096,6 @@ Toggle1:OnChanged(function(State)
     game:GetService("RunService").Stepped:Connect(function()
         pcall(function()
             if Settings.Re then
-                AllKill()
                 ScriptFunction(Script)
                 ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
                 Noclip(Player.Character:WaitForChild("Humanoid"))
