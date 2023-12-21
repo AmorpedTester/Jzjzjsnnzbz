@@ -394,7 +394,7 @@ Toggle1:OnChanged(function(State)
     Settings.H = State
     game:GetService("RunService").Stepped:Connect(function()
         pcall(function()
-            if Settings.H thenl
+            if Settings.H then
                 ScriptFunction(Script)
                 ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
                 Noclip(Player.Character:WaitForChild("Humanoid"))
