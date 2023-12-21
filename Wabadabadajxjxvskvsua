@@ -349,7 +349,7 @@ Fluent:Notify({
 Fluent:Notify({
         Title = "Announcement Notification",
         Content = "Announcement Notifier",
-        SubContent = "Guesttester_1 Posted a New Leaks", -- Optional
+        SubContent = "Guesttester_1 Posted a New 2 Leaks", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
 
