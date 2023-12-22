@@ -228,6 +228,29 @@ local dungeon, rooms, enemies, shrines = getDungeon()
     end
 end
 
+function killAuraV3(monster)
+    local dungeon, rooms, enemies, shrines = getDungeon()
+
+    for _, monster in ipairs(enemies:GetChildren()) do
+        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+           monster.EvilHumanoid.Health > 0 then
+            local monsterRootPart = monster.HumanoidRootPart
+
+            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+                if damage.ClassName ~= "Part" and damage.ClassName ~= "MeshPart" then
+                    pcall(function()
+                        damage.Transparency = 1
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
+                    end)
+                end
+            end
+
+            wait(0.1)  -- Add a delay to reduce execution frequency
+        end
+    end
+end
+
 function getNearestAttack()
     local nearestAttack = nil
     local closestDistance = math.huge
@@ -250,6 +273,7 @@ local function AllKill()
     getNearestAttack()
     killAuraV1(monster)
     killAuraV2(monster)
+    killAuraV3(monster)
     wait(0.1)
 end
 
