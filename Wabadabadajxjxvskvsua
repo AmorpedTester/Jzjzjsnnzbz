@@ -171,26 +171,29 @@ function getDungeon()
     return dungeon, rooms, enemies, shrines
 end
 
-function killAuraV1(monster)
-local dungeon, rooms, enemies, shrines = getDungeon()
+function killAuraV1()
+    local dungeon, rooms, enemies, shrines = getDungeon()
 
     for _, monster in ipairs(enemies:GetChildren()) do
-    if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-       monster.EvilHumanoid.Health > 0 then
-        local monsterRootPart = monster.HumanoidRootPart
-        
-  for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-        if damage.ClassName ~= "Model" then
-            pcall(function()
-                damage.Transparency = 1
-                damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
-                damage.Position = monster.HumanoidRootPart.Position
-              end)
+        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+           monster.EvilHumanoid.Health > 0 then
+            local monsterRootPart = monster.HumanoidRootPart
+
+            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+                if damage.ClassName ~= "Model" then
+                    pcall(function()
+                        damage.Transparency = 1
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
+                    end)
+                end
             end
-         end
-      end
-   end
+
+            wait(0.1)  -- Add a delay to reduce execution frequency
+        end
+    end
 end
+
 
 function killAuraV2(monster)
 local dungeon, rooms, enemies, shrines = getDungeon()
@@ -219,6 +222,8 @@ local dungeon, rooms, enemies, shrines = getDungeon()
                     end
                 end)
             end
+            
+            wait(0.1)
         end
     end
 end
@@ -240,6 +245,8 @@ local dungeon, rooms, enemies, shrines = getDungeon()
               end)
             end
          end
+         
+      wait(0.1)
       end
    end
 end
@@ -257,7 +264,8 @@ function getNearestAttack()
             end
         end
     end
-
+    
+wait(0.1)
     return nearestAttack, closestDistance
 end
 
@@ -266,6 +274,7 @@ local function AllKill()
     killAuraV1(monster)
     killAuraV2(monster)
     killAuraV3(monster)
+    wait(0.1)
 end
 
 local h = require(ReplicatedStorage.Shared.Modules.DungeonLibrary)
@@ -418,7 +427,7 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Warrior: Set the Hitbox X=300 Y=30 Z=300",
+        Title = "Warrior: Set the Hitbox X=300 Y=30 Z=300 Trans=1",
         Content = "Kill Aura: Allow"
     })
 
@@ -1059,8 +1068,8 @@ local InputTransparency = Tabs.Main:AddInput("InputTransparency", {
 AuraSecond = 1
 
 Tabs.Main:AddParagraph({
-        Title = "Kill Aura (WIP)",
-        Content = "Ability Only"
+        Title = "Kill Aura",
+        Content = "Ability Only And Hitbox"
     })
 
 local Toggle = Tabs.Main:AddToggle("KillAura", {Title = "Kill Aura", Default = false })
@@ -2649,6 +2658,11 @@ Tabs.Main:AddParagraph({
 
 Tabs.Main:AddParagraph({
         Title = "Fixed: Lags Auto Kill Mobs (Warrior)",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Fixed: Lags Kill Aura (5%)",
         Content = ""
     })
 
