@@ -13,7 +13,7 @@ button.Parent = gui
 
 -- Function to send the virtual key event
 local function sendKeyEvent()
-    game:GetService("VirtualInputManager"):SendKeyEvent(true, "RightShift", false, game)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "N", false, game)
 end
 
 -- Connect the function to the button's MouseClick event
@@ -30,7 +30,7 @@ getgenv().Get =
     }
 )
 
-print("Gui: Orion Library")
+print("Gui: Fluent Library")
 
 wait(0.5)
 
@@ -71,6 +71,7 @@ print("-- Unknown TQ Hub 3.5/5: Bypassing... *DumbExploiterController* ")
 -- Valuable Servers
 local isWaveDefense
 local isGrandGrotto
+local isDungeon
 local isLobby = game.PlaceId == 2960777560
 
 function bypassAntiCheat()
@@ -171,20 +172,38 @@ function getDungeon()
 end
 
 function killAuraV1(monster)
-    for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-        if damage.ClassName ~= "Model" then
-            pcall(function()
-                damage.Transparency = 1
-                damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
-                damage.Position = monster.HumanoidRootPart.Position
-            end)
+    local dungeon, rooms, enemies, shrines = getDungeon()
+
+    for _, monster in ipairs(enemies:GetChildren()) do
+        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+           monster.EvilHumanoid.Health > 0 then
+            local monsterRootPart = monster.HumanoidRootPart
+
+            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+                if damage.ClassName ~= "Model" then
+                    pcall(function()
+                        damage.Transparency = 1
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
+                    end)
+                end
+            end
+
+            wait(0.1)  -- Add a delay to reduce execution frequency
         end
     end
 end
 
 
 function killAuraV2(monster)
-    for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+local dungeon, rooms, enemies, shrines = getDungeon()
+
+   for _, monster in ipairs(enemies:GetChildren()) do
+    if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+       monster.EvilHumanoid.Health > 0 then
+        local monsterRootPart = monster.HumanoidRootPart
+        
+        for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
         -- if damage.ClassName ~= "Model" then
         --     pcall(function()
         --         damage.Transparency = 1
@@ -193,18 +212,43 @@ function killAuraV2(monster)
         --     end)
         -- end
         pcall(function()
-            if damage.ClassName ~= "Model" and damage.ClassName ~= "Explosion" then
-                game:GetService("TweenService"):Create(damage, TweenInfo.new(1), {
-                    CFrame = monster.HumanoidRootPart.CFrame
-                }):Play()
+                    if damage.ClassName ~= "Model" and damage.ClassName ~= "Explosion" then
+                       damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                       damage.Position = monster.HumanoidRootPart.Position
+                    end
+                    if damage:FindFirstChild("Hitbox") then
+                       damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                       damage.Position = monster.HumanoidRootPart.Position
+                    end
+                end)
             end
-            if damage:FindFirstChild("Hitbox") then
-                game:GetService("TweenService"):Create(damage.Hitbox, TweenInfo.new(1), {
-                    CFrame = monster.HumanoidRootPart.CFrame
-                }):Play()
-            end
-        end)
+            
+            wait(0.1)
+        end
     end
+end
+
+function killAuraV3(monster)
+local dungeon, rooms, enemies, shrines = getDungeon()
+
+    for _, monster in ipairs(enemies:GetChildren()) do
+    if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+       monster.EvilHumanoid.Health > 0 then
+        local monsterRootPart = monster.HumanoidRootPart
+        
+  for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+        if damage.ClassName ~= "Part" and damage.ClassName ~= "MeshPart" then
+            pcall(function()
+                damage.Transparency = 1
+                damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                damage.Position = monster.HumanoidRootPart.Position
+              end)
+            end
+         end
+         
+      wait(0.1)
+      end
+   end
 end
 
 function getNearestAttack()
@@ -220,7 +264,8 @@ function getNearestAttack()
             end
         end
     end
-
+    
+wait(0.1)
     return nearestAttack, closestDistance
 end
 
@@ -228,6 +273,8 @@ local function AllKill()
     getNearestAttack()
     killAuraV1(monster)
     killAuraV2(monster)
+    killAuraV3(monster)
+    wait(0.1)
 end
 
 local h = require(ReplicatedStorage.Shared.Modules.DungeonLibrary)
@@ -275,7 +322,7 @@ local function GetClosestt()
     end
     return Target
 end
-
+    
 local Noclip = function(A)
     return A:ChangeState(11)
 end 
@@ -298,6 +345,13 @@ x = 0
 y = 0
 
 z = -2
+
+-- Valuable from autoleave
+local cha = game:GetService('Players').LocalPlayer.Character
+local mainFrame = game:GetService("Players")[cha.Name].PlayerGui:WaitForChild("MainGui"):WaitForChild("MainFrame")
+local rightSideFrame = mainFrame:WaitForChild("Right")
+local topSideFrame = mainFrame:WaitForChild("Top")
+local playerCard = mainFrame:WaitForChild("Bottom"):WaitForChild("PlayerCard")
 
 if game.PlaceId == 2960777560 then
 pcall(function()
@@ -330,7 +384,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/tha
 
 -- StarterGui
 
-local Window = OrionLib:MakeWindow({Name = "Unknown TQ Hub V3.4 (Orion)", IntroText = "Unknown TQ Hub V3.4 ", HidePremium = true, SaveConfig = false, ConfigFolder = "UnknownTQHub"})
+local Window = OrionLib:MakeWindow({Name = "Unknown TQ Hub V3.5 (Orion)", IntroText = "Unknown TQ Hub V3.4 ", HidePremium = true, SaveConfig = false, ConfigFolder = "UnknownTQHub"})
 
 -- Script
 
@@ -342,19 +396,11 @@ OrionLib:MakeNotification({
 })
 
 OrionLib:MakeNotification({
-	Name = "Warning Notification",
-	Content = "U Should Hide ur Exploit while Screenshot or Crop.",
+	Name = "Announcement Notification",
+	Content = "Many Logs on Update Logs",
 	Image = "rbxassetid://4483345998",
 	Time = 10
 })
-
-OrionLib:MakeNotification({
-	Name = "Warning Notification 2",
-	Content = "i was spying on official discord nosniy server.",
-	Image = "rbxassetid://4483345998",
-	Time = 10
-})
-
 
 OrionLib:MakeNotification({
 	Name = "Quick Optimizer",
@@ -380,9 +426,29 @@ ReplicatedStorage.Lobby.Remotes.ClaimTreasureReward:FireServer()
 end)
 end
 
+local Section = Tab:AddSection({
+	Name = "Enable Kill Aura To Farm Faster!"
+})
+
+local Section = Tab:AddSection({
+	Name = "Warrior: Set the Hitbox X=300 Y=30 Z=300 Trans=1"
+})
+
+local Section = Tab:AddSection({
+	Name = "Kill Aura: Allow"
+})
+
+local Section = Tab:AddSection({
+	Name = "Wizard: Best Farm Ability is Tsunami"
+})
+
+local Section = Tab:AddSection({
+	Name = "Kill Aura: Not Allow (if Enabled: Super lag)"
+})
+
 Settings.H = State
 Tab:AddToggle({
-	Name = "Auto Kill Mob",
+	Name = "Auto Kill Mobs (Warrior)",
 	Default = false,
 	Save = true,
     Flag = "AutoMobs",
@@ -391,7 +457,6 @@ Settings.H = State
     game:GetService("RunService").Stepped:Connect(function()
         pcall(function()
             if Settings.H then
-                AllKill()
                 ScriptFunction(Script)
                 ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
                 Noclip(Player.Character:WaitForChild("Humanoid"))
@@ -419,16 +484,8 @@ Settings.H = State
         end
     end)
  end})
-
-local Section = Tab:AddSection({
-	Name = "Fast Farming"
-})
-
-local Section = Tab:AddSection({
-	Name = "GPU PERFORMANCE ONLY"
-})
-
-local function StartDungeon()
+ 
+ local function StartDungeon()
     local hasHumanoidRootPart = false
     for _, v in ipairs(game:GetService("Workspace"):GetChildren()) do
         if v.ClassName == "Folder" then
@@ -596,478 +653,105 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-local function Wskill()
-    local Skill = {"Fireball", "Tsunami", "Freeze", "Heal", "HealBlast", "Shockwave", "LaserBeam", "LightningStrike",
-                   "Sandstorm", "Earthquake", "IceSpikes", "PolarVortex", "TeamHeal", "RainbowBlast", "PumpkinBlast",
-                   "Random", "Camouflage", "Tumble", "Flurry", "Boomerang", "ShockArrows", "ShocFlameArrowskwave",
-                   "BoomArows", "FrostArrows", "WeaponThrow", "WaveBlast", "InfernoWave", "SpikeField", "Berserk",
-                   "Pulsefire", "Cyclone", "BlackHole", "QuickSlash", "MeteorShower", "MeteorBlast", "Stomp"}
-
-    for _, v in pairs(game:GetService("Workspace"):GetChildren()) do
-        if table.find(Skill, v.Name) then
-            local SKK = table.find(Skill, v.Name)
-            local AllPart = v:IsA("BasePart") or v:IsA("MeshPart") or v:IsA("Part")
-            if (SKK or AllPart) then
-                v.Transparency = 1
-            end
-        end
-    end
-end
-
-local function visibleskill()
-    local Skill = {"Fireball", "Tsunami", "Freeze", "Heal", "HealBlast", "Shockwave", "LaserBeam", "LightningStrike",
-                   "Sandstorm", "Earthquake", "IceSpikes", "PolarVortex", "TeamHeal", "RainbowBlast", "PumpkinBlast",
-                   "Random", "Camouflage", "Tumble", "Flurry", "Boomerang", "ShockArrows", "ShocFlameArrowskwave",
-                   "BoomArows", "FrostArrows", "WeaponThrow", "WaveBlast", "InfernoWave", "SpikeField", "Berserk",
-                   "Pulsefire", "Cyclone", "BlackHole", "QuickSlash", "MeteorShower", "MeteorBlast", "Stomp"}
-
-    for _, v in pairs(game:GetService("Workspace").Ignore:GetChildren()) do
-        if table.find(Skill, v.Name) then
-            local SKK = table.find(Skill, v.Name)
-            local AllPart = v:IsA("BasePart") or v:IsA("MeshPart") or v:IsA("Part")
-            if (SKK or AllPart) then
-                v.Transparency = 1
-            end
-        end
-    end
-end
-
-local function visiblemob()
-    local visible = {"LeftHand", "LeftLowerArm", "LeftUpperArm", "RightHand", "RightLowerArm", "RightUpperArm",
-                     "UpperTorso", "LeftFoot", "LeftLowerLeg", "LeftUpperLeg", "RightFoot", "RightLowerLeg",
-                     "RightUpperLeg", "LowerTorso", "Head", "Body Colors", "FakeHead", "+Appearance", "Hat"}
-
-    for _, v in pairs(game:GetService("Workspace"):GetChildren()) do
-        if v.ClassName == "Folder" then
-            for _, x in pairs(v:GetChildren()) do
-                if x.ClassName == "Folder" then
-                    for _, c in pairs(x:GetChildren()) do
-                        if c:IsA("Model") then
-                            for _, f in pairs(c:GetChildren()) do
-                                if table.find(visible, f.Name) then
-                                    f:Destroy()
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
-local function allvis()
-    Wskill()
-    visibleskill()
-    visiblemob()
-end
-
-
----------------------------------------------------------------------------------------------------------------------------------
-
 local Script = require(Player.PlayerScripts.Shared.Client.CombatController)
 local ScriptFunction = Script.BasicAttack
 local ScriptFunction2 = Script.UseAbility
 
+local Workspace = game:GetService("Workspace")
+local AutoMobs = false
+ 
 Tab:AddToggle({
-	Name = "Fast Farming High Device",
+	Name = "Auto Kill Mobs (Wizard)",
 	Default = false,
 	Save = true,
 	Flag = "FastFarmingHigh",
 	Callback = function(vaf)
-        AutoMobs = vaf
-        if AutoMobs then
-while AutoMobs do
-    StartDungeon()
-    killAuraV2(monster)
-    spawn(function()
-        while AutoMobs do
+            AutoMobs = vaf
+    if AutoMobs then
+        spawn(function()
+            while AutoMobs do
+                StartDungeon()
 
-            wait(1)
+                wait(1)
 
-            local dungeon, rooms, enemies, shrines = getDungeon()
-            
-            for _, monster in ipairs(enemies:GetChildren()) do
-            
-                if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-                
-                        monster.EvilHumanoid.Health >= 0 then
-                        
-                    local monsterRootPart = monster.HumanoidRootPart
-                    
-                    if monsterRootPart.Size ~= Vector3.new(500000, 10000, 500000) then
-                    
-                        monsterRootPart.Size = Vector3.new(500000, 10000, 500000)
-                        
-                        monsterRootPart.Transparency = 0.9
-                        
-                        for _, v in ipairs(Workspace:GetChildren()) do
-                        
-                            if v.ClassName == "Folder" then
+                local dungeon, rooms, enemies, shrines = getDungeon()
+                for _, monster in ipairs(enemies:GetChildren()) do
+                    if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+                            monster.EvilHumanoid.Health >= 0 then
+                        local monsterRootPart = monster.HumanoidRootPart
+                        if monsterRootPart.Size ~= Vector3.new(50, 30, 50) then
+                            monsterRootPart.Size = Vector3.new(50, 30, 50)
+                            monsterRootPart.Transparency = 1
 
-                                for _, x in ipairs(v:GetChildren()) do
-                                
-                                    if x.ClassName == "Folder" then
-                                    
-                                        for _, c in ipairs(x:GetChildren()) do
-                                        
-                                            if c:IsA("Model") and c:FindFirstChild("EvilHumanoid") then
-                                            
-                                                local EvilHumanoid = c:FindFirstChild("EvilHumanoid")
-                                                
-                                                local humanoidRootPart = c:FindFirstChild("HumanoidRootPart")
-                                                
-                                                
-                                                
-                                                if EvilHumanoid and humanoidRootPart then
-                                                
-                                                    local monsterPos = humanoidRootPart.Position
-                                                    
-                                                    local player = game.Players.LocalPlayer
-                                                    
-                                                    local playerPos = player.Character and
+                            for _, v in ipairs(Workspace:GetChildren()) do
+                                if v.ClassName == "Folder" then
+                                    for _, x in ipairs(v:GetChildren()) do
+                                        if x.ClassName == "Folder" then
+                                            for _, c in ipairs(x:GetChildren()) do
+                                                if c:IsA("Model") and c:FindFirstChild("EvilHumanoid") then
+                                                    local EvilHumanoid = c:FindFirstChild("EvilHumanoid")
+                                                    local humanoidRootPart = c:FindFirstChild("HumanoidRootPart")
 
-                                                            player.Character:FindFirstChild(
-                                                            
-                                                                    "HumanoidRootPart") and
-                                                                     
-                                                           player.Character.HumanoidRootPart.Position
-                                                           
+                                                    if EvilHumanoid and humanoidRootPart then
+                                                        local monsterPos = humanoidRootPart.Position
+                                                        local player = game.Players.LocalPlayer
+                                                        local playerPos = player.Character and
+                                                                player.Character:FindFirstChild(
+                                                                        "HumanoidRootPart") and
+                                                                player.Character.HumanoidRootPart.Position
 
-
-                                                    if playerPos and EvilHumanoid.Health > 0 then
-
-                                                        local direction = (playerPos - monsterPos).unit
-
-                                                        local distanceToTeleport = 3
-
-                                                        local teleportPos = playerPos + direction * distanceToTeleport
-
-                                                        humanoidRootPart.Position = teleportPos
-
+                                                        if playerPos and EvilHumanoid.Health > 0 then
+                                                            local direction = (playerPos - monsterPos).unit
+                                                            local distanceToTeleport = 3
+                                                            local teleportPos = playerPos + direction * distanceToTeleport
+                                                            humanoidRootPart.Position = teleportPos
+                                                        end
                                                     end
-
                                                 end
-
                                             end
-
                                         end
-
                                     end
-
                                 end
-
                             end
-
                         end
-
                     end
-
                 end
-
+                wait()
             end
+        end)
 
-            wait()
-
-        end
-
-    end)
-
-
-
-
-
-                local function PerformAttack()
-
-                    pcall(function()
-
-                        if AutoMobs then
-
-                            ScriptFunction(Script)
-
-                            ScriptFunction2(Script)
-
-                        end
-
-                    end)
-
+        local function PerformAttack()
+            pcall(function()
+                if AutoMobs then
+                    ScriptFunction(Script)
+                    ScriptFunction2(Script)
                 end
+            end)
+        end
+        game:GetService("RunService").Stepped:Connect(PerformAttack)
 
-                game:GetService("RunService").Stepped:Connect(PerformAttack)
-
-
-
-                spawn(function()
-
-                    while AutoMobs do
-
-                        allvis()
-
-                        wait(0.01)
-
-                    end
-
-                end)
-
-
-
-                spawn(function()
-
-                    while AutoMobs do
-
-                        MoveOutFromBossRoom()
-
-                        wait(0.01)
-
-                    end
-
-                end)
-
-
-
-                spawn(function()
-
-                    while AutoMobs do
-
-                        local finishPart = findFinishPartInWorkspace(game:GetService("Workspace"))
-
-                        if finishPart then
-
-                            local character = game.Players.LocalPlayer.Character
-
-                            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-
-                            if humanoidRootPart then
-
-                                local ChestPart = findNewChestInWorkspace(game:GetService("Workspace"))
-
-                                if ChestPart then
-
-                                    humanoidRootPart.CFrame = ChestPart.CFrame
-
-                                    wait(3)
-
-                                    humanoidRootPart.CFrame = finishPart.CFrame
-
-                                end
-
-                            end
-
-                        end
-
-                        wait(0.1)
-
-                    end
-
-                end)
-
+        spawn(function()
+            while AutoMobs do
+                MoveOutFromBossRoom()
                 wait(0.01)
-
             end
+        end)
 
-        end
-
-    end})
-
-Tab:AddToggle({
-	Name = "Fast Farming High Device",
-	Default = false,
-	Save = true,
-	Flag = "FastFarmingHigh",
-	Callback = function(vaf)
-        AutoMobs = vaf
-        if AutoMobs then
-while AutoMobs do
-    StartDungeon()
-    killAuraV2(monster)
-    spawn(function()
-        while AutoMobs do
-
-            wait(1)
-
-            local dungeon, rooms, enemies, shrines = getDungeon()
-            
-            for _, monster in ipairs(enemies:GetChildren()) do
-            
-                if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-                
-                        monster.EvilHumanoid.Health >= 0 then
-                        
-                    local monsterRootPart = monster.HumanoidRootPart
-                    
-                    if monsterRootPart.Size ~= Vector3.new(40, 40, 40) then
-                    
-                        monsterRootPart.Size = Vector3.new(40, 40, 40)
-                        
-                        monsterRootPart.Transparency = 1
-                        
-                        for _, v in ipairs(Workspace:GetChildren()) do
-                        
-                            if v.ClassName == "Folder" then
-
-                                for _, x in ipairs(v:GetChildren()) do
-                                
-                                    if x.ClassName == "Folder" then
-                                    
-                                        for _, c in ipairs(x:GetChildren()) do
-                                        
-                                            if c:IsA("Model") and c:FindFirstChild("EvilHumanoid") then
-                                            
-                                                local EvilHumanoid = c:FindFirstChild("EvilHumanoid")
-                                                
-                                                local humanoidRootPart = c:FindFirstChild("HumanoidRootPart")
-                                                
-                                                
-                                                
-                                                if EvilHumanoid and humanoidRootPart then
-                                                
-                                                    local monsterPos = humanoidRootPart.Position
-                                                    
-                                                    local player = game.Players.LocalPlayer
-                                                    
-                                                    local playerPos = player.Character and
-
-                                                            player.Character:FindFirstChild(
-                                                            
-                                                                    "HumanoidRootPart") and
-                                                                     
-                                                           player.Character.HumanoidRootPart.Position
-                                                           
-
-
-                                                    if playerPos and EvilHumanoid.Health > 0 then
-
-                                                        local direction = (playerPos - monsterPos).unit
-
-                                                        local distanceToTeleport = 3
-
-                                                        local teleportPos = playerPos + direction * distanceToTeleport
-
-                                                        humanoidRootPart.Position = teleportPos
-
-                                                    end
-
-                                                end
-
-                                            end
-
-                                        end
-
-                                    end
-
-                                end
-
-                            end
-
-                        end
-
+        spawn(function()
+            while AutoMobs do
+                local finishPart = findFinishPartInWorkspace(game:GetService("Workspace"))
+                if finishPart then
+                    local character = game.Players.LocalPlayer.Character
+                    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+                    if humanoidRootPart then
+                        humanoidRootPart.CFrame = finishPart.CFrame
                     end
-
                 end
-
+                wait(0.1)
             end
-
-            wait()
-
-        end
-
-    end)
-
-
-
-
-
-                local function PerformAttack()
-
-                    pcall(function()
-
-                        if AutoMobs then
-
-                            ScriptFunction(Script)
-
-                            ScriptFunction2(Script)
-
-                        end
-
-                    end)
-
-                end
-
-                game:GetService("RunService").Stepped:Connect(PerformAttack)
-
-
-
-                spawn(function()
-
-                    while AutoMobs do
-
-                        allvis()
-
-                        wait(0.01)
-
-                    end
-
-                end)
-
-
-
-                spawn(function()
-
-                    while AutoMobs do
-
-                        MoveOutFromBossRoom()
-
-                        wait(0.01)
-
-                    end
-
-                end)
-
-
-
-                spawn(function()
-
-                    while AutoMobs do
-
-                        local finishPart = findFinishPartInWorkspace(game:GetService("Workspace"))
-
-                        if finishPart then
-
-                            local character = game.Players.LocalPlayer.Character
-
-                            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-
-                            if humanoidRootPart then
-
-                                local ChestPart = findNewChestInWorkspace(game:GetService("Workspace"))
-
-                                if ChestPart then
-
-                                    humanoidRootPart.CFrame = ChestPart.CFrame
-
-                                    wait(3)
-
-                                    humanoidRootPart.CFrame = finishPart.CFrame
-
-                                end
-
-                            end
-
-                        end
-
-                        wait(0.1)
-
-                    end
-
-                end)
-
-                wait(0.01)
-
-            end
-
-        end
-
-    end})
+        end)
+    end
+end})
 
 local Section = Tab:AddSection({
 	Name = "Auto Collects"
@@ -1182,7 +866,6 @@ game:GetService("RunService").Stepped:connect(
         pcall(
             function()
                 if Settings.H then
-                    AllKill()
                     ScriptFunction(Script)
                     ScriptFunction2(Script, GetClosestt().PrimaryPart.Position)
                     Noclip(Player.Character:WaitForChild("Humanoid"))
@@ -1395,6 +1078,35 @@ Tab:AddTextbox({
     end
 })
 
+local Section = Tab:AddSection({
+	Name = "Kill Aura"
+})
+
+AuraSecond = 1
+AuraKill = State
+
+Tab:AddToggle({
+	Name = "Kill Aura",
+	Default = false,
+	Callback = function(State)
+    if AuraKill then
+        while AuraKill do
+            AllKill()
+            wait(AuraSecond) 
+         end
+       end
+	end    
+})
+
+Tab:AddTextbox({
+    Name = "Delay Kill Aura",
+    Default = "1",
+    TextDisappear = true,
+    Callback = function(ack)
+        AuraSecond = tonumber(ack) or 1
+    end
+})
+
 local Tab = Window:MakeTab({
 	Name = "Custom Visuals",
 	Icon = "rbxassetid://7734022107",
@@ -1409,8 +1121,10 @@ spawn(function()
     while wait() do
         pcall(function()
             if MobESP then
-                for i,v in pairs(game:GetService("Workspace").Dungeon.Enemies:GetChildren()) do
+                for i, v in pairs(game:GetService("Workspace").Dungeon.Enemies:GetChildren()) do
                     if v:FindFirstChild('HumanoidRootPart') then
+                        local evilHumanoid = v:FindFirstChild("EvilHumanoid")  -- Change "Humanoid" to "EvilHumanoid"
+                        
                         if not v:FindFirstChild("MobEap") then
                             local BillboardGui = Instance.new("BillboardGui")
                             local TextLabel = Instance.new("TextLabel")
@@ -1430,14 +1144,23 @@ spawn(function()
                             TextLabel.Size = UDim2.new(0, 200, 0, 50)
                             TextLabel.Font = Enum.Font.GothamBold
                             TextLabel.TextColor3 = Color3.fromRGB(7, 236, 240)
-                            TextLabel.Text.Size = 35
+                            TextLabel.TextSize = 14  -- Adjust the text size to your preference
+
+                            v.MobEap = BillboardGui  -- Store the BillboardGui in MobEap for later use
                         end
-                        local Dis = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).Magnitude)
-                        v.MobEap.TextLabel.Text = v.Name.." - "..Dis.." M"
+
+                        local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).Magnitude)
+
+                        if evilHumanoid then
+                            local health = math.floor(evilHumanoid.Health)
+                            v.MobEap.TextLabel.Text = v.Name.." - "..distance.." M\nHealth: "..health
+                        else
+                            v.MobEap.TextLabel.Text = v.Name.." - "..distance.." M"
+                        end
                     end
                 end
             else
-                for i,v in pairs(game:GetService("Workspace").Dungeon.Enemies:GetChildren()) do
+                for i, v in pairs(game:GetService("Workspace").Dungeon.Enemies:GetChildren()) do
                     if v:FindFirstChild("MobEap") then
                         v.MobEap:Destroy()
                     end
@@ -1670,7 +1393,7 @@ local Section = Tab:AddSection({
 	Name = "Toggle"
 })
 
-local tab = Tab:AddToggle({
+Tab:AddToggle({
     Name = "Anti-Afk",
     Default = true,
     Callback = function(State)
@@ -2025,55 +1748,81 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+-- Define toggle settings in _G
+_G.Setting = {
+    AutoSell = {
+        Sell_Enabled = false,
+        Sell_Common = false,
+        Sell_Rare = false,
+        Sell_Legendary = false,
+        Sell_Mythical = false,
+        Sell_Ultimate = false
+    },
+    AutoBank = {
+    	Transfer_Enabled = false,
+        Transfer_Common = false,
+        Transfer_Rare = false,
+        Transfer_Legendary = false,
+        Transfer_Mythical = false,
+        Transfer_Ultimate = false
+    },
+    AutoEquip = {
+        Emblem = false,
+    },
+    AutoLeave = {
+        WhenDied = {
+            Enabled = false,
+            Delay = 2
+        },
+        WhenInventoryFull = {
+            Enabled = false,
+            Delay = 2
+        }
+    }
+}
+
+local Section = Tab:AddSection({
+	Name = "Auto Sell"
+})
+
 local Section = Tab:AddSection({
 	Name = "Becarefull U will lose ur items"
 })
 
--- Define toggle settings in _G
-_G.Setting = {
-    AutoSell = {
-        Enabled = false,
-        Common = false,
-        Rare = false,
-        Legendary = false,
-        Mythical = false,
-        Ultimate = false
-    }
-}
-
 -- Function to auto-sell items based on rarity settings
+local itemToSell = {}
+
 function autoSell()
-    if not _G.Setting.AutoSell.Enabled then
+    if not _G.Setting.AutoSell.Sell_Enabled then
         return
     end
 
-    local itemToSell = {}
     for _, item in pairs(InventoryController.Inventory.Items) do
         local id = item.Data.ItemID
         local rarity = item.DatabaseInfo.Rarity
 
-        if _G.Setting.AutoSell.Common and rarity == 'Common' then
+        if _G.Setting.AutoSell.Sell_Common and rarity == 'Common' then
             table.insert(itemToSell, id)
         end
 
-        if _G.Setting.AutoSell.Rare and rarity == 'Rare' then
+        if _G.Setting.AutoSell.Sell_Rare and rarity == 'Rare' then
             table.insert(itemToSell, id)
         end
 
-        if _G.Setting.AutoSell.Legendary and rarity == 'Legendary' then
+        if _G.Setting.AutoSell.Sell_Legendary and rarity == 'Legendary' then
             table.insert(itemToSell, id)
         end
 
-        if _G.Setting.AutoSell.Mythical and rarity == 'Mythical' then
+        if _G.Setting.AutoSell.Sell_Mythical and rarity == 'Mythical' then
             table.insert(itemToSell, id)
         end
 
-        if _G.Setting.AutoSell.Ultimate and rarity == 'Ultimate' then
+        if _G.Setting.AutoSell.Sell_Ultimate and rarity == 'Ultimate' then
             table.insert(itemToSell, id)
         end
     end
 
-    print('Selling Items:', table.unpack(itemToSell))
+print('Selling Items:', table.unpack(itemToSell))
     -- Example: FireServer with the itemToSell table
     game:GetService("ReplicatedStorage").Lobby.Remotes.Sell:FireServer(itemToSell)
 end
@@ -2090,7 +1839,7 @@ Tab:AddToggle({
     Save = true,
     Flag = AutoSellA,
     Callback = function(Value)
-        toggleCallback("Enabled", Value)
+        toggleCallback("Sell_Enabled", Value)
     end    
 })
 
@@ -2100,7 +1849,7 @@ Tab:AddToggle({
     Save = true,
     Flag = SellCommon,
     Callback = function(Value)
-        toggleCallback("Common", Value)
+        toggleCallback("Sell_Common", Value)
     end    
 })
 
@@ -2110,7 +1859,7 @@ Tab:AddToggle({
     Save = true,
     Flag = SellRare,
     Callback = function(Value)
-        toggleCallback("Rare", Value)
+        toggleCallback("Sell_Rare", Value)
     end    
 })
 
@@ -2120,7 +1869,7 @@ Tab:AddToggle({
     Save = true,
     Flag = SellLegendary,
     Callback = function(Value)
-        toggleCallback("Legendary", Value)
+        toggleCallback("Sell_Legendary", Value)
     end    
 })
 
@@ -2130,7 +1879,7 @@ Tab:AddToggle({
     Save = true,
     Flag = SellMythical,
     Callback = function(Value)
-        toggleCallback("Mythical", Value)
+        toggleCallback("Sell_Mythical", Value)
     end    
 })
 
@@ -2140,7 +1889,125 @@ Tab:AddToggle({
     Save = true,
     Flag = SellUltimate,
     Callback = function(Value)
-        toggleCallback("Ultimate", Value)
+        toggleCallback("Sell_Ultimate", Value)
+    end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Auto Bank"
+})
+
+local Section = Tab:AddSection({
+	Name = "Warning: Auto Bank Can Transfer Equipped Weapon"
+})
+
+function autoBank()
+    while _G.Setting.AutoBank.Transfer_Enabled do
+        local itemToBank = {
+            [1] = "Inventory",
+            [2] = "id", 
+            [3] = 1
+        }
+
+        for _, item in pairs(InventoryController.Inventory.Items) do
+            local id = item.Data.ItemID
+            local rarity = item.DatabaseInfo.Rarity
+
+            if _G.Setting.AutoBank.Transfer_Common and rarity == 'Common' then
+                itemToBank[2] = id
+            end
+
+            if _G.Setting.AutoBank.Transfer_Rare and rarity == 'Rare' then
+                itemToBank[2] = id
+            end
+
+            if _G.Setting.AutoBank.Transfer_Legendary and rarity == 'Legendary' then
+                itemToBank[2] = id
+            end
+
+            if _G.Setting.AutoBank.Transfer_Mythical and rarity == 'Mythical' then
+                itemToBank[2] = id
+            end
+
+            if _G.Setting.AutoBank.Transfer_Ultimate and rarity == 'Ultimate' then
+                itemToBank[2] = id
+            end
+        end
+
+        print('Bank Transfer Item:', itemToBank[2])
+
+        
+        game:GetService("ReplicatedStorage").Lobby.Remotes.BankTransfer:FireServer(unpack(itemToBank))
+
+        wait(1)
+    end
+end
+
+function toggleBankCallback(toggleName, value)
+    _G.Setting.AutoBank[toggleName] = value
+
+    if value then
+        spawn(autoBank)
+    end
+end
+
+Tab:AddToggle({
+    Name = "Auto Bank",
+    Default = false,
+    Save = true,
+    Flag = AutoSellA,
+    Callback = function(Value)
+        toggleCallback("Transfer_Enabled", Value)
+    end    
+})
+
+Tab:AddToggle({
+    Name = "Transfer Common",
+    Default = false,
+    Save = true,
+    Flag = SellCommon,
+    Callback = function(Value)
+        toggleCallback("Transfer_Common", Value)
+    end    
+})
+
+Tab:AddToggle({
+    Name = "Transfer Rare",
+    Default = false,
+    Save = true,
+    Flag = SellRare,
+    Callback = function(Value)
+        toggleCallback("Transfer_Rare", Value)
+    end    
+})
+
+Tab:AddToggle({
+    Name = "Transfer Legendary",
+    Default = false,
+    Save = true,
+    Flag = SellLegendary,
+    Callback = function(Value)
+        toggleCallback("Transfer_Legendary", Value)
+    end    
+})
+
+Tab:AddToggle({
+    Name = "Transfer Mythical",
+    Default = false,
+    Save = true,
+    Flag = SellMythical,
+    Callback = function(Value)
+        toggleCallback("Transfer_Mythical", Value)
+    end    
+})
+
+Tab:AddToggle({
+    Name = "Transfer Ultimate",
+    Default = false,
+    Save = true,
+    Flag = SellUltimate,
+    Callback = function(Value)
+        toggleCallback("Transfer_Ultimate", Value)
     end    
 })
 
@@ -2734,7 +2601,7 @@ local Section = Tab:AddSection({
 })
 
 Tab:AddButton({
-	Name = "Update Status: 🔴",
+	Name = "Update Status: 🟢",
 	Callback = function()
 print("its just a status bro.")
   	end    
