@@ -30,7 +30,7 @@ getgenv().Get =
     }
 )
 
-print("Gui: Fluent Library")
+print("Gui: Orion Library")
 
 wait(0.5)
 
