@@ -746,18 +746,18 @@ local Toggle3 = Tabs.Main:AddToggle("AutoMedkits", {Title = "Auto Collect Medkit
 Toggle3:OnChanged(function(State)
     Settings.Med = State
     spawn(function()
-        while wait() and Settings.Med do
-            pcall(function()
-                for i, v in pairs(Workspace.Ignore:GetChildren()) do
-                    if v.Name == "Medkit" and v:FindFirstChildWhichIsA("TouchTransmitter",true) then
-                        if Player.Character.Humanoid.Heharacter.Humanoid.MaxHealth then
-                            firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true), v, 0)
-                            firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true), v, 1)
-                        end 
-                    end 
-                end
-            end)
-        end 
+    while wait() and Settings.Med do
+        pcall(function()
+            for i,v in pairs(Workspace.Ignore:GetChildren()) do
+                if v.Name == "Medkit" and v:FindFirstChildWhichIsA("TouchTransmitter",true) then
+                    if Player.Character.Humanoid.Health < Player.Character.Humanoid.MaxHealth then
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true), v, 0)
+                        firetouchinterest(Player.Character:FindFirstChild("HumanoidRootPart",true), v, 1)
+                      end 
+                  end 
+              end
+           end)
+       end 
     end)
 end)
 
@@ -2639,9 +2639,15 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Fixed: Lags Kill Aura (5%)",
+        Title = "Fixed: Lags Kill Aura (75%)",
         Content = ""
     })
+
+Tabs.Main:AddParagraph({
+        Title = "Fixed: Medkit is Not Working",
+        Content = ""
+    })
+    
 
 Tabs.Main:AddParagraph({
         Title = "Status Update: 🟢",
