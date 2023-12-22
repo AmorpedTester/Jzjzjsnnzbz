@@ -1957,7 +1957,7 @@ Tab:AddToggle({
     Save = true,
     Flag = AutoSellA,
     Callback = function(Value)
-        toggleCallback("Transfer_Enabled", Value)
+        toggleBankCallback("Transfer_Enabled", Value)
     end    
 })
 
@@ -1967,7 +1967,7 @@ Tab:AddToggle({
     Save = true,
     Flag = SellCommon,
     Callback = function(Value)
-        toggleCallback("Transfer_Common", Value)
+        toggleBankCallback("Transfer_Common", Value)
     end    
 })
 
@@ -1977,7 +1977,7 @@ Tab:AddToggle({
     Save = true,
     Flag = SellRare,
     Callback = function(Value)
-        toggleCallback("Transfer_Rare", Value)
+        toggleBankCallback("Transfer_Rare", Value)
     end    
 })
 
@@ -1987,7 +1987,7 @@ Tab:AddToggle({
     Save = true,
     Flag = SellLegendary,
     Callback = function(Value)
-        toggleCallback("Transfer_Legendary", Value)
+        toggleBankCallback("Transfer_Legendary", Value)
     end    
 })
 
@@ -1997,7 +1997,7 @@ Tab:AddToggle({
     Save = true,
     Flag = SellMythical,
     Callback = function(Value)
-        toggleCallback("Transfer_Mythical", Value)
+        toggleBankCallback("Transfer_Mythical", Value)
     end    
 })
 
@@ -2007,7 +2007,7 @@ Tab:AddToggle({
     Save = true,
     Flag = SellUltimate,
     Callback = function(Value)
-        toggleCallback("Transfer_Ultimate", Value)
+        toggleBankCallback("Transfer_Ultimate", Value)
     end    
 })
 
