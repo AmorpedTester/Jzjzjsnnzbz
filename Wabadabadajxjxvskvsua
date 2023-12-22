@@ -13,7 +13,7 @@ button.Parent = gui
 
 -- Function to send the virtual key event
 local function sendKeyEvent()
-    game:GetService("VirtualInputManager"):SendKeyEvent(true, "N", false, game)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "RightShift", false, game)
 end
 
 -- Connect the function to the button's MouseClick event
@@ -30,7 +30,7 @@ getgenv().Get =
     }
 )
 
-print("Gui: Orion Library")
+print("Gui: Fluent Library")
 
 wait(0.5)
 
