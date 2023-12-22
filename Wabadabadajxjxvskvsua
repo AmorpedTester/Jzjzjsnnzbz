@@ -390,7 +390,7 @@ Fluent:Notify({
         SubContent = "Added: Many logs on Update Logs", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
-
+   
 Fluent:Notify({
         Title = "Quick Optimzer",
         Content = "Done!",
@@ -1195,12 +1195,10 @@ local lastUpdateTime = 0
 local updateInterval = 1
 
 local function archorMobsEnable(monsterRootPart)
-    monsterHumanoid.WalkSpeed = 1
     monsterRootPart.Anchored = true
 end
 
 local function archorMobsDisable(monsterRootPart)
-    monsterHumanoid.WalkSpeed = 16
     monsterRootPart.Anchored = false
 end
 
@@ -1215,7 +1213,6 @@ local function toggleArchorMobsState()
             if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
                monster.EvilHumanoid.Health > 0 then
                 local monsterRootPart = monster.HumanoidRootPart
-                local monsterHumanoid = monster.EvilHumanoid
 
                 if archorMobsEnabled then
                     archorMobsEnable(monsterRootPart)
