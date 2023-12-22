@@ -384,7 +384,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/tha
 
 -- StarterGui
 
-local Window = OrionLib:MakeWindow({Name = "Unknown TQ Hub V3.5 (Orion)", IntroText = "Unknown TQ Hub V3.4 ", HidePremium = true, SaveConfig = false, ConfigFolder = "UnknownTQHub"})
+local Window = OrionLib:MakeWindow({Name = "Unknown TQ Hub V3.5 (Orion)", IntroText = "Unknown TQ Hub V3.5 ", HidePremium = true, SaveConfig = false, ConfigFolder = "UnknownTQHub"})
 
 -- Script
 
