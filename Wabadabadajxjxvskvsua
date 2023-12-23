@@ -237,7 +237,7 @@ function killAuraV3(monster)
             local monsterRootPart = monster.HumanoidRootPart
 
             for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-                if damage.ClassName ~= "Part" and damage.ClassName ~= "MeshPart" then
+                if damage.ClassName ~= "BasePart" and damage.ClassName ~= "MeshPart" then
                     pcall(function()
                         damage.Transparency = 1
                         damage.CFrame = CFrame.new(monsterRootPart.Position)
