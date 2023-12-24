@@ -71,7 +71,6 @@ print("-- Unknown TQ Hub 3.5/5: Bypassing... *DumbExploiterController* ")
 -- Valuable Servers
 local isWaveDefense
 local isGrandGrotto
-local isDungeon
 local isLobby = game.PlaceId == 2960777560
 
 function bypassAntiCheat()
@@ -122,7 +121,12 @@ function bypassAntiCheat()
     -- Grand Grotto
     if workspace.Dungeon.Rooms:FindFirstChild("Start"):FindFirstChild("Traps") then
         isGrandGrotto = true
-    end
+end
+
+-- Dungeon
+    if workspace.Dungeon.Rooms:FindFirstChild("Start") then
+        isDungeon = true
+   end
 end
 
 bypassAntiCheat()
@@ -251,6 +255,127 @@ function killAuraV3(monster)
     end
 end
 
+function killAuraV4(monster)
+    local dungeon, rooms, enemies, shrines = getDungeon()
+
+    for _, monster in ipairs(enemies:GetChildren()) do
+        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+           monster.EvilHumanoid.Health > 0 then
+            local monsterRootPart = monster.HumanoidRootPart
+
+            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+                if damage.ClassName ~= "Model" then
+                    pcall(function()
+                        damage.Transparency = 1
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
+                    end)
+                end
+            end
+
+            wait(0.1)  -- Add a delay to reduce execution frequency
+        end
+    end
+end
+
+function killAuraV5(monster)
+    for _, monster in pairs(workspace:GetDescendants()) do
+    if monster:FindFirstChild("HumanoidRootPart") then
+        if monster.Name ~= game.Players.LocalPlayer.Name then
+            local monsterRootPart = monster.HumanoidRootPart
+                
+            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+                if damage.ClassName ~= "Model" then
+                    pcall(function()
+                        damage.Transparency = 1
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
+                    end)
+                end
+            end
+
+            wait(0.1)  -- Add a delay to reduce execution frequency
+        end
+    end
+  end
+end
+
+function killAuraV6(monster)
+   for _, monster in pairs(workspace:GetDescendants()) do
+    if monster:FindFirstChild("HumanoidRootPart") then
+        if monster.Name ~= game.Players.LocalPlayer.Name then
+            local monsterRootPart = monster.HumanoidRootPart
+        
+        for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+        -- if damage.ClassName ~= "Model" then
+        --     pcall(function()
+        --         damage.Transparency = 1
+        --         damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+        --         -- damage.Position = monster.HumanoidRootPart.Position
+        --     end)
+        -- end
+        pcall(function()
+                    if damage.ClassName ~= "Model" and damage.ClassName ~= "Explosion" then
+                       damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                       damage.Position = monster.HumanoidRootPart.Position
+                    end
+                    if damage:FindFirstChild("Hitbox") then
+                       damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                       damage.Position = monster.HumanoidRootPart.Position
+                    end
+                end)
+            end
+            
+            wait(0.1)
+        end
+    end
+  end
+end
+
+function killAuraV7(monster)
+    for _, monster in pairs(workspace:GetDescendants()) do
+    if monster:FindFirstChild("HumanoidRootPart") then
+        if monster.Name ~= game.Players.LocalPlayer.Name then
+            local monsterRootPart = monster.HumanoidRootPart
+
+            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+                if damage.ClassName ~= "BasePart" and damage.ClassName ~= "MeshPart" then
+                    pcall(function()
+                        damage.Transparency = 1
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
+                    end)
+                end
+            end
+
+            wait(0.1)  -- Add a delay to reduce execution frequency
+        end
+    end
+  end
+end
+
+function killAuraV8(monster)
+    for _, monster in pairs(workspace:GetDescendants()) do
+    if monster:FindFirstChild("HumanoidRootPart") then
+        if monster.Name ~= game.Players.LocalPlayer.Name then
+            local monsterRootPart = monster.HumanoidRootPart
+
+            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+                if damage.ClassName ~= "Model" then
+                    pcall(function()
+                        damage.Transparency = 1
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
+                    end)
+                end
+            end
+
+            wait(0.1)  -- Add a delay to reduce execution frequency
+        end
+    end
+  end
+end
+
 function getNearestAttack()
     local nearestAttack = nil
     local closestDistance = math.huge
@@ -274,6 +399,16 @@ local function AllKill()
     killAuraV1(monster)
     killAuraV2(monster)
     killAuraV3(monster)
+    killAuraV4(monster)
+    wait(0.1)
+end
+
+local function AllKill2()
+    getNearestAttack()
+    killAuraV5(monster)
+    killAuraV6(monster)
+    killAuraV7(monster)
+    killAuraV8(monster)
     wait(0.1)
 end
 
@@ -388,7 +523,7 @@ local Options = Fluent.Options
 
 Fluent:Notify({
         Title = "Made by Unknownproooolucky",
-        Content = "",
+        Content = "Merry Christmas y'all",
         SubContent = "", -- Optional
         Duration = 5 -- Set to nil to make the notification not disappear
     })
@@ -421,6 +556,8 @@ local Tabs = {
     Main = Window:AddTab({ Title = "Auto Farms", Icon = "rbxassetid://7733960981" }),
 }
 
+if isLobby or isDungeon or isGrandGrotto then
+
 Tabs.Main:AddParagraph({
         Title = "Auto Farm",
         Content = "Enable Kill Aura To Farm Faster!"
@@ -435,6 +572,27 @@ Tabs.Main:AddParagraph({
         Title = "Wizard: Best Farm Ability is Tsunami",
         Content = "Kill Aura: Not Allowed (if Enabled: Super Lag)"
     })
+    
+end
+
+if isWaveDefense then
+
+Tabs.Main:AddParagraph({
+        Title = "Wave Defense Farms (BETA)",
+        Content = "Enable Kill Aura To Farm Faster!"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Warrior: Set the Hitbox X=100 Y=30 Z=100 Trans=1",
+        Content = "Kill Aura: Allow"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Wizard: Not Working",
+        Content = "Kill Aura: (Unknown)"
+    })
+
+end
 
 local Toggle1 = Tabs.Main:AddToggle("AutokillMobsWarrior", {Title = "Auto Kill Mobs (Warrior)", Default = false })
 
@@ -966,6 +1124,8 @@ local Tabs = {
     Main = Window:AddTab({ Title = "Hitbox Settings", Icon = "rbxassetid://7734022107" }),
 }
 
+if isLobby or isDungeon or isGrandGrotto then
+
 Tabs.Main:AddParagraph({
         Title = "Hitbox Toggle",
         Content = "Optimized Hitbox V2"
@@ -1100,6 +1260,151 @@ local InputTransparency = Tabs.Main:AddInput("KillAuraDelay", {
         end
      })
 
+end
+
+if isWaveDefense then
+
+Tabs.Main:AddParagraph({
+        Title = "Wave Defense Version",
+        Content = "(BETA)"
+    })
+
+local xhx, yhx, zhx, txx = 1, 1, 1, 0.5
+local hitboxTest = false
+local lastUpdateTime = 0
+local updateInterval = 1  -- Set the interval in seconds
+
+local function enableHitbox()
+    for _, value in pairs(workspace:GetDescendants()) do
+        if value:IsA("Model") and value:FindFirstChild("HumanoidRootPart") then
+            if value.Name ~= game.Players.LocalPlayer.Name then
+                value.HumanoidRootPart.Transparency = txx
+                value.HumanoidRootPart.Size = Vector3.new(xhx, yhx, zhx)
+            end
+        end
+    end
+end
+
+local function disableHitbox()
+    for _, value in pairs(workspace:GetDescendants()) do
+        if value:IsA("Model") and value:FindFirstChild("HumanoidRootPart") then
+            if value.Name ~= game.Players.LocalPlayer.Name then
+                value.HumanoidRootPart.Transparency = 1
+                value.HumanoidRootPart.Size = Vector3.new(5, 5, 5)
+            end
+        end
+    end
+end
+
+local RunService = game:GetService("RunService")
+
+local function toggleHitboxState()
+    local currentTime = tick()
+    if currentTime - lastUpdateTime >= updateInterval then
+        lastUpdateTime = currentTime
+
+        if hitboxTest then
+            enableHitbox()
+        else
+            disableHitbox()
+        end
+    end
+end
+
+local Toggle = Tabs.Main:AddToggle("HitboxEnemies", { Title = "Hitbox Toggle", Default = false })
+
+Toggle:OnChanged(function(isEnabled)
+    hitboxTest = isEnabled
+    toggleHitboxState()
+end)
+
+RunService.Heartbeat:Connect(function()
+    wait(0.1)  -- No need for an additional wait here
+    toggleHitboxState()
+end)
+
+Options.HitboxEnemies:SetValue(false)
+
+local InputX = Tabs.Main:AddInput("InputX", {
+        Title = "Hitbox Size X",
+        Default = "1",
+        Placeholder = "Placeholder",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(jxk)
+        xhx = tonumber(jxk) or 5
+        end
+      })
+
+local InputY = Tabs.Main:AddInput("InputY", {
+        Title = "Hitbox Size Y",
+        Default = "1",
+        Placeholder = "Placeholder",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(gxk)
+        yhx = tonumber(gxk) or 5
+        end
+      })
+      
+local InputZ = Tabs.Main:AddInput("InputZ", {
+        Title = "Hitbox Size Z",
+        Default = "1",
+        Placeholder = "Placeholder",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(rxk)
+        zhx = tonumber(rxk) or 5
+        end
+     })
+
+local InputTransparency = Tabs.Main:AddInput("InputTransparency", {
+        Title = "Hitbox Transparency",
+        Default = "0.5",
+        Placeholder = "Placeholder",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(xxk)
+        txx = tonumber(xxk) or 0.5
+        end
+     })
+
+AuraSecond = 1
+
+Tabs.Main:AddParagraph({
+        Title = "Wave Defense Kill Aura",
+        Content = ""
+    })
+
+local Toggle = Tabs.Main:AddToggle("KillAura", {Title = "Kill Aura", Default = false })
+local isToggleActive = false
+
+Toggle:OnChanged(function(isToggled)
+    isToggleActive = isToggled
+
+    if isToggleActive then
+        while isToggleActive do
+            AllKill2()
+            wait(AuraSecond) 
+        end
+    end
+end)
+
+Options.KillAura:SetValue(false)
+
+local InputTransparency = Tabs.Main:AddInput("KillAuraDelay", {
+        Title = "Delay Kill Aura",
+        Default = "1",
+        Placeholder = "Cooldown here",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(ack)
+        AuraSecond = tonumber(ack) or 1
+        end
+     })
+
+end
+
 local Tabs = {
     Main = Window:AddTab({ Title = "Custom Visuals", Icon = "rbxassetid://7734022107" }),
 }
@@ -1131,6 +1436,7 @@ game.Players.LocalPlayer.Character.Humanoid.MaxHealth = Hmax
         end
     })
 
+if isLobby or isDungeon or isGrandGrotto then
 Tabs.Main:AddParagraph({
         Title = "Enemies Modify",
         Content = ""
@@ -1245,6 +1551,125 @@ RunService.Heartbeat:Connect(function()
 end)
 
 Options.ArchorMobs:SetValue(false)
+
+end
+
+if isWaveDefense then
+Tabs.Main:AddParagraph({
+        Title = "Enemies Modify",
+        Content = "(Wave Defense)"
+    })
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if MobESP then
+                for i, v in pairs(game:GetService("Workspace").Dungeon.Enemies:GetChildren()) do
+                    if v:FindFirstChild('HumanoidRootPart') then
+                        local evilHumanoid = v:FindFirstChild("EvilHumanoid") or v:FindFirstChildOfClass("Humanoid")  -- Change "Humanoid" to "EvilHumanoid"
+                        
+                        if not v:FindFirstChild("MobEap") then
+                            local BillboardGui = Instance.new("BillboardGui")
+                            local TextLabel = Instance.new("TextLabel")
+
+                            BillboardGui.Parent = v
+                            BillboardGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+                            BillboardGui.Active = true
+                            BillboardGui.Name = "MobEap"
+                            BillboardGui.AlwaysOnTop = true
+                            BillboardGui.LightInfluence = 1.000
+                            BillboardGui.Size = UDim2.new(0, 200, 0, 50)
+                            BillboardGui.StudsOffset = Vector3.new(0, 2.5, 0)
+
+                            TextLabel.Parent = BillboardGui
+                            TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                            TextLabel.BackgroundTransparency = 1.000
+                            TextLabel.Size = UDim2.new(0, 200, 0, 50)
+                            TextLabel.Font = Enum.Font.GothamBold
+                            TextLabel.TextColor3 = Color3.fromRGB(7, 236, 240)
+                            TextLabel.TextSize = 14  -- Adjust the text size to your preference
+
+                            v.MobEap = BillboardGui  -- Store the BillboardGui in MobEap for later use
+                        end
+
+                        local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).Magnitude)
+
+                        if evilHumanoid then
+                            local health = math.floor(evilHumanoid.Health)
+                            v.MobEap.TextLabel.Text = v.Name.." - "..distance.." M\nHealth: "..health
+                        else
+                            v.MobEap.TextLabel.Text = v.Name.." - "..distance.." M"
+                        end
+                    end
+                end
+            else
+                for i, v in pairs(game:GetService("Workspace").Dungeon.Enemies:GetChildren()) do
+                    if v:FindFirstChild("MobEap") then
+                        v.MobEap:Destroy()
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+local Toggle = Tabs.Main:AddToggle("EspMobs", {Title = "Esp Enemies", Default = false })
+
+    Toggle:OnChanged(function(nec)
+        MobESP = nec
+    end)
+    
+Options.EspMobs:SetValue(false)
+    
+
+local RunService = game:GetService("RunService")
+
+local archorMobsEnabled = false
+local lastUpdateTime = 0
+local updateInterval = 1
+
+local function archorMobsEnable(monsterRootPart)
+    monsterRootPart.Anchored = true
+end
+
+local function archorMobsDisable(monsterRootPart)
+    monsterRootPart.Anchored = false
+end
+
+local function toggleArchorMobsState()
+    local currentTime = tick()
+    if currentTime - lastUpdateTime >= updateInterval then
+        lastUpdateTime = currentTime
+
+   for _, monster in pairs(workspace:GetDescendants()) do
+    if monster:FindFirstChild("HumanoidRootPart") then
+        if monster.Name ~= game.Players.LocalPlayer.Name then
+            local monsterRootPart = monster.HumanoidRootPart
+
+                if archorMobsEnabled then
+                    archorMobsEnable(monsterRootPart)
+                else
+                    archorMobsDisable(monsterRootPart)
+                end
+             end
+         end
+      end
+   end
+end
+
+local ToggleArchorMobs = Tabs.Main:AddToggle("ArchorMobs", {Title = "Freeze Enemies Toggle", Default = false })
+
+ToggleArchorMobs:OnChanged(function(isEnabled)
+    archorMobsEnabled = isEnabled
+end)
+
+RunService.Heartbeat:Connect(function()
+    toggleArchorMobsState()
+end)
+
+Options.ArchorMobs:SetValue(false)
+
+end
 
 -- Function to get the nearest target
 function getNearestTarget()
@@ -2672,6 +3097,10 @@ Tabs.Main:AddParagraph({
         Content = ""
     })
     
+Tabs.Main:AddParagraph({
+        Title = "Added Wave Defense Farms",
+        Content = ""
+    })
 
 Tabs.Main:AddParagraph({
         Title = "Status Update: 🟢",
