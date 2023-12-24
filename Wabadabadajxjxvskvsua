@@ -531,7 +531,7 @@ Fluent:Notify({
 Fluent:Notify({
         Title = "Announcement Notification",
         Content = "Update Notifier",
-        SubContent = "Added: Many logs on Update Logs", -- Optional
+        SubContent = "Added:Wave Defense Farms", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
