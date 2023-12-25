@@ -963,7 +963,7 @@ speed = tonumber(speedtw) or 50
         end
     })
 
-    Slider:SetValue(50)
+    SpeedSlider:SetValue(50)
 
     local TweenX = Tabs.Main:AddInput("Input", {
         Title = "Tween Position X",
