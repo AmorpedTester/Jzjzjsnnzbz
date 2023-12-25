@@ -532,7 +532,7 @@ Fluent:Notify({
 Fluent:Notify({
         Title = "Announcement Notification",
         Content = "Update Notifier",
-        SubContent = "Added: Save Config", -- Optional
+        SubContent = "Added: Many logs on Update Logs", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -951,7 +951,7 @@ Tabs.Main:AddParagraph({
         Content = "Edit it, if u want"
     })
 
-local Slider = Tabs.Main:AddSlider("TweenSpeed", {
+local SpeedSlider = Tabs.Main:AddSlider("TweenSpeed", {
         Title = "Tween Speed",
         Description = "",
         Default = 50,
@@ -965,7 +965,7 @@ speed = tonumber(speedtw) or 50
 
     Slider:SetValue(50)
 
-    local Input = Tabs.Main:AddInput("Input", {
+    local TweenX = Tabs.Main:AddInput("Input", {
         Title = "Tween Position X",
         Default = "0",
         Placeholder = "Placeholder",
@@ -977,7 +977,7 @@ x = xtw
     })
 
 
-    local Input = Tabs.Main:AddInput("Input", {
+    local TweenY = Tabs.Main:AddInput("Input", {
         Title = "Tween Position Y",
         Default = "0",
         Placeholder = "Placeholder",
@@ -988,7 +988,7 @@ y = ytw
         end
     })
 
-    local Input = Tabs.Main:AddInput("Input", {
+    local TweenZ = Tabs.Main:AddInput("Input", {
         Title = "Tween Position Z",
         Default = "-2",
         Placeholder = "Placeholder",
@@ -2517,7 +2517,7 @@ Dropdown:OnChanged(function(value)
         selectedAmountCK = tonumber(value) or 1
     end)
 
-local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Buy item", Default = false })
+local Toggle = Tabs.Main:AddToggle("Buy1", {Title = "Buy item", Default = false })
 
     Toggle:OnChanged(function(value)
 BuyitemCK = value
@@ -2579,7 +2579,7 @@ Dropdown:OnChanged(function(value)
         selectedAmountDD = tonumber(value) or 1
     end)
 
-local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Buy item", Default = false })
+local Toggle = Tabs.Main:AddToggle("Buy2", {Title = "Buy item", Default = false })
 
     Toggle:OnChanged(function(value)
 BuyitemDD = value
@@ -2651,7 +2651,7 @@ Dropdown:OnChanged(function(value)
         selectedAmountFF = tonumber(value) or 1
     end)
 
-local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Buy item", Default = false })
+local Toggle = Tabs.Main:AddToggle("Buy3", {Title = "Buy item", Default = false })
 
     Toggle:OnChanged(function(value)
 BuyitemFF = value
