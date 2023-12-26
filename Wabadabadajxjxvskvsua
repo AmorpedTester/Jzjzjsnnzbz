@@ -965,7 +965,7 @@ speed = tonumber(speedtw) or 50
 
     SpeedSlider:SetValue(50)
 
-    local input = Tabs.Main:AddInput("TweenX", {
+    local TweenX = Tabs.Main:AddInput("TweenX", {
         Title = "Tween Position X",
         Default = "0",
         Placeholder = "Placeholder",
@@ -977,7 +977,7 @@ x = xtw
     })
 
 
-    local input = Tabs.Main:AddInput("TweenY", {
+    local TweenY = Tabs.Main:AddInput("TweenY", {
         Title = "Tween Position Y",
         Default = "0",
         Placeholder = "Placeholder",
@@ -988,7 +988,7 @@ y = ytw
         end
     })
 
-    local input = Tabs.Main:AddInput("TweenZ", {
+    local TweenZ = Tabs.Main:AddInput("TweenZ", {
         Title = "Tween Position Z",
         Default = "-2",
         Placeholder = "Placeholder",
