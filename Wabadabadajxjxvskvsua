@@ -524,7 +524,7 @@ local Options = Fluent.Options
 
 Fluent:Notify({
         Title = "Made by Unknownproooolucky",
-        Content = "Happy New Year!",
+        Content = "",
         SubContent = "", -- Optional
         Duration = 5 -- Set to nil to make the notification not disappear
     })
@@ -532,7 +532,7 @@ Fluent:Notify({
 Fluent:Notify({
         Title = "Announcement Notification",
         Content = "Update Notifier",
-        SubContent = "Added: Many logs on Update Logs", -- Optional
+        SubContent = "No Update Waiting for New Event", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
