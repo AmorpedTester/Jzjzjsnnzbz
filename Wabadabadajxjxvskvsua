@@ -187,9 +187,8 @@ function killAuraV1(monster)
                 if damage.ClassName ~= "Model" then
                     pcall(function()
                         damage.Transparency = 1
-                        damage.Size = Vector3.new(300, 5, 300) 
-                       damage.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Position = monsterRootPart.Position
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
                     end)
                 end
             end
@@ -218,14 +217,12 @@ local dungeon, rooms, enemies, shrines = getDungeon()
         -- end
         pcall(function()
                     if damage.ClassName ~= "Model" and damage.ClassName ~= "Explosion" then
-                       damage.Size = Vector3.new(300, 5, 300) 
-                       damage.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Position = monsterRootPart.Position
+                       damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                       damage.Position = monster.HumanoidRootPart.Position
                     end
                     if damage:FindFirstChild("Hitbox") then
-                       damage.Hitbox.Size = Vector3.new(100, 100, 100) 
-                       damage.Hitbox.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Hitbox.Position = monsterRootPart.Position
+                       damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                       damage.Position = monster.HumanoidRootPart.Position
                     end
                 end)
             end
@@ -235,7 +232,7 @@ local dungeon, rooms, enemies, shrines = getDungeon()
     end
 end
 
-function killAuraV3()
+function killAuraV3(monster)
     local dungeon, rooms, enemies, shrines = getDungeon()
 
     for _, monster in ipairs(enemies:GetChildren()) do
@@ -247,9 +244,8 @@ function killAuraV3()
                 if damage.ClassName ~= "BasePart" and damage.ClassName ~= "MeshPart" then
                     pcall(function()
                         damage.Transparency = 1
-                        damage.Size = Vector3.new(300, 5, 300) 
-                       damage.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Position = monsterRootPart.Position
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
                     end)
                 end
             end
@@ -271,9 +267,8 @@ function killAuraV4(monster)
                 if damage.ClassName ~= "Model" then
                     pcall(function()
                         damage.Transparency = 1
-                        damage.Size = Vector3.new(300, 5, 300) 
-                       damage.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Position = monsterRootPart.Position
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
                     end)
                 end
             end
@@ -293,9 +288,8 @@ function killAuraV5(monster)
                 if damage.ClassName ~= "Model" then
                     pcall(function()
                         damage.Transparency = 1
-                        damage.Size = Vector3.new(300, 5, 300) 
-                       damage.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Position = monsterRootPart.Position
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
                     end)
                 end
             end
@@ -322,14 +316,12 @@ function killAuraV6(monster)
         -- end
         pcall(function()
                     if damage.ClassName ~= "Model" and damage.ClassName ~= "Explosion" then
-                       damage.Size = Vector3.new(300, 5, 300) 
-                       damage.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Position = monsterRootPart.Position
+                       damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                       damage.Position = monster.HumanoidRootPart.Position
                     end
                     if damage:FindFirstChild("Hitbox") then
-                       damage.Hitbox.Size = Vector3.new(100, 5, 100) 
-                       damage.Hitbox.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Hitbox.Position = monsterRootPart.Position
+                       damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
+                       damage.Position = monster.HumanoidRootPart.Position
                     end
                 end)
             end
@@ -350,9 +342,8 @@ function killAuraV7(monster)
                 if damage.ClassName ~= "BasePart" and damage.ClassName ~= "MeshPart" then
                     pcall(function()
                         damage.Transparency = 1
-                        damage.Size = Vector3.new(300, 5, 300) 
-                       damage.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Position = monsterRootPart.Position
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
                     end)
                 end
             end
@@ -373,9 +364,8 @@ function killAuraV8(monster)
                 if damage.ClassName ~= "Model" then
                     pcall(function()
                         damage.Transparency = 1
-                        damage.Size = Vector3.new(300, 5, 300) 
-                       damage.CFrame = CFrame.new(monsterRootPart.Position)
-                       damage.Position = monsterRootPart.Position
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
                     end)
                 end
             end
@@ -555,7 +545,7 @@ Fluent:Notify({
    
 local Window = Fluent:CreateWindow({
     Title = "Unknown TQ Hub",
-    SubTitle = "V3.5 | ❄️ Christmas Update ❄️ |",
+    SubTitle = "V3.6 (Dungeon)",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
@@ -2328,6 +2318,7 @@ local function AutoLeaveDied()
         wait(3)
         game.ReplicatedStorage.Dungeon.Remotes.BackToLobby:FireServer()
     else
+       wait(10)
         print("No DeadCard Found or its not visible.")
     end
 end
@@ -2944,11 +2935,6 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Improved  Kill Aura",
-        Content = "ignore about the medkit"
-    })
-
-Tabs.Main:AddParagraph({
         Title = "Fixed Lag Kill Aura 93%",
         Content = ""
     })
@@ -2966,51 +2952,6 @@ Tabs.Main:AddParagraph({
 Tabs.Main:AddParagraph({
         Title = "Added Auto Create Dungeon",
         Content = "2 options Auto Create and Button Create"
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Added Auto Claim",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Auto Shrines is Still WIP but so much buggy",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Improved Tween Farm (No more Falling)",
-        Content = ""
-    })
-    
-Tabs.Main:AddParagraph({
-        Title = "Improved Freeze Mobs (Client)",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Fixed: Lags Auto Kill Mobs (Warrior)",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Fixed: Lags Kill Aura (75%)",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Fixed: Medkit is Not Working",
-        Content = ""
-    })
-    
-Tabs.Main:AddParagraph({
-        Title = "Added Wave Defense Farms",
-        Content = ""
-    })
-
-Tabs.Main:AddParagraph({
-        Title = "Added Save Config",
-        Content = ""
     })
 
 Tabs.Main:AddParagraph({
