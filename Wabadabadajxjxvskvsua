@@ -545,7 +545,7 @@ Fluent:Notify({
    
 local Window = Fluent:CreateWindow({
     Title = "Unknown TQ Hub",
-    SubTitle = "V3.6 (Dungeon)",
+    SubTitle = "V3.5 | ❄️ Christmas Update ❄️ |",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
@@ -1980,6 +1980,92 @@ Options.Noclip:SetValue(false)
 
 Noclip()
 
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+
+local GodModeTag = Instance.new("BoolValue")
+GodModeTag.Name = "GodMode"
+
+local function GodModeFunc()
+    if Player.Character then
+        if Player.Character:FindFirstChild("Humanoid") then
+            local humanoid = Player.Character.Humanoid
+            local accessories = humanoid:GetAccessories()
+
+            if #accessories > 0 then
+                for _, accessory in ipairs(accessories) do
+                    accessory:Destroy()
+                end
+            end
+
+            humanoid.Name = "1"
+
+            local newHumanoid = humanoid:Clone()
+            newHumanoid.Parent = Player.Character
+            newHumanoid.Name = "Humanoid"
+
+            wait(0.1)
+
+            Player.Character["1"]:Destroy()
+            Workspace.CurrentCamera.CameraSubject = newHumanoid
+
+            for _, accessory in ipairs(accessories) do
+                humanoid:AddAccessory(accessory:Clone())
+            end
+
+            Player.Character.Animate.Disabled = true
+            wait(0.1)
+            Player.Character.Animate.Disabled = false
+
+            --Tag:
+            GodModeTag.Value = true
+
+            spawn(function()
+                local Jumping = false
+                local Died = false
+
+                humanoid.Died:Connect(function()
+                    Died = true
+                end)
+
+                UserInputService.InputBegan:Connect(function(input, processed)
+                    if not processed and not Died then
+                        Jumping = true
+                        spawn(function()
+                            repeat
+                                RunService.Heartbeat:Wait()
+                            until not Jumping or Died
+                        end)
+                    end
+                end)
+
+                UserInputService.InputEnded:Connect(function(input, processed)
+                    if not processed and not Died then
+                        Jumping = false
+                    end
+                end)
+            end)
+        end
+        wait(10)
+      end
+   end
+ 
+local GodMode = Tabs.Main:AddToggle("GodChr", {Title = "God Mode", Default = false })
+
+    GodMode:OnChanged(function(GodMode2)
+    getgenv().God2 = GodMode2
+
+        pcall(function()
+            while getgenv().God2 and GodMode2 do
+                GodModeFunc()
+                RunService.Heartbeat:Wait()
+            end
+        end)
+    end)
+ 
 Tabs.Main:AddParagraph({
         Title = "Auto-Farm Support",
         Content = ""
@@ -2952,6 +3038,11 @@ Tabs.Main:AddParagraph({
 Tabs.Main:AddParagraph({
         Title = "Added Auto Create Dungeon",
         Content = "2 options Auto Create and Button Create"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added God Mode",
+        Content = "(Enemies Mod)"
     })
 
 Tabs.Main:AddParagraph({
