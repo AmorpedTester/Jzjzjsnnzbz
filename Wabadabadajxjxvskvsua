@@ -531,8 +531,8 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
-        Content = "Update Notifier",
-        SubContent = "No Update Waiting for New Event", -- Optional
+        Content = "Owner Message",
+        SubContent = "U are now on the Early Access", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -545,7 +545,7 @@ Fluent:Notify({
    
 local Window = Fluent:CreateWindow({
     Title = "Unknown TQ Hub",
-    SubTitle = "V3.5 | ❄️ Christmas Update ❄️ |",
+    SubTitle = "V3.6 (Dungeon)",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
