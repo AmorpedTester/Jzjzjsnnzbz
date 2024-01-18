@@ -1525,7 +1525,6 @@ local function archorMobsEnable(monsterRootPart, monsterHumanoid)
     monsterHumanoid.WalkSpeed = 0
     monsterHumanoid.JumpPower = 0
     monsterHumanoid.HipHeight = 0
-    MonsterHumanoid:ChangeState(Enum.HumanoidStateType.Seated)
     monsterRootPart.Anchored = true
 end
 
@@ -1534,7 +1533,6 @@ local function archorMobsDisable(monsterRootPart, monsterHumanoid)
     monsterHumanoid.WalkSpeed = 16
     monsterHumanoid.JumpPower = 50
     monsterHumanoid.HipHeight = 2.5
-    MonsterHumanoid:ChangeState(Enum.HumanoidStateType.Physics)
     monsterRootPart.Anchored = false
 end
 
