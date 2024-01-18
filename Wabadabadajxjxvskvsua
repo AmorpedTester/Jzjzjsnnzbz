@@ -34,10 +34,10 @@ print("Gui: Fluent Library")
 
 wait(0.5)
 
-print("-- Fast Loader V1")
+print("-- Fast Loader V2")
 print("-- Unknown TQ Hub 1/5: Checking Game...")
 
-wait(1)
+wait(0.2)
 
 print("-- Unknown TQ Hub 2/5: Getting Service...")
 
@@ -500,7 +500,7 @@ game:GetService("Workspace"):FindFirstChild("Map")
 
 print("-- Unknown TQ Hub 4/5: Checking Exploit Support...")
 
-wait(0.5)
+wait(0.1)
 
 if not require then
     return game.Players.LocalPlayer:Kick("Your Exploit doesn't support")
@@ -512,7 +512,7 @@ end
 
 print("-- Unknown TQ Hub 5/5: Loaded, Pls Wait for Few Seconds...")
 
-wait(0.5)
+wait(0.1)
 
 
 -- Troubleshooting Ui library
@@ -545,7 +545,7 @@ Fluent:Notify({
    
 local Window = Fluent:CreateWindow({
     Title = "Unknown TQ Hub",
-    SubTitle = "V3.5 | ❄️ Christmas Update ❄️ |",
+    SubTitle = "V3.6b2 (Dungeon) ",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
