@@ -531,8 +531,8 @@ Fluent:Notify({
    
 Fluent:Notify({
         Title = "Announcement Notification",
-        Content = "Owner Message",
-        SubContent = "U are now on the Early Access", -- Optional
+        Content = "Update Notifier",
+        SubContent = "No Update Waiting for New Event", -- Optional
         Duration = 10 -- Set to nil to make the notification not disappear
     })
    
@@ -545,7 +545,7 @@ Fluent:Notify({
    
 local Window = Fluent:CreateWindow({
     Title = "Unknown TQ Hub",
-    SubTitle = "V3.6 (Dungeon)",
+    SubTitle = "V3.5 | ❄️ Christmas Update ❄️ |",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
@@ -565,8 +565,8 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Warrior: Set the Hitbox X=300 Y=30 Z=300 Trans=1",
-        Content = "Kill Aura: Allow"
+        Title = "Warrior: Set The Hitbox Ever you want!",
+        Content = "Kill Aura: Allowed "
     })
 
 Tabs.Main:AddParagraph({
@@ -584,13 +584,13 @@ Tabs.Main:AddParagraph({
     })
 
 Tabs.Main:AddParagraph({
-        Title = "Warrior: Set the Hitbox X=100 Y=30 Z=100 Trans=1",
+        Title = "Warrior: Set the Hitbox Ever you want!",
         Content = "Kill Aura: Allow"
     })
 
 Tabs.Main:AddParagraph({
         Title = "Wizard: Not Working",
-        Content = "Kill Aura: (Unknown)"
+        Content = "Kill Aura: Allowed"
     })
 
 end
@@ -1520,11 +1520,21 @@ local archorMobsEnabled = false
 local lastUpdateTime = 0
 local updateInterval = 1
 
-local function archorMobsEnable(monsterRootPart)
+local function archorMobsEnable(monsterRootPart, monsterHumanoid)
+    monsterHumanoid.PlatformStand = true
+    monsterHumanoid.WalkSpeed = 0
+    monsterHumanoid.JumpPower = 0
+    monsterHumanoid.HipHeight = 0
+    MonsterHumanoid:ChangeState(Enum.HumanoidStateType.Seated)
     monsterRootPart.Anchored = true
 end
 
-local function archorMobsDisable(monsterRootPart)
+local function archorMobsDisable(monsterRootPart, monsterHumanoid)
+    monsterHumanoid.PlatformStand = false
+    monsterHumanoid.WalkSpeed = 16
+    monsterHumanoid.JumpPower = 50
+    monsterHumanoid.HipHeight = 2.5
+    MonsterHumanoid:ChangeState(Enum.HumanoidStateType.Physics)
     monsterRootPart.Anchored = false
 end
 
@@ -1539,11 +1549,12 @@ local function toggleArchorMobsState()
             if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
                monster.EvilHumanoid.Health > 0 then
                 local monsterRootPart = monster.HumanoidRootPart
+                local monsterHumanoid = monster.EvilHumanoid
 
                 if archorMobsEnabled then
-                    archorMobsEnable(monsterRootPart)
+                    archorMobsEnable(monsterRootPart, monsterHumanoid)
                 else
-                    archorMobsDisable(monsterRootPart)
+                    archorMobsDisable(monsterRootPart, monsterHumanoid)
                 end
             end
         end
@@ -2006,6 +2017,8 @@ local function GodModeFunc()
             local newHumanoid = humanoid:Clone()
             newHumanoid.Parent = Player.Character
             newHumanoid.Name = "Humanoid"
+            newHumanoid.Health = math.huge
+            newHumanoid.MaxHealth = math.huge
 
             wait(0.1)
 
@@ -3042,6 +3055,11 @@ Tabs.Main:AddParagraph({
 
 Tabs.Main:AddParagraph({
         Title = "Added God Mode",
+        Content = "(Enemies Mod)"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Improved Freeze Enemies",
         Content = "(Enemies Mod)"
     })
 
