@@ -545,7 +545,7 @@ Fluent:Notify({
    
 local Window = Fluent:CreateWindow({
     Title = "Unknown TQ Hub",
-    SubTitle = "V3.6b2 (Dungeon) ",
+    SubTitle = "V3.6b3 (Dungeon) ",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
@@ -1054,74 +1054,56 @@ Toggle1:OnChanged(function(State)
     
 Options.AutoGrotto:SetValue(false)
 
-local speed2 = 1 -- Default value
-local timerx = 1
+-- Initialize the global variable
+_G.TPG3 = false
 
-local Input = Tabs.Main:AddInput("Input", {
-    Title = "Teleport Boss Speed",
-    Default = "25",
-    Placeholder = "Placeholder",
-    Numeric = true, -- Only allows numbers
-    Finished = false, -- Only calls callback when you press enter
-    Callback = function(speedtw)
-        speed2 = tonumber(speedtw) or 1 -- Convert to number or use default value
-    end
-})
-
-Tabs.Main:AddButton({
-    Title = "Teleport To Boss",
-    Description = "Manual",
-    Callback = function()
-        local CFrameEnd = CFrame.new(-1593.79, 515.489, 606.864) -- Place your coords here
-        local Time = speed2 -- Time in seconds
-        local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
-        tween:Play()
-        tween.Completed:Wait()
-    end
-})
-
-local _G = {}
-_G.Button3 = false -- Set the initial value to false
-
-local function RunTween()
-    local CFrameEnd = CFrame.new(-1593.79, 515.489, 606.865) -- Place your coords here
-    local Time = speed2 -- Time in seconds (you can change this)
-    local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(Time), {CFrame = CFrameEnd})
-    tween:Play()
-    tween.Completed:Wait()
-end
-
-local Toggle = Tabs.Main:AddToggle("AutoKillGrottoBoss", {Title = "Auto Teleport to Boss", Default = false })
+local Toggle = Tabs.Main:AddToggle("AutoKillGrottoBoss", {Title = "Teleport to Spawn Boss", Default = false })
 
 Toggle:OnChanged(function(Tswx)
-    _G.Button3 = Tswx -- Set the global variable based on the toggle state
-    if _G.Button3 then
-        local startTime = tick()
-        local timerx = tonumber(timerx) or 130 -- Default value or user input
-        while _G.Button3 do
-            if tick() - startTime >= timerx then
-                RunTween()
-                startTime = tick()
-                print("Re-executed")
-            end
-            wait() -- This is crucial to avoid high CPU usage
+    _G.TPG3 = Tswx  -- Update the global variable
+
+    local TweenService = game:GetService("TweenService")
+    local player = game.Players.LocalPlayer
+
+    local function moveCharacter()
+        local character = player.Character
+        if not character then
+            return  -- Character might not exist (e.g., during respawn)
+        end
+
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        local destinationCFrame = CFrame.new(Vector3.new(-1593.79, 515.489, 606.864))
+
+        local Distance = (destinationCFrame.Position - humanoidRootPart.Position).Magnitude
+
+        local Speed =  68 -- Default speed for larger distances
+        if Distance < 150 then
+            Speed = 50
+        elseif Distance < 200 then
+            Speed = 50
+        elseif Distance < 300 then
+            Speed = 50
+        elseif Distance < 500 then
+            Speed = 60
+        elseif Distance < 1000 then
+            Speed = 68
+        end
+
+        local tweenInfo = TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+        local tweenGoal = {}
+        tweenGoal.CFrame = destinationCFrame
+
+        local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
+        tween:Play()
+        wait(10)
+    end
+
+    while wait(0.1)  and _G.TPG3 do
+        if _G.TPG3 == true then
+            moveCharacter()
         end
     end
 end)
-
-Options.AutoKillGrottoBoss:SetValue(false)
-
-local Input = Tabs.Main:AddInput("Input", {
-    Title = "Afk Teleport Time",
-    Default = "130",
-    Placeholder = "Placeholder",
-    Numeric = true, -- Only allows numbers
-    Finished = false, -- Only calls callback when you press enter
-    Callback = function(Xdsr)
-        timerx = Xdsr
-    end
-})
-
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Hitbox Settings", Icon = "rbxassetid://7734022107" }),
@@ -3059,6 +3041,11 @@ Tabs.Main:AddParagraph({
 Tabs.Main:AddParagraph({
         Title = "Improved Freeze Enemies",
         Content = "(Enemies Mod)"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Improved Teleport to boss spawn",
+        Content = "(suggestion by: crisis) reason: prevent humanoid teleport (not teleport lag back ;-;)"
     })
 
 Tabs.Main:AddParagraph({
