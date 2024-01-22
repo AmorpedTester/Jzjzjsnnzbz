@@ -19,6 +19,44 @@ end
 -- Connect the function to the button's MouseClick event
 button.MouseButton1Click:Connect(sendKeyEvent)
 
+local player = game.Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+local fpsCounter = Instance.new("ScreenGui")
+fpsCounter.Parent = player.PlayerGui
+fpsCounter.ResetOnSpawn = false
+
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(0, 150, 0, 70)
+label.Position = UDim2.new(0, 200, 0, 10)
+label.Text = "FPS: 0\nTime Played: 0h 0m 0s"
+label.TextSize = 10
+label.Parent = fpsCounter
+
+local startTime = tick()
+local lastUpdateTime = tick()
+local frameCount = 0
+
+RunService.RenderStepped:Connect(function()
+    local currentTime = tick()
+    local deltaTime = currentTime - lastUpdateTime
+    frameCount = frameCount + 1
+
+    if deltaTime >= 1 then
+        local fps = math.floor(frameCount / deltaTime)
+        local elapsedTime = currentTime - startTime
+
+        local hours = math.floor(elapsedTime / 3600)
+        local minutes = math.floor((elapsedTime % 3600) / 60)
+        local seconds = math.floor(elapsedTime % 60)
+
+        label.Text = "FPS: " .. fps .. "\nTime Played: " .. hours .. "h " .. minutes .. "m " .. seconds .. "s"
+
+        lastUpdateTime = currentTime
+        frameCount = 0
+    end
+end)
+
 -- instances
 getgenv().Get =
     setmetatable(
@@ -176,30 +214,6 @@ function getDungeon()
 end
 
 function killAuraV1(monster)
-    local dungeon, rooms, enemies, shrines = getDungeon()
-
-    for _, monster in ipairs(enemies:GetChildren()) do
-        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-           monster.EvilHumanoid.Health > 0 then
-            local monsterRootPart = monster.HumanoidRootPart
-
-            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-                if damage.ClassName ~= "Model" then
-                    pcall(function()
-                        damage.Transparency = 1
-                        damage.CFrame = CFrame.new(monsterRootPart.Position)
-                        damage.Position = monsterRootPart.Position
-                    end)
-                end
-            end
-
-            wait(0.1)  -- Add a delay to reduce execution frequency
-        end
-    end
-end
-
-
-function killAuraV2(monster)
 local dungeon, rooms, enemies, shrines = getDungeon()
 
    for _, monster in ipairs(enemies:GetChildren()) do
@@ -216,7 +230,7 @@ local dungeon, rooms, enemies, shrines = getDungeon()
         --     end)
         -- end
         pcall(function()
-                    if damage.ClassName ~= "Model" and damage.ClassName ~= "Explosion" then
+                    if damage.ClassName ~= "Model" or damage.ClassName ~= "Explosion" then
                        damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
                        damage.Position = monster.HumanoidRootPart.Position
                     end
@@ -232,60 +246,38 @@ local dungeon, rooms, enemies, shrines = getDungeon()
     end
 end
 
+function killAuraV2(monster)
+    local dungeon, rooms, enemies, shrines = getDungeon()
+
+    for _, monster in ipairs(enemies:GetChildren()) do
+        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
+           monster.EvilHumanoid.Health > 0 then
+            local monsterRootPart = monster.HumanoidRootPart
+
+            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
+                if damage.ClassName ~= "BasePart" or damage.ClassName ~= "MeshPart" or damage.ClassName ~= "Model" then
+                    pcall(function()
+                        damage.Transparency = 1
+                        damage.CFrame = CFrame.new(monsterRootPart.Position)
+                        damage.Position = monsterRootPart.Position
+                    end)
+                end
+            end
+
+            wait(0.1)  -- Add a delay to reduce execution frequency
+        end
+    end
+end
+
+
 function killAuraV3(monster)
-    local dungeon, rooms, enemies, shrines = getDungeon()
-
-    for _, monster in ipairs(enemies:GetChildren()) do
-        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-           monster.EvilHumanoid.Health > 0 then
-            local monsterRootPart = monster.HumanoidRootPart
-
-            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-                if damage.ClassName ~= "BasePart" and damage.ClassName ~= "MeshPart" then
-                    pcall(function()
-                        damage.Transparency = 1
-                        damage.CFrame = CFrame.new(monsterRootPart.Position)
-                        damage.Position = monsterRootPart.Position
-                    end)
-                end
-            end
-
-            wait(0.1)  -- Add a delay to reduce execution frequency
-        end
-    end
-end
-
-function killAuraV4(monster)
-    local dungeon, rooms, enemies, shrines = getDungeon()
-
-    for _, monster in ipairs(enemies:GetChildren()) do
-        if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-           monster.EvilHumanoid.Health > 0 then
-            local monsterRootPart = monster.HumanoidRootPart
-
-            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-                if damage.ClassName ~= "Model" then
-                    pcall(function()
-                        damage.Transparency = 1
-                        damage.CFrame = CFrame.new(monsterRootPart.Position)
-                        damage.Position = monsterRootPart.Position
-                    end)
-                end
-            end
-
-            wait(0.1)  -- Add a delay to reduce execution frequency
-        end
-    end
-end
-
-function killAuraV5(monster)
     for _, monster in pairs(workspace:GetDescendants()) do
     if monster:FindFirstChild("HumanoidRootPart") then
         if monster.Name ~= game.Players.LocalPlayer.Name then
             local monsterRootPart = monster.HumanoidRootPart
                 
             for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-                if damage.ClassName ~= "Model" then
+                if damage.ClassName ~= "Model" or damage.ClassName ~= "MeshPart" or damage.ClassName ~= "BasePart" then
                     pcall(function()
                         damage.Transparency = 1
                         damage.CFrame = CFrame.new(monsterRootPart.Position)
@@ -300,7 +292,7 @@ function killAuraV5(monster)
   end
 end
 
-function killAuraV6(monster)
+function killAuraV4(monster)
    for _, monster in pairs(workspace:GetDescendants()) do
     if monster:FindFirstChild("HumanoidRootPart") then
         if monster.Name ~= game.Players.LocalPlayer.Name then
@@ -311,11 +303,11 @@ function killAuraV6(monster)
         --     pcall(function()
         --         damage.Transparency = 1
         --         damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
-        --         -- damage.Position = monster.HumanoidRootPart.Position
+        --         -- damage.Position = Vector3.new(monster.HumanoidRootPart.Position)
         --     end)
         -- end
         pcall(function()
-                    if damage.ClassName ~= "Model" and damage.ClassName ~= "Explosion" then
+                    if damage.ClassName ~= "Model" or damage.ClassName ~= "Explosion" then
                        damage.CFrame = CFrame.new(monster.HumanoidRootPart.Position)
                        damage.Position = monster.HumanoidRootPart.Position
                     end
@@ -327,50 +319,6 @@ function killAuraV6(monster)
             end
             
             wait(0.1)
-        end
-    end
-  end
-end
-
-function killAuraV7(monster)
-    for _, monster in pairs(workspace:GetDescendants()) do
-    if monster:FindFirstChild("HumanoidRootPart") then
-        if monster.Name ~= game.Players.LocalPlayer.Name then
-            local monsterRootPart = monster.HumanoidRootPart
-
-            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-                if damage.ClassName ~= "BasePart" and damage.ClassName ~= "MeshPart" then
-                    pcall(function()
-                        damage.Transparency = 1
-                        damage.CFrame = CFrame.new(monsterRootPart.Position)
-                        damage.Position = monsterRootPart.Position
-                    end)
-                end
-            end
-
-            wait(0.1)  -- Add a delay to reduce execution frequency
-        end
-    end
-  end
-end
-
-function killAuraV8(monster)
-    for _, monster in pairs(workspace:GetDescendants()) do
-    if monster:FindFirstChild("HumanoidRootPart") then
-        if monster.Name ~= game.Players.LocalPlayer.Name then
-            local monsterRootPart = monster.HumanoidRootPart
-
-            for _, damage in ipairs(game:GetService("Workspace").Ignore:GetDescendants()) do
-                if damage.ClassName ~= "Model" then
-                    pcall(function()
-                        damage.Transparency = 1
-                        damage.CFrame = CFrame.new(monsterRootPart.Position)
-                        damage.Position = monsterRootPart.Position
-                    end)
-                end
-            end
-
-            wait(0.1)  -- Add a delay to reduce execution frequency
         end
     end
   end
@@ -398,17 +346,13 @@ local function AllKill()
     getNearestAttack()
     killAuraV1(monster)
     killAuraV2(monster)
-    killAuraV3(monster)
-    killAuraV4(monster)
     wait(0.1)
 end
 
 local function AllKill2()
     getNearestAttack()
-    killAuraV5(monster)
-    killAuraV6(monster)
-    killAuraV7(monster)
-    killAuraV8(monster)
+    killAuraV3(monster)
+    killAuraV4(monster)
     wait(0.1)
 end
 
@@ -462,19 +406,41 @@ local Noclip = function(A)
     return A:ChangeState(11)
 end 
 
-local TweenService = game:GetService("TweenService")
-
-local Tween = function(A,B,C)
-    if A and B and C then
-        return TweenService:Create(A, TweenInfo.new((B.Position + Vector3.new(x,y,z) - A.Position).magnitude / C, Enum.EasingStyle.Linear),{CFrame = CFrame.new(B.Position + Vector3.new(x,y,z))}):Play()
+--[[ local Tween = function(A,B,C)
+     if A and B and C then
+        return TweenService:Create(A, TweenInfo.new((B.Position + Vector3.new(x,y,z) - A.Position).magnitude / C, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),{CFrame = CFrame.new(B.Position + Vector3.new(x,y,z))}):Play()
     end 
 end
+]]
+local TweenService = game:GetService("TweenService")
+
+local function Tween(A, B, C)
+    if A and B and C then
+        local distance = (B.Position + Vector3.new(x,y,z) - A.Position).Magnitude
+
+        local speed = 68 -- Default speed for larger distances
+        if distance < 150 then
+            speed = 50
+        elseif distance < 200 then
+            speed = 52
+        elseif distance < 300 then
+            speed = 56
+        elseif distance < 500 then
+            speed = 64
+        elseif distance < 1000 then
+            speed = 68
+        end
+
+        local time = distance / speed
+
+        return TweenService:Create(A, TweenInfo.new(time, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {CFrame = CFrame.new(B.Position + Vector3.new(x,y,z))}):Play()
+    end
+end
+
 
 local Script = require(Player.PlayerScripts.Shared.Client.CombatController)
 local ScriptFunction = Script.BasicAttack
 local ScriptFunction2 = Script.UseAbility
-
-speed = 50
 
 x = 0
 
@@ -514,7 +480,6 @@ print("-- Unknown TQ Hub 5/5: Loaded, Pls Wait for Few Seconds...")
 
 wait(0.1)
 
-
 -- Troubleshooting Ui library
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
@@ -545,7 +510,7 @@ Fluent:Notify({
    
 local Window = Fluent:CreateWindow({
     Title = "Unknown TQ Hub",
-    SubTitle = "V3.6b3 (Dungeon) ",
+    SubTitle = "V3.6b4 (Dungeon) ",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
@@ -571,7 +536,7 @@ Tabs.Main:AddParagraph({
 
 Tabs.Main:AddParagraph({
         Title = "Wizard: Best Farm Ability is Tsunami",
-        Content = "Kill Aura: Not Allowed (if Enabled: Super Lag)"
+        Content = "Kill Aura: Allowed (Fast But Only High Device)"
     })
     
 end
@@ -585,7 +550,7 @@ Tabs.Main:AddParagraph({
 
 Tabs.Main:AddParagraph({
         Title = "Warrior: Set the Hitbox Ever you want!",
-        Content = "Kill Aura: Allow"
+        Content = "Kill Aura: Allowed"
     })
 
 Tabs.Main:AddParagraph({
@@ -622,7 +587,7 @@ Toggle1:OnChanged(function(State)
                     end 
                 end 
                 if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
-                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
+                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,time)
                 end 
             end)
         end
@@ -780,12 +745,24 @@ local function MoveOutFromBossRoom()
     local PlayerSpawn = findBossRoomInWorkspace(workspace)
     if PlayerSpawn then
         local targetPosition = PlayerSpawn.Position - Vector3.new(0, 0, -75)
-        local movementSpeed = 70
+        local movementSpeed = 68
 
         local TweenService = game:GetService("TweenService")
         local HumanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
 
         local distance = (targetPosition - HumanoidRootPart.Position).Magnitude
+        if distance < 150 then
+            movementSpeed = 50
+        elseif distance < 200 then
+            movementSpeed = 54
+        elseif distance < 300 then
+            movementSpeed = 59
+        elseif distance < 500 then
+            movementSpeed = 62
+        elseif distance < 1000 then
+            movementSpeed = 65
+        end
+        
         local duration = distance / movementSpeed
 
         local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
@@ -816,16 +793,7 @@ Toggle4:OnChanged(function(vaf)
                 StartDungeon()
 
                 wait(1)
-
-                local dungeon, rooms, enemies, shrines = getDungeon()
-                for _, monster in ipairs(enemies:GetChildren()) do
-                    if monster:FindFirstChild("EvilHumanoid") and monster:FindFirstChild("HumanoidRootPart") and
-                            monster.EvilHumanoid.Health >= 0 then
-                        local monsterRootPart = monster.HumanoidRootPart
-                        if monsterRootPart.Size ~= Vector3.new(50, 30, 50) then
-                            monsterRootPart.Size = Vector3.new(50, 30, 50)
-                            monsterRootPart.Transparency = 1
-
+        
                             for _, v in ipairs(Workspace:GetChildren()) do
                                 if v.ClassName == "Folder" then
                                     for _, x in ipairs(v:GetChildren()) do
@@ -838,10 +806,7 @@ Toggle4:OnChanged(function(vaf)
                                                     if EvilHumanoid and humanoidRootPart then
                                                         local monsterPos = humanoidRootPart.Position
                                                         local player = game.Players.LocalPlayer
-                                                        local playerPos = player.Character and
-                                                                player.Character:FindFirstChild(
-                                                                        "HumanoidRootPart") and
-                                                                player.Character.HumanoidRootPart.Position
+                                                        local playerPos = player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character.HumanoidRootPart.Position
 
                                                         if playerPos and EvilHumanoid.Health > 0 then
                                                             local direction = (playerPos - monsterPos).unit
@@ -851,16 +816,13 @@ Toggle4:OnChanged(function(vaf)
                                                         end
                                                     end
                                                 end
+                                             wait(0.1)
                                             end
                                         end
                                     end
                                 end
                             end
-                           wait(0.1)
-                        end
-                    end
-                end
-              wait(0.1)
+                 wait(0.1)
             end
         end)
 
@@ -951,19 +913,22 @@ Tabs.Main:AddParagraph({
         Content = "Edit it, if u want"
     })
 
-local SpeedSlider = Tabs.Main:AddSlider("TweenSpeed", {
-        Title = "Tween Speed",
-        Description = "",
-        Default = 50,
-        Min = 0,
-        Max = 70,
-        Rounding = 1,
-        Callback = function(speedtw)
-speed = tonumber(speedtw) or 50
-        end
+Tabs.Main:AddParagraph({
+        Title = "Tween Speed: Distance Calculation Mode",
+        Content = ""
     })
 
-    SpeedSlider:SetValue(50)
+--[[ local twSpeed = Tabs.Main:AddInput("TweenS", {
+        Title = "Tween Speed",
+        Default = "50",
+        Placeholder = "Put a Speed",
+        Numeric = true, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(speedtw)
+                 speed = tonumber(speedtw) or 50
+      end
+    })
+]]
 
     local TweenX = Tabs.Main:AddInput("TweenX", {
         Title = "Tween Position X",
@@ -1031,12 +996,11 @@ Toggle1:OnChanged(function(State)
                     end 
                 end 
                 if GetClosestt():FindFirstChildWhichIsA("Humanoid",true).Health ~= 0 then
-                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,speed)
+                    Tween(Player.Character:FindFirstChild("HumanoidRootPart",true),GetClosestt().HumanoidRootPart,time)
                 end 
             end)
         end
     end)
-    
     spawn(function()
         while wait() and Settings.Re do
             local player, cha, plr, hum = getPlayer()
@@ -1050,7 +1014,7 @@ Toggle1:OnChanged(function(State)
             wait()
         end
     end)
-  end)
+end)
     
 Options.AutoGrotto:SetValue(false)
 
@@ -1080,11 +1044,11 @@ Toggle:OnChanged(function(Tswx)
         if Distance < 150 then
             Speed = 50
         elseif Distance < 200 then
-            Speed = 50
+            Speed = 52
         elseif Distance < 300 then
-            Speed = 50
+            Speed = 56
         elseif Distance < 500 then
-            Speed = 60
+            Speed = 64
         elseif Distance < 1000 then
             Speed = 68
         end
@@ -1104,6 +1068,70 @@ Toggle:OnChanged(function(Tswx)
         end
     end
 end)
+
+Tabs.Main:AddParagraph({
+        Title = "Auto Shrine Settings (WIP) ",
+        Content = "Not Working Cuz its too lots of Bugs"
+    })
+
+local Dasd = "Summoning"
+
+_G.Main = {
+    AutoShrine = {
+        CollectShrines = {
+            ToCollect = {Dasd}
+        }
+    }
+}
+
+local function getClosestShrine()
+    local target
+    local dungeon, rooms, enemies, shrines = getDungeon()
+    local shrinesFolder = dungeon:WaitForChild("Shrines")
+    local closestDistance = math.huge
+
+    for _, shrine in ipairs(shrinesFolder:GetChildren()) do
+        if shrine:FindFirstChild("Primary") and shrine.Primary:FindFirstChild("ProximityPrompt") then
+            if table.find(_G.Main.AutoShrine.CollectShrines.ToCollect, shrine.Name) then
+                local distance = (shrine.Primary.Position - Player.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude
+                if distance < closestDistance then
+                    target = shrine
+                    closestDistance = distance
+                end
+            end
+        end
+    end
+
+    return target
+end
+
+local function pressE()
+    game:GetService('VirtualInputManager'):SendKeyEvent(true, "E", false, game)
+end
+
+local Toggle1 = Tabs.Main:AddToggle("AutoShrine", {Title = "Auto Collect Shrine", Default = false})
+
+Toggle1:OnChanged(function(State)
+    if State then
+        local closestShrine = getClosestShrine()
+        if closestShrine then
+            spawn(pressE)
+            Tween(Player.Character:FindFirstChild("HumanoidRootPart", true), closestShrine.Primary, 1) -- Adjust the time as needed
+        end
+    end
+end)
+
+local ShrineName = Tabs.Main:AddInput("ShrineType", {
+    Title = "Shrine Name",
+    Default = Dasd,
+    Placeholder = "Shrine Name Here",
+    Numeric = false,
+    Finished = false,
+    Callback = function(Value3)
+        Dasd = tostring(Value3)
+    end
+})
+
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Hitbox Settings", Icon = "rbxassetid://7734022107" }),
@@ -1725,7 +1753,7 @@ function updateCamera()
                 camera.CameraSubject = workspace.Characters:FindFirstChild(cameraPartName)
             end
         end
-        wait()  -- Add a small delay to avoid using too much CPU
+        wait(0.1)  -- Add a small delay to avoid using too much CPU
     end
 end
 
@@ -1766,9 +1794,97 @@ Tabs.Main:AddButton({
 local isUpdatingCamera = false
 
 Tabs.Main:AddParagraph({
-        Title = "Speed And Jump",
+        Title = "Character Mods",
         Content = ""
     })
+
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+
+local GodModeTag = Instance.new("BoolValue")
+GodModeTag.Name = "GodMode"
+
+local function GodModeFunc()
+    if Player.Character then
+        if Player.Character:FindFirstChild("Humanoid") then
+            local humanoid = Player.Character.Humanoid
+            local accessories = humanoid:GetAccessories()
+
+            if #accessories > 0 then
+                for _, accessory in ipairs(accessories) do
+                    accessory:Destroy()
+                end
+            end
+
+            humanoid.Name = "1"
+
+            local newHumanoid = humanoid:Clone()
+            newHumanoid.Parent = Player.Character
+            newHumanoid.Name = "Humanoid"
+            newHumanoid.Health = math.huge
+            newHumanoid.MaxHealth = math.huge
+
+            wait(0.1)
+
+            Player.Character["1"]:Destroy()
+            Workspace.CurrentCamera.CameraSubject = newHumanoid
+
+            for _, accessory in ipairs(accessories) do
+                humanoid:AddAccessory(accessory:Clone())
+            end
+
+            Player.Character.Animate.Disabled = true
+            wait(0.1)
+            Player.Character.Animate.Disabled = false
+
+            --Tag:
+            GodModeTag.Value = true
+
+            spawn(function()
+                local Jumping = false
+                local Died = false
+
+                humanoid.Died:Connect(function()
+                    Died = true
+                end)
+
+                UserInputService.InputBegan:Connect(function(input, processed)
+                    if not processed and not Died then
+                        Jumping = true
+                        spawn(function()
+                            repeat
+                                RunService.Heartbeat:Wait()
+                            until not Jumping or Died
+                        end)
+                    end
+                end)
+
+                UserInputService.InputEnded:Connect(function(input, processed)
+                    if not processed and not Died then
+                        Jumping = false
+                    end
+                end)
+            end)
+        end
+        wait(10)
+      end
+   end
+ 
+local GodMode = Tabs.Main:AddToggle("GodChr", {Title = "God Mode", Default = false })
+
+    GodMode:OnChanged(function(GodMode2)
+    getgenv().God2 = GodMode2
+
+        pcall(function()
+            while getgenv().God2 and GodMode2 do
+                GodModeFunc()
+                RunService.Heartbeat:Wait()
+            end
+        end)
+    end)
 
 local Input = Tabs.Main:AddInput("Input", {
         Title = "WalkSpeed",
@@ -1970,94 +2086,6 @@ NoClipx = State
 Options.Noclip:SetValue(false)
 
 Noclip()
-
-local UserInputService = game:GetService("UserInputService")
-local Workspace = game:GetService("Workspace")
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-local Player = Players.LocalPlayer
-
-local GodModeTag = Instance.new("BoolValue")
-GodModeTag.Name = "GodMode"
-
-local function GodModeFunc()
-    if Player.Character then
-        if Player.Character:FindFirstChild("Humanoid") then
-            local humanoid = Player.Character.Humanoid
-            local accessories = humanoid:GetAccessories()
-
-            if #accessories > 0 then
-                for _, accessory in ipairs(accessories) do
-                    accessory:Destroy()
-                end
-            end
-
-            humanoid.Name = "1"
-
-            local newHumanoid = humanoid:Clone()
-            newHumanoid.Parent = Player.Character
-            newHumanoid.Name = "Humanoid"
-            newHumanoid.Health = math.huge
-            newHumanoid.MaxHealth = math.huge
-
-            wait(0.1)
-
-            Player.Character["1"]:Destroy()
-            Workspace.CurrentCamera.CameraSubject = newHumanoid
-
-            for _, accessory in ipairs(accessories) do
-                humanoid:AddAccessory(accessory:Clone())
-            end
-
-            Player.Character.Animate.Disabled = true
-            wait(0.1)
-            Player.Character.Animate.Disabled = false
-
-            --Tag:
-            GodModeTag.Value = true
-
-            spawn(function()
-                local Jumping = false
-                local Died = false
-
-                humanoid.Died:Connect(function()
-                    Died = true
-                end)
-
-                UserInputService.InputBegan:Connect(function(input, processed)
-                    if not processed and not Died then
-                        Jumping = true
-                        spawn(function()
-                            repeat
-                                RunService.Heartbeat:Wait()
-                            until not Jumping or Died
-                        end)
-                    end
-                end)
-
-                UserInputService.InputEnded:Connect(function(input, processed)
-                    if not processed and not Died then
-                        Jumping = false
-                    end
-                end)
-            end)
-        end
-        wait(10)
-      end
-   end
- 
-local GodMode = Tabs.Main:AddToggle("GodChr", {Title = "God Mode", Default = false })
-
-    GodMode:OnChanged(function(GodMode2)
-    getgenv().God2 = GodMode2
-
-        pcall(function()
-            while getgenv().God2 and GodMode2 do
-                GodModeFunc()
-                RunService.Heartbeat:Wait()
-            end
-        end)
-    end)
  
 Tabs.Main:AddParagraph({
         Title = "Auto-Farm Support",
@@ -2896,6 +2924,7 @@ l.GlobalShadows = false
 l.FogEnd = 9e9
 l.Brightness = 0
 settings().Rendering.QualityLevel = "Level01"
+wait(1)
 for i,v in pairs(g:GetDescendants()) do
     if v:IsA("Part") or v:IsA("Union") or v:IsA("MeshPart") then
         v.Material = "Plastic"
@@ -2960,7 +2989,7 @@ for i = 1,#l:GetChildren() do
     end
 end
 w.DescendantAdded:Connect(function(v)
-    wait()--prevent errors and shit
+    wait(1)--prevent errors and shit
    if v:IsA("BasePart") and not v:IsA("MeshPart") then
         v.Material = "Plastic"
         v.Reflectance = 0
@@ -3035,7 +3064,7 @@ Tabs.Main:AddParagraph({
 
 Tabs.Main:AddParagraph({
         Title = "Added God Mode",
-        Content = "(Enemies Mod)"
+        Content = "(Character Mod)"
     })
 
 Tabs.Main:AddParagraph({
@@ -3046,6 +3075,31 @@ Tabs.Main:AddParagraph({
 Tabs.Main:AddParagraph({
         Title = "Improved Teleport to boss spawn",
         Content = "(suggestion by: crisis) reason: prevent humanoid teleport (not teleport lag back ;-;)"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Fixed Lag Wizard Farm 99%",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Fixed Lag Kill Aura 98% ",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Changed Tween Speed to Calculation",
+        Content = ""
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Added Fps and Game time",
+        Content = "(Suggestion by Johnson3475)"
+    })
+
+Tabs.Main:AddParagraph({
+        Title = "Fixed Anti-Lag Malfunction to Auto farm",
+        Content = "(Report Bug by Crisis)"
     })
 
 Tabs.Main:AddParagraph({
@@ -3066,7 +3120,7 @@ local Tabs = {
 
 Tabs.Config:AddParagraph({
         Title = "Save Config",
-        Content = "If you got a bug from Minimize Keybind Search the file name UnknownTQHub>Options.json set it LeftControl"
+        Content = "Save A Config"
     })
 
 -- Save Manager
